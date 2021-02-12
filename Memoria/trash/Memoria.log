@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2021.2.10)  11 FEB 2021 10:47
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2021.2.10)  12 FEB 2021 12:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -459,7 +459,7 @@ File: listings.cfg 2020/03/24 1.8d listings configuration
 ))
 Package: listings 2020/03/24 1.8d (Carsten Heinz)
 )
-(./secciones/_DatosTFG.tex)
+(./secciones/00_DatosTFG.tex)
 LaTeX Font Info:    Trying to load font information for T1+pbk on input line 16
 .
  (/usr/share/texmf-dist/tex/latex/psnfss/t1pbk.fd
@@ -467,13 +467,14 @@ File: t1pbk.fd 2001/06/04 font definitions for T1/pbk.
 )
 LaTeX Font Info:    Font shape `T1/pbk/m/n' in size <10.95> not available
 (Font)              Font shape `T1/pbk/l/n' tried instead on input line 16.
-
 (/usr/share/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2020-09-24 L3 backend support: PDF output (pdfTeX)
 \l__kernel_color_stack_int=\count303
 \l__pdf_internal_box=\box61
+) (./Memoria.aux
+LaTeX Info: Redefining \. on input line 25.
+LaTeX Info: Redefining \% on input line 25.
 )
-No file Memoria.aux.
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 16.
 LaTeX Font Info:    ... okay on input line 16.
 LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 16.
@@ -492,7 +493,7 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 16.
 LaTeX Font Info:    ... okay on input line 16.
 LaTeX Info: Redefining \. on input line 16.
 LaTeX Info: Redefining \% on input line 16.
-(/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+ (/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count304
 \scratchdimen=\dimen177
@@ -563,6 +564,8 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 16.
 LaTeX Info: Redefining \pageref on input line 16.
 LaTeX Info: Redefining \nameref on input line 16.
+
+(./Memoria.out) (./Memoria.out)
 \@outlinefile=\write3
 
 (/usr/share/texmf-dist/tex/latex/pdflscape/pdflscape.sty
@@ -575,7 +578,7 @@ Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
 )
 \c@lstlisting=\count311
  (./include/Portada.tex
-<./include/EscUpm.png, id=4, 245.91875pt x 200.75pt>
+<./include/EscUpm.png, id=59, 245.91875pt x 200.75pt>
 File: ./include/EscUpm.png Graphic file (type png)
 <use ./include/EscUpm.png>
 Package pdftex.def Info: ./include/EscUpm.png  used on input line 12.
@@ -607,7 +610,7 @@ LaTeX Font Info:    Font shape `T1/pbk/m/n' in size <14.4> not available
 (Font)              Font shape `T1/pbk/l/n' tried instead on input line 18.
 LaTeX Font Info:    Font shape `T1/pbk/b/n' in size <14.4> not available
 (Font)              Font shape `T1/pbk/db/n' tried instead on input line 19.
-<./include/FacInformatica.png, id=6, 160.6pt x 170.6375pt>
+<./include/FacInformatica.png, id=61, 160.6pt x 170.6375pt>
 File: ./include/FacInformatica.png Graphic file (type png)
 <use ./include/FacInformatica.png>
 Package pdftex.def Info: ./include/FacInformatica.png  used on input line 23.
@@ -628,7 +631,7 @@ LaTeX Font Info:    Font shape `T1/pbk/m/n' in size <12> not available
 nclude/FacInformatica.png>]
 LaTeX Font Info:    Font shape `T1/pbk/m/it' in size <12> not available
 (Font)              Font shape `T1/pbk/l/it' tried instead on input line 62.
- [2]) (./secciones/00_Resumen.tex
+ [2]) (./secciones/01_Resumen.tex
 LaTeX Font Info:    Font shape `T1/pbk/m/n' in size <24.88> not available
 (Font)              Font shape `T1/pbk/l/n' tried instead on input line 1.
 LaTeX Font Info:    Font shape `T1/pbk/b/n' in size <24.88> not available
@@ -641,11 +644,16 @@ LaTeX Font Info:    Font shape `T1/pbk/b/n' in size <24.88> not available
 ])
 [3] [4
 
-]
+] (./Memoria.toc
+LaTeX Info: Redefining \. on input line 1.
+LaTeX Info: Redefining \% on input line 1.
+LaTeX Font Info:    Font shape `T1/pbk/b/n' in size <10.95> not available
+(Font)              Font shape `T1/pbk/db/n' tried instead on input line 2.
+)
 \tf@toc=\write4
  [5] [6
 
-] (./secciones/01_introduccion.tex
+] (./secciones/02_introduccion.tex
 Cap\'{\i }tulo 1.
 LaTeX Font Info:    Trying to load font information for TS1+pbk on input line 9
 .
@@ -672,10 +680,8 @@ File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
 LaTeX Font Info:    Font shape `T1/pbk/m/n' in size <8> not available
 (Font)              Font shape `T1/pbk/l/n' tried instead on input line 36.
-LaTeX Font Info:    Font shape `T1/pbk/b/n' in size <10.95> not available
-(Font)              Font shape `T1/pbk/db/n' tried instead on input line 39.
 )
-(./secciones/02_Desarrollo.texpdfTeX warning (ext4): destination with the same 
+(./secciones/03_Desarrollo.texpdfTeX warning (ext4): destination with the same 
 identifier (name{page.2}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
@@ -684,15 +690,15 @@ l.1 \chapter
 Cap\'{\i }tulo 2.
 LaTeX Font Info:    Font shape `T1/pbk/b/n' in size <12> not available
 (Font)              Font shape `T1/pbk/db/n' tried instead on input line 10.
-) (./secciones/03_Resultados.tex [3
+) (./secciones/04_Resultados.tex [3
 
 ] [4
 
 ]
 Cap\'{\i }tulo 3.
-) (./secciones/04_Bibliografia.tex [5] [6
+) (./secciones/05_Bibliografia.tex [5] [6
 
-]) [7] (./secciones/05_Anexos.tex
+]) [7] (./secciones/06_Anexos.tex
 [8
 
 
@@ -705,23 +711,14 @@ LaTeX Font Info:    Font shape `T1/pbk/m/n' in size <6> not available
 LaTeX Info: Redefining \. on input line 25.
 LaTeX Info: Redefining \% on input line 25.
 )
-
-Package rerunfilecheck Warning: File `Memoria.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `Memoria.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  33FC2251641B1660A0908711AB87B45A;988.
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
+Package rerunfilecheck Info: File `Memoria.out' has not changed.
+(rerunfilecheck)             Checksum: 33FC2251641B1660A0908711AB87B45A;988.
  ) 
 Here is how much of TeX's memory you used:
- 11834 strings out of 479383
- 167039 string characters out of 5875830
- 704437 words of memory out of 5000000
- 28625 multiletter control sequences out of 15000+600000
+ 11856 strings out of 479383
+ 167345 string characters out of 5875830
+ 704768 words of memory out of 5000000
+ 28639 multiletter control sequences out of 15000+600000
  432928 words of font info for 86 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  70i,11n,74p,547b,1314s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -732,10 +729,10 @@ mr10.pfb></usr/share/texmf-dist/fonts/type1/urw/bookman/ubkd8a.pfb></usr/share/
 texmf-dist/fonts/type1/urw/bookman/ubkl8a.pfb></usr/share/texmf-dist/fonts/type
 1/urw/bookman/ubkli8a.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrb8a
 .pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb>
-Output written on Memoria.pdf (17 pages, 188905 bytes).
+Output written on Memoria.pdf (17 pages, 191288 bytes).
 PDF statistics:
- 159 PDF objects out of 1000 (max. 8388607)
- 126 compressed objects within 2 object streams
+ 216 PDF objects out of 1000 (max. 8388607)
+ 183 compressed objects within 2 object streams
  46 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 123 words of extra memory for PDF output out of 10000 (max. 10000000)
 
