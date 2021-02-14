@@ -2,7 +2,7 @@ MAKEFLAGS += --silent
 
 magic:
 	pdflatex Memoria.tex
-	mv Memoria.* trash
-	mv trash/Memoria.tex .
-	mv trash/Memoria.pdf .
+	mv Memoria.* Trash
+	mv Trash/Memoria.tex .
+	mv Trash/Memoria.pdf .
 
