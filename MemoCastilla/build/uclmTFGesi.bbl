@@ -1,0 +1,391 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.1 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nyt/global//global/global}
+    \entry{cascales03}{book}{}
+      \name{author}{2}{}{%
+        {{hash=35143fc928260fc4c4e8b3a5cc6385ba}{%
+           family={Cascales},
+           familyi={C\bibinitperiod},
+           given={B.},
+           giveni={B\bibinitperiod}}}%
+        {{hash=b13f9ee6044e4c43d8ba55d08d423281}{%
+           family={Lucas},
+           familyi={L\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {spanish}%
+      }
+      \list{publisher}{1}{%
+        {Pearson Education}%
+      }
+      \strng{namehash}{a97ac497188c22caac3cc3bb5d4a8208}
+      \strng{fullhash}{a97ac497188c22caac3cc3bb5d4a8208}
+      \strng{bibnamehash}{a97ac497188c22caac3cc3bb5d4a8208}
+      \strng{authorbibnamehash}{a97ac497188c22caac3cc3bb5d4a8208}
+      \strng{authornamehash}{a97ac497188c22caac3cc3bb5d4a8208}
+      \strng{authorfullhash}{a97ac497188c22caac3cc3bb5d4a8208}
+      \field{sortinit}{C}
+      \field{sortinithash}{4c244ceae61406cdc0cc2ce1cb1ff703}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{9788420537795}
+      \field{langid}{spanish}
+      \field{title}{El Libro de {\LaTeX}}
+      \field{year}{2005}
+    \endentry
+    \entry{goos07}{book}{}
+      \name{author}{3}{}{%
+        {{hash=cea30c44975fa955530d08d547542cbe}{%
+           family={Goossens},
+           familyi={G\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=9505fd7ab47874950a19ce3799ed90a4}{%
+           family={Rahtz},
+           familyi={R\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=5c00b9ef0c08e422be978eb73911c935}{%
+           family={Mittelbach},
+           familyi={M\bibinitperiod},
+           given={F.},
+           giveni={F\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \list{publisher}{1}{%
+        {Addison-Wesley Reading, MA}%
+      }
+      \strng{namehash}{e6a193e6d5538e88a73a51bb1ac528e9}
+      \strng{fullhash}{e6a193e6d5538e88a73a51bb1ac528e9}
+      \strng{bibnamehash}{e6a193e6d5538e88a73a51bb1ac528e9}
+      \strng{authorbibnamehash}{e6a193e6d5538e88a73a51bb1ac528e9}
+      \strng{authornamehash}{e6a193e6d5538e88a73a51bb1ac528e9}
+      \strng{authorfullhash}{e6a193e6d5538e88a73a51bb1ac528e9}
+      \field{sortinit}{G}
+      \field{sortinithash}{62eb2aa29549e4fdbd3cb154ec5711cb}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{2}
+      \field{langid}{english}
+      \field{title}{The {\LaTeX{}} graphics companion}
+      \field{year}{2007}
+    \endentry
+    \entry{lamport94}{book}{}
+      \name{author}{1}{}{%
+        {{hash=ef82223e035dbb62f84cb1c0782df38c}{%
+           family={Lamport},
+           familyi={L\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \list{publisher}{1}{%
+        {Addison-Wesley}%
+      }
+      \strng{namehash}{ef82223e035dbb62f84cb1c0782df38c}
+      \strng{fullhash}{ef82223e035dbb62f84cb1c0782df38c}
+      \strng{bibnamehash}{ef82223e035dbb62f84cb1c0782df38c}
+      \strng{authorbibnamehash}{ef82223e035dbb62f84cb1c0782df38c}
+      \strng{authornamehash}{ef82223e035dbb62f84cb1c0782df38c}
+      \strng{authorfullhash}{ef82223e035dbb62f84cb1c0782df38c}
+      \field{sortinit}{L}
+      \field{sortinithash}{dad3efd0836470093a7b4a7bb756eb8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{2}
+      \field{langid}{english}
+      \field{title}{{\LaTeX}: A document preparation system}
+      \field{year}{1994}
+    \endentry
+    \entry{oetiker14}{manual}{}
+      \name{author}{4}{}{%
+        {{hash=5d11479143005f8afd00a80db661847f}{%
+           family={Oetiker},
+           familyi={O\bibinitperiod},
+           given={Tobias},
+           giveni={T\bibinitperiod}}}%
+        {{hash=8ca96670929452aa6904ed514c3b557d}{%
+           family={Partl},
+           familyi={P\bibinitperiod},
+           given={Hubert},
+           giveni={H\bibinitperiod}}}%
+        {{hash=db9b819bf4a42d221113f40ed8c86d64}{%
+           family={Hyna},
+           familyi={H\bibinitperiod},
+           given={Irene},
+           giveni={I\bibinitperiod}}}%
+        {{hash=18761ea06cd8d6305a71fa1fde3f4b19}{%
+           family={Schlegl},
+           familyi={S\bibinitperiod},
+           given={Elisabeth},
+           giveni={E\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {spanish}%
+      }
+      \strng{namehash}{8fca386a8f8bd6243f3461ae9167a2f4}
+      \strng{fullhash}{8fca386a8f8bd6243f3461ae9167a2f4}
+      \strng{bibnamehash}{febdb7d8cc94bfeec1182be1d0189280}
+      \strng{authorbibnamehash}{febdb7d8cc94bfeec1182be1d0189280}
+      \strng{authornamehash}{8fca386a8f8bd6243f3461ae9167a2f4}
+      \strng{authorfullhash}{8fca386a8f8bd6243f3461ae9167a2f4}
+      \field{sortinit}{O}
+      \field{sortinithash}{ff8d4eeb5101e3cf3809959b3592d942}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{spanish}
+      \field{title}{La introducción no-tan-corta a {\LaTeX2e}}
+      \field{version}{5.03}
+      \field{year}{2014}
+      \verb{urlraw}
+      \verb http://www.ctan.org/tex-archive/info/lshort/spanish/
+      \endverb
+      \verb{url}
+      \verb http://www.ctan.org/tex-archive/info/lshort/spanish/
+      \endverb
+    \endentry
+    \entry{sidney00}{online}{}
+      \name{author}{3}{}{%
+        {{hash=9d4b72139692ec9cd72bf2f0b95fd2c3}{%
+           family={Regan},
+           familyi={R\bibinitperiod},
+           given={Caroline},
+           giveni={C\bibinitperiod}}}%
+        {{hash=7656369c3a2b25b8cb6bda997cb28e27}{%
+           family={Haas},
+           familyi={H\bibinitperiod},
+           given={Jacki},
+           giveni={J\bibinitperiod}}}%
+        {{hash=e62b458e5ddef0afdd177132e8a54afd}{%
+           family={Stevens},
+           familyi={S\bibinitperiod},
+           given={Philippa},
+           giveni={P\bibinitperiod}}}%
+      }
+      \name{editor}{1}{}{%
+        {{hash=7e3dba86ee0b4b44fe9a3b9bec01abeb}{%
+           family={Sidney\bibnamedelima Library},
+           familyi={S\bibinitperiod\bibinitdelim L\bibinitperiod},
+           given={The\bibnamedelima University},
+           giveni={T\bibinitperiod\bibinitdelim U\bibinitperiod},
+           prefix={of},
+           prefixi={o\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {spanish}%
+      }
+      \strng{namehash}{c8245fd2cc2a01c2710840cecebde617}
+      \strng{fullhash}{c8245fd2cc2a01c2710840cecebde617}
+      \strng{bibnamehash}{c8245fd2cc2a01c2710840cecebde617}
+      \strng{authorbibnamehash}{c8245fd2cc2a01c2710840cecebde617}
+      \strng{authornamehash}{c8245fd2cc2a01c2710840cecebde617}
+      \strng{authorfullhash}{c8245fd2cc2a01c2710840cecebde617}
+      \strng{editorbibnamehash}{7e3dba86ee0b4b44fe9a3b9bec01abeb}
+      \strng{editornamehash}{7e3dba86ee0b4b44fe9a3b9bec01abeb}
+      \strng{editorfullhash}{7e3dba86ee0b4b44fe9a3b9bec01abeb}
+      \field{sortinit}{R}
+      \field{sortinithash}{b9c68a358aea118dfa887b6e902414a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{spanish}
+      \field{note}{Vídeo tutorial (requiere Flash). Traducido al español y adaptado por REBIUN y CRUE-TIC.}
+      \field{title}{El plagio y la honestidad académica}
+      \field{urlday}{15}
+      \field{urlmonth}{7}
+      \field{urlyear}{2019}
+      \field{year}{2000}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb http://www.crue.org/tutorial_plagio/
+      \endverb
+      \verb{url}
+      \verb http://www.crue.org/tutorial_plagio/
+      \endverb
+    \endentry
+    \entry{salido10}{online}{}
+      \name{author}{1}{}{%
+        {{hash=52a455f5fbcad98e21de0712c6fe35b1}{%
+           family={Salido},
+           familyi={S\bibinitperiod},
+           given={Jesús},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {spanish}%
+      }
+      \list{organization}{1}{%
+        {Universidad de Castilla-La Mancha}%
+      }
+      \strng{namehash}{52a455f5fbcad98e21de0712c6fe35b1}
+      \strng{fullhash}{52a455f5fbcad98e21de0712c6fe35b1}
+      \strng{bibnamehash}{52a455f5fbcad98e21de0712c6fe35b1}
+      \strng{authorbibnamehash}{52a455f5fbcad98e21de0712c6fe35b1}
+      \strng{authornamehash}{52a455f5fbcad98e21de0712c6fe35b1}
+      \strng{authorfullhash}{52a455f5fbcad98e21de0712c6fe35b1}
+      \field{sortinit}{S}
+      \field{sortinithash}{c319cff79d99c853d775f88277d4e45f}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Apuntes de la {UCLM}}
+      \field{langid}{spanish}
+      \field{title}{Curso: {\LaTeX{}} esencial para preparación de TFG, Tesis y otros documentos académicos}
+      \field{urlday}{12}
+      \field{urlmonth}{2}
+      \field{urlyear}{2017}
+      \field{year}{2010}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb http://visilab.etsii.uclm.es/?page_id=1468
+      \endverb
+      \verb{url}
+      \verb http://visilab.etsii.uclm.es/?page_id=1468
+      \endverb
+    \endentry
+    \entry{refer00}{online}{}
+      \name{author}{1}{}{%
+        {{hash=9e356bc891704f5b99e5bc332b29025b}{%
+           family={{The University of Sydney Library}},
+           familyi={T\bibinitperiod}}}%
+      }
+      \name{editor}{1}{}{%
+        {{hash=9e356bc891704f5b99e5bc332b29025b}{%
+           family={{The University of Sydney Library}},
+           familyi={T\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {spanish}%
+      }
+      \strng{namehash}{9e356bc891704f5b99e5bc332b29025b}
+      \strng{fullhash}{9e356bc891704f5b99e5bc332b29025b}
+      \strng{bibnamehash}{9e356bc891704f5b99e5bc332b29025b}
+      \strng{authorbibnamehash}{9e356bc891704f5b99e5bc332b29025b}
+      \strng{authornamehash}{9e356bc891704f5b99e5bc332b29025b}
+      \strng{authorfullhash}{9e356bc891704f5b99e5bc332b29025b}
+      \strng{editorbibnamehash}{9e356bc891704f5b99e5bc332b29025b}
+      \strng{editornamehash}{9e356bc891704f5b99e5bc332b29025b}
+      \strng{editorfullhash}{9e356bc891704f5b99e5bc332b29025b}
+      \field{sortinit}{T}
+      \field{sortinithash}{51f9faf24c60c62ca764a77f78cf5666}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{spanish}
+      \field{note}{Traducido al español y adaptado por REBIUN y CRUE-TIC}
+      \field{title}{Cómo citar y elaborar referencias}
+      \field{urlday}{15}
+      \field{urlmonth}{7}
+      \field{urlyear}{2019}
+      \field{year}{2000}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb http://www.crue.org/tutorial_referencias/
+      \endverb
+      \verb{url}
+      \verb http://www.crue.org/tutorial_referencias/
+      \endverb
+    \endentry
+    \entry{unican18}{online}{}
+      \name{author}{1}{}{%
+        {{hash=4f8cced61ef3b2b71d20067e135488f3}{%
+           family={{Universidad de Cantabria}},
+           familyi={U\bibinitperiod}}}%
+      }
+      \name{editor}{1}{}{%
+        {{hash=45c70283e03bdeecae8fae78be9dbd4f}{%
+           family={Cantabria},
+           familyi={C\bibinitperiod},
+           given={Universidad},
+           giveni={U\bibinitperiod},
+           prefix={de},
+           prefixi={d\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {spanish}%
+      }
+      \strng{namehash}{4f8cced61ef3b2b71d20067e135488f3}
+      \strng{fullhash}{4f8cced61ef3b2b71d20067e135488f3}
+      \strng{bibnamehash}{4f8cced61ef3b2b71d20067e135488f3}
+      \strng{authorbibnamehash}{4f8cced61ef3b2b71d20067e135488f3}
+      \strng{authornamehash}{4f8cced61ef3b2b71d20067e135488f3}
+      \strng{authorfullhash}{4f8cced61ef3b2b71d20067e135488f3}
+      \strng{editorbibnamehash}{45c70283e03bdeecae8fae78be9dbd4f}
+      \strng{editornamehash}{45c70283e03bdeecae8fae78be9dbd4f}
+      \strng{editorfullhash}{45c70283e03bdeecae8fae78be9dbd4f}
+      \field{sortinit}{U}
+      \field{sortinithash}{77a6935510e008adcf5b555e7b4f0711}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{spanish}
+      \field{title}{Cómo usar imágenes en trabajos}
+      \field{urlday}{15}
+      \field{urlmonth}{7}
+      \field{urlyear}{2019}
+      \field{year}{2018}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://web.unican.es/buc/Documents/Formacion/guia_imagenes.pdf
+      \endverb
+      \verb{url}
+      \verb https://web.unican.es/buc/Documents/Formacion/guia_imagenes.pdf
+      \endverb
+    \endentry
+    \entry{wikibookLaTex10}{online}{}
+      \name{author}{1}{}{%
+        {{hash=4208669ced5e30d9a5376405294021e0}{%
+           family={WikiMedia},
+           familyi={W\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{4208669ced5e30d9a5376405294021e0}
+      \strng{fullhash}{4208669ced5e30d9a5376405294021e0}
+      \strng{bibnamehash}{4208669ced5e30d9a5376405294021e0}
+      \strng{authorbibnamehash}{4208669ced5e30d9a5376405294021e0}
+      \strng{authornamehash}{4208669ced5e30d9a5376405294021e0}
+      \strng{authorfullhash}{4208669ced5e30d9a5376405294021e0}
+      \field{sortinit}{W}
+      \field{sortinithash}{1af34bd8c148ffb32de1494636b49713}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{spanish}
+      \field{title}{{\LaTeX{} Wikibook}}
+      \field{urlday}{2}
+      \field{urlmonth}{2}
+      \field{urlyear}{2017}
+      \field{year}{2010}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb http://en.wikibooks.org/wiki/LaTeX
+      \endverb
+      \verb{url}
+      \verb http://en.wikibooks.org/wiki/LaTeX
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
