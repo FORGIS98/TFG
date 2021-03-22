@@ -1,0 +1,459 @@
+% CABECERA
+% BEGIN_FOLD
+%%%%%%%%%%%%%%
+% Fichero: uclmTFGesi.tex
+% Autor: Jesús Salido Tercero (https://www.esi.uclm.es/www/jsalido)
+% Fecha (creación): Febrero 2010 
+% Rev. : Febrero 2021
+% Descripción: Plantilla para memoria de TFG 
+% (Escuela Sup. de Informática, UCLM). Creada para el curso 
+% “LaTeX esencial para preparación de TFG, Tesis y otros documentos 
+% académicos” (Esc. Sup. Informática-UCLM)
+%
+%### Compilación 
+%
+% Esta plantilla ha sido preparada para compilarse con `pdflatex`, `biblatex` 
+% (bibliografía con `biber`) y `makeindex` (sólo si se incluye índice 
+% temático).
+%
+% Para su compilación se aconseja utilizar `latexmk` (requiere para su 
+% ejecución de un intérprete perl:
+%
+%> \$> latexmk -gg -pdflatex -bibtex-cond1 -silent -auxdir=build -outdir=build uclmTFGesi.tex
+%
+% Para la automatización del trabajo con esta plantilla es recomendable el 
+% empleo de IDE dedicados como [TeXstudio](https://www.texstudio.org/).
+%
+% Una versión revisada de esta plantilla está disponible en overleaf.
+% Puede crearse un proyecto propio para escribir un TFG directamente en 
+% overleaf, o bien descargarla como un archivo .zip para su utilización en 
+% modo local.
+%
+% Si deseas acceder a la versión de desarrollo puedes encontrarla en GitHub:
+%	https://github.com/JesusSalido/TFG_ESI_UCLM
+%%%%%%%%%%%%%%
+% END_FOLD
+
+
+% -------------------------
+%
+% PREÁMBULO
+% BEGIN_FOLD
+% -------------------------
+\documentclass[ 		% Clase del documento
+	11pt,				% Tamaño de letra
+	a4paper,			% Tamaño de papel
+	twoside,			% Impresión a doble cara
+	openright,			% La apertura de cap. a la dcha.
+%	draft       		% Versión borrador (sin figuras)
+	final       		% Versión final
+]{book}
+
+%--- Codificación de entrada (mejora respecto a inputenc)
+\usepackage[utf8]{inputenx} 
+\usepackage[
+    english,     % Se emplea porque el resumen siempre en inglés
+    spanish,     % Se emplea para resumen en español
+    es-tabla,    % Si idioma pral. español
+    es-noindentfirst
+]{babel} % Internacionalización
+
+
+%--- Geometría de las páginas del documento
+\usepackage[			% Márgenes del documento
+	top=2.5cm,			% Margen superior
+	bottom=2.5cm,		% Margen inferior
+	inner=3.5cm,		% Margen al interior
+	outer=2cm			% Margen al exterior
+]{geometry}
+
+%--- Tipografía
+\usepackage{amsmath,amssymb,amsfonts} % Para ecs.
+
+%--- Si no se emplea ningún paquete de tipografía se empleará Computern Modern.
+%--- Tipografía 
+%--- (Opción: Latin Modern)
+%\usepackage{lmodern} % Latin Modern. Empleada cuando se desea una tipografía genuina de LaTeX sucesora de Computer Modern.
+%--- (Opción: Libertine)
+\usepackage[tt=false]{libertine} % Libertine con Old-Style Figures [osf]
+\usepackage[libertine]{newtxmath} % Times
+%--- (Opción: Palatino)
+%\usepackage{newpxtext} % Palatino: La opción osf proporciona números en old style.
+%\usepackage{newpxmath}	% Palatino
+%--- (Opción: Fourier)
+%\usepackage{fourier} % Utopía
+%---
+
+%--- (Opción excepcional)
+% Si es preciso cambio de tipo de familia de tipografía por defecto a Sans-Serif
+% Aunque es una opción extraña es la preferida en algunos centros docentes (ADE-UCLM).
+% Con esta elección es más conveniente una tipografía tipo Helvética/Arial (no Libertine)
+%\usepackage{helvet}
+%\renewcommand{\familydefault}{\sfdefault}
+%---
+
+\usepackage{textcomp,marvosym,pifont} % OPT.: Generación de símbolos 
+%especiales
+\usepackage{ccicons} % OPT.: Iconos de licencia Creative Commons
+\usepackage[T1]{fontenc}% Codificación de salida    
+
+%--- Paquete con personalización local para el TFG (ESI-UCLM)
+% EDITAR: Si es preciso que la memoria emplee "english" como idioma 
+% principal, prefijos de género y ubicación en número de página al pie.
+% Con la opción "english" el resto de opciones son irrelevantes.
+% Los prefijos de género permiten un tratamiento adecuado en portadas
+% automáticas.
+%
+% Opciones del paquete: (por defecto) Memoria en español y prefijos masculinos.
+%	spanish: idioma pral. español (valor por defecto).
+%   english: idioma pral. inglés.
+%	autora,tutora,cotutora: indica el género de intervinientes (masculino por defecto) 	
+%	pageonfooter: Número de página en el pie y centrado como ADE-UCLM (por defecto en cabeceras)
+% -------------------------
+% COMANDOS OPCIONALES PROPORCIONADOS:
+% OP-Opcional
+% RE-Recomendado
+%
+% Comandos de generación automática de portadas
+% \portadaTFG, \portadaTFG*{ficheroPDF}: Página de portada
+% \portillaTFG, \portadillaTFG*{ficheroPDF}: Página de contraportada
+% \tribunalTFG, \tribunalTFG*{ficheroPDF}: Página de tribunal
+% \dedicado{texto}: Dedicatoria
+% \creditos{texto}{fichero gráfico de licencia}
+%
+% Comandos para definir variables con los datos del documento.
+%
+% OP-\nodivide[penalty]			: Penaliza la división de palabras. Máx. 
+%								: (n=10000) sin arg.
+% OP-\nowidowandorphan[penalty] : Penaliza las viudas y huérfanas. (sólo si necesario)
+% OP-\nodividenotes[penalty]	: Penaliza la división de notas al pié entre págs.	(sólo si necesario)	
+% OP-\savepagecnt				: Salva en un contador interno el nº de pág. actual
+% OP-\contpagination			: Recupera el valor de pág. previamente salvado en el cont. interno.
+% OP-\tecla{texto}				: Genera un borde de tecla en torno al 
+%texto		
+% -------------------------
+%\usepackage{uclmTFGesi}
+\usepackage[tutora,cotutora]{uclmTFGesi}
+%\usepackage[pageonfooter]{uclmTFGesi}
+
+
+
+%--- Bibliografía: Biblatex con biber.
+% Permite cambiar los estilos de citación y ordenación de la bibliografía
+\usepackage[%
+	backend=biber,
+	% Estilos: numeric, numeric-comp, alphabetic, authoryear, authoryear-comp
+	% Otros: apa, chicago, ieee, mla-new, iso-numeric, iso-authoryear
+	% Estilos tradicionales BibTeX: trad-plain, trad-unsrt, trad-alpha y trad-abbrv
+%	bibstyle=apa, % Estilo APA
+	bibstyle=ieee,
+	% Citación: numeric, numeric-comp, numeric-verb, 
+	%           authoryear, authoryear-comp,...
+	%           otros aplicados con estilo gral.: ieee,apa,aml,chem-acs,iso-numeric,iso-authoryear
+	citestyle=numeric-comp,
+	sortcites, % Ordenación de citas múltiples cuando son numéricas
+	maxbibnames=3, % Máximo número listado de autores en la bibliografía
+	minbibnames=1, % Mínimo número de autores cuando se abrevia la lista de autores
+	% Descomentar las opciones siguientes para bibliografía multilingüe
+	autolang=other, % Requerido para opción multilingüe
+	language=auto,   % Requerido para opción multilingüe
+	sorting=nyt%
+					% Para cambiar criterio de ordenación de las referencias.
+ 					% =nty (name-title-year), nyt (name-year-title), nyvt (name-year-volume-title), 
+					% =anyt (alphabetic-name-year-title), anyvt (alphabetic-name-year-volume-title), 
+					% =ynt (year-name-title), ydnt (yeardescendent-name-title), 
+					% =none (por orden de citación, como en ETSII-UCLM).			
+]{biblatex}
+
+% Línea añadida para eliminar el idioma de la fuente bibliográfica.
+\AtEveryBibitem{\clearfield{note} \clearlist{language}}
+
+% OPT: No comentar si es necesario suprimir el sangrado de párrafos.
+%\setlength{\parindent}{0pt} % Elimina sangrado de párrafos
+
+\addbibresource{biblioTFG.bib} 	% Fichero de bibliografía.
+
+\DeclareGraphicsExtensions{.pdf,.png,.jpg} % Precedencia de extensiones
+\graphicspath{{./figs/}}% Path de búsqueda de ficheros gráficos
+
+\usepackage{makeidx} % Indice temático
+
+% END_FOLD
+% EDITAR: Descomentar si se desea índice temático
+%\makeindex           % OPT.: Procesamiento de índice temático
+% -------------------------
+% -------------------------
+% -------------------------
+
+
+
+% DATOS del documento
+% EDITAR: Datos del documento. 
+% Los elementos opcionales pueden dejarse, eliminarse o comentarse. No se deben dejar vacíos porque provoca errores.
+% BEGIN_FOLD
+% -------------------------
+% -------------------------
+% -------------------------
+% DATOS DEL DOCUMENTO 
+% Definición de variables empleadas en el documento por lo que no son
+% traducidos. Cuando algún campo puede tener varias líneas aparecen dos
+% campos señalados como <campo>Primera y <campo>Segunda. Si no se desea 
+% emplear los campos opcionales (OPT.) estos deben comentarse.
+% -------------------------
+\tituloPrimera{Diseño e Implementación de un SDK Android para Facilitar la Interacción de Aplicaciones Móvil con una Blockchain} % 1ª Línea
+% \tituloSegunda{Curso de {\LaTeX{}} esencial} % OPT.: Para títulos largos.
+\titulo{SDK Android con interacción con Blockchain} % Título corto (mostrado en pág. de créditos)
+\autor{Jorge Sol Gonzalez}
+\email{jorge.sol.gonzalez@alumnos.upm.es}					
+\tutor{Francisco javier Soriano Camino} % Sólo nombre, el prefijo añadido automát.
+% \cotutor{<co-tutor(a) (nombre apellidos)>}	% OPT.: Cotutor(a)
+\instEdu{UNIVERSIDAD POLITÉCNICA DE MADRID}
+
+% Fichero con escudo de la institución
+% Logo de la ESI que prefieras (la normativa no especifica obligatoriedad).
+%\escudo{esi} 					% Logo ESI (gris uniforme)							
+%\escudo{esi_black} 			% Logo ESI (negro)						
+%\escudo{esi_color}				% Logo ESI (dos tintas)						
+\escudo{IngInformatica_color}	% Nucleo de ferrita	(color)
+%\escudo{IngInformatica_bw} 	% Nucleo de ferrita	(en escala de grises)					
+
+\centroEdu{ESCUELA TÉCNICA SUPERIOR DE INGENIEROS INFORMÁTICOS}
+\deptoEduPrimera{Departamento de Lenguajes y Sistemas} % 1ª Línea(EN: Department of ...)
+% \deptoEduSegunda{<Segunda línea Depto. Director>} % OPT.: Para nombres largos.
+\titulacion{GRADO EN INGENIERÍA INFORMÁTICA} % (EN: BACHELOR IN COMPUTING ENGINEERING)
+% \especialidad{<Tecnología Específica>} % OPT.: Especialidad - Intensificación
+% (EN: Specialization in ...)
+\tipoDoc{TRABAJO FIN DE GRADO} % (EN: BACHELOR DISSERTATION)
+
+% Si las fechas se desean en inglés hay que ponerla explícita.
+\fechaDef{junio, 2021} 			% Fecha de defensa
+\mesDef{junio}        			% Mes de defensa
+\yearDef{2021}        			% Año de defensa
+\lugarDef{Madrid}			% Lugar de defensa
+
+
+% --- Metadatos (propiedades) para el documento PDF
+\hypersetup{% OPT.
+	pdftitle={Diseño e Implementación de un SDK Android para Facilitar la Interacción de Aplicaciones Móvil con una Blockchain}, % Título
+	pdfauthor={Jorge Sol Gonzalez}, % Autor
+	pdfsubject={TFG},  % Tema
+	pdftoolbar=true, % Muestra la toolbar de Acrobat
+	pdfmenubar=true	 % Muestra la menubar de Acrobat
+}
+% -------------------------
+% -------------------------
+% -------------------------
+% END_FOLD
+
+
+
+% -------------------------
+% -------------------------
+% -------------------------
+% -------------------------
+%
+% CUERPO del documento
+%
+% -------------------------
+\begin{document}
+%--- PORTADAS + FRONTMATTER
+\frontmatter
+% Cambia la numeración de páginas a números romanos y las secciones no están 
+%numeradas aunque si aparecen en el índice de contenidos.
+\pagestyle{empty}  % Páginas sin cabecera ni pies
+
+\includecomment{portadas} % Cambiar por exclude para evitar compilar portadas
+%\excludecomment{portadas} % Cambiar por exclude para evitar compilar portadas
+\begin{portadas}
+% -------------------------
+% -------------------------
+% -------------------------
+%
+% PORTADAS: 
+%
+% Los comandos \portadaTFG y \portadilla generan dos portadas con LaTeX 
+% teniendo en cuenta los datos sobre el documento aportados en el preámbulo.
+% Si se desea incluir una portada generada externamente en PDF se emplea la
+% versión del comando con estrella indicando el fichero.
+%
+% -------------------------
+
+
+
+
+
+%---
+% \portadaTFG		% Portada pral.
+%\portadaTFG*{./figs/portadaETSII} % Portada generada externamente en PDF
+% También en versión con estrella para indicar fichero PDF
+% Comentar si no se desea incluir
+%---
+
+
+
+
+
+
+%---
+\portadillaTFG	% Portada interior (con tutor(a) y co-tutor(a) si existe).
+% También en versión con estrella para indicar fichero PDF
+% Comentar si no se desea incluir
+%---
+
+
+
+
+
+%---
+% OPT.: CRÉDITOS (aunque no es obligatorio es recomendable).
+\input{./frontmatter/Creditos}
+%---
+
+
+
+
+%---
+% \tribunalTFG % Página para calificaciones del tribunal
+% También en versión con estrella para indicar fichero PDF
+%---
+
+
+
+
+
+%---
+% OPT.: DEDICATORIA (1 pág. máximo) comentar si no se desea incluir.
+% Aunque opcional, no se debería perder la oportunidad de poder 
+% dedicar el trabajo a alguien MUY especial.
+% EDITAR: Dedicatoria.
+\dedicado{A mis estudiantes \\ % A alguien muy especial
+Por contribuir a hacer de cada día un reto ilusionante} % Como mucho dos líneas (no confundir con los agradecimientos).
+%---
+%
+% FIN PORTADAS: 
+% |
+% |
+% -> ----------------------
+\end{portadas}
+
+% Puedes comentar los apartados que no deseas compilar
+\input{./frontmatter/Resumen} % Abstract
+\input{./frontmatter/Agradecimientos} % Agradecimientos etc.
+\input{./frontmatter/Notacion} % Notación empleada.
+\input{./frontmatter/Indices} % Índice de contenido, figuras, tablas, listados, etc.
+%--- (FIN FRONTMATTER)
+
+
+
+% Ajustes previos a Capítulos (MAINMATTER)
+% BEGIN_FOLD
+%--- MAINMATTER
+% Capítulos del documento
+% Salva en un contador interno el nº de páginas actual
+% Debe ir antes de \mainmatter (antes de que se reinicie el cnt page)
+\savepagecnt
+\mainmatter
+% Justo antes del primer capítulo del libro. Activa la numeración con números arábigos y reinicia el contador de páginas.
+
+% Ajusta valor de cabeceras y pies a comienzo de capítulo
+\ifpageonfooter
+\else
+	\cleanhdfirst
+\fi
+
+% Reajuste del número de página consecutivo para no reiniciar paginación en Cáp. 1
+%\contpagination % Comentado para reiniciar paginación (pag. 1)
+% END_FOLD
+
+% -------------------------
+%
+% CAPÍTULOS: Un fichero por capítulo.
+%
+% -------------------------
+
+% NOTA: En la ESI-UCLM es obligado interlineado de una línea, pero en algunas circunstancias se puede necesitar alterar dicho interlineado.
+% OPT: Si deseas modificar el interlineado de una línea (por defecto)
+% puedes emplear los comandos señalados (proporcionados por paquete `setspace')
+%\onehalfspacing % Ajusta interlineado a 1.5 líneas
+%\doublespacing  % Ajusta interlineado a 2 líneas  
+
+\include{./caps/Introduccion}
+\include{./caps/EstadoArte}
+\include{./caps/Desarrollo}
+\include{./caps/Conclusiones}
+% -------------------------
+
+% No olvides retornar al interlineado sencillo en el resto del documento.
+\singlespacing
+
+%--- BACKMATTER
+%\backmatter (se comenta para que los apéndices puedan aparecer después de la bibliografía)
+
+
+% -------------------------
+%
+%--- BIBLIOGRAFÍA
+%
+% -------------------------
+% BEGIN_FOLD
+\cleardoublepage % Necesario para ajustar el avance de página
+\phantomsection  % Ojo necesario con hyperref.
+\addcontentsline{toc}{chapter}{\bibname} % Añade la bibliografía al Índice de contenidos. Se debe mantaner cuando se desean subbibliografías.
+%---
+% Opción 1: Bibliografía con todas las fuentes en un apartado.
+%---
+\printbibliography
+%---
+
+%---
+% Opción 2: Bibliografía con secciones separadas.
+%---
+%\printbibheading
+% Se puede incluir un apartado de fuentes de consulta no citadas
+% Como no están citadas es preciso incluir comando \nocite{<key>}
+% Se añaden palabras clave a las entradas en el fichero *.bib para poder diferenciarlas
+%\printbibliography[heading=subbibliography,keyword=consulta,title={Fuentes de consulta}]
+%\printbibliography[heading=subbibliography,keyword=url,title={Direcciones de Internet}]
+% -------------------------
+% END_FOLD
+
+
+
+% -------------------------
+%
+%--- ANEXOS: Comentar si no se desean incluir. [OPT.]
+% Mover si se desea que aparezcan antes de la bobliografía.
+%
+% -------------------------
+%BEGIN_FOLD
+\appendix
+\portadaAnexos % OPT. Añade una portada para anexos
+
+% Tras este punto los capítulos se numeran con letras.
+% Aquí todos los apéndices necesarios
+\include{./anexos/AnexoA} % Apéndice A (opcionales)
+
+%---
+
+
+
+
+
+
+
+
+% -------------------------
+%
+% OPT.: ÍNDICE TEMÁTICO: Comentar si no se desean incluir.
+%
+% -------------------------
+% CONSEJO: Incluir los comandos mientras se escribe cada capítulo ya que hacerlo al final resulta tedioso.
+%\cleardoublepage % Necesario para ajustar el avance de página
+%\phantomsection  % Ojo necesario con hyperref.
+%% Permite cambiar el nombre del índice temático
+%%\renewcommand{\indexname}{Título del índice}
+%\addcontentsline{toc}{chapter}{\indexname} % Añade al Índice de contenidos.
+%\printindex  % Facilitado por makeidx (opcional, si no se usa no se imprime)
+%---
+%END_FOLD
+\end{document}
