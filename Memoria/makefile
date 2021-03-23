@@ -1,2 +1,2 @@
 make:
-	latexmk -gg -pdflatex -silent -auxdir=build -outdir=build MemoriaJorgeSol.tex
+	latexmk -gg -pdflatex -auxdir=build -outdir=build MemoriaJorgeSol.tex
