@@ -105,19 +105,131 @@ Existen múltiples algoritmos de consenso, y estos evolucionan con el paso del t
 \item Actividad
 \end{itemize}
 
-Puesto que hay una gran cantidad de algoritmos trataremos de explicar algunos a continuación.\cite{algoConsenso}
+Puesto que hay una gran cantidad de algoritmos trataremos de explicar algunos a continuación\cite{algoConsenso}. Todos los algoritmos buscan el mismo objetivo, solucionar el problema de las \textbf{faltas bizantinas}(BFT)\cite{BFT}. La tolerancia a faltas bizantinas es la resistencia de un sistema informático tolerante a fallas de componentes electrónicos. Si lo llevamos al mundo blockchain, cuando hablamos de fallas nos referimos a nodos de la blockchain defectuosos accidentalmente o provocado. Si una empresa tiene control de 200 nodos, puede tratar de crear transacciones falsas y minar ese bloque con los 200 nodos, el resto de nodos de la red tienen que ser capaces a través del algoritmo de consenso que se utilice de descartar la información de estos 200 nodos.
 
 \subsubsection{Proof of Work (PoW)}
-\subsubsection{Proof of Stake (PoS)}
-\subsubsection{Proof of Elapsed Time (PoET)}
-\subsubsection{Practical Byzantine Fault Tolerance (PBFT)}
-\subsubsection{Simplified BFT (SBFT)}
 
+El algoritmo de prueba de trabajo es el primer algoritmo introducido en la red blockchain. Muchas blockchains utilizan este algoritmo para llevar a cabo el consenso y así confirmar todas las transacciones. \\ 
+
+\emph{¿Como funciona?} Cada nodo tiene descargada la red blockchain entera, cuando el nuevo bloque tiene las transacciones necesarias para ser minado, todos los nodos se ponene a buscar el resultado de un \textbf{hash} con la dificultad que tenga el mismo. A más poder de computo, mas posibilidades de encontrar el resultado, validarlo con los otros nodos y añadirlo a la red blockchain, además las redes que usan PoW suelen tener un sistema de premios por lo que cuando un nodo encuentra la solución al problema se le da criptomonedas a cambio. \\
+
+Este sistema tiene dos principales desventajas, la primera es que el poder de cálculo que se necesita es muy grande, y estos últimos años han crecido lo que se conoce como granjas de minado las cuales se llevan el premio la gran mayoría de veces. Esto causa que el sistema empiece a centralizarse, rompiendo con la idea de descentralización que tiene blockchain. El problema es que si alguien logra tener él poder de computo de un 51\% de la red blockchain este puede añadir los bloques que quiera a partir de ese momento pues siempre serán validados por la mayoría de nodos (su 51\% de los nodos). La segunda gran pega va liagada a estas granjas de minado, consumen gran cantidad de energía, en 2020 bitcoin consumió \emph{120 gigawatts} por segundo\cite{bitcoinEnergyUse} lo que a nivel medioambiental tiene un impacto negativo, por lo que PoW no es un algoritmo de consenso que se pueda mantener en el tiempo.
+
+\emph{Ventajas y Desventajas}
+\begin{itemize}
+\item PROS
+  \begin{itemize}
+  \item Evita ataques DDoS
+  \item Es justo y transparente
+  \item Fomenta el interés del público en mantener una red saludable
+  \end{itemize}
+\item CONS
+  \begin{itemize}
+  \item La adquisición de equipo para el minado es costosa
+  \item La máquina destinada al minado no podrá utilizarse para otra tarea pues se necesita todo el poder de computo en la resolución de los problemas matemáticos.
+  \item La red tiende a centralizarse a causa de las granjas de minado, dandole poder al dueño de la granja y rompiendo la descentralización.
+  \item La minería desaparecerá cuando no haya mas incentivos, en el caso de Bitcoin, cuando se alcance el límite de Bitcoins (21 Millones) los mineros dejarán de recibir premios y se perderá la motivación del minado.
+  \end{itemize}
+\end{itemize}
+
+\subsubsection{Proof of Stake (PoS)}
+
+El concepto de participación establece que una persona puede minar o validar transacciones en bloque según el número de monedas que posea. Esto significa que cuanta más criptomoneda tengas, más poder de minado se te asigna. \\ 
+
+Se creó como alternativa a PoW, para solventar algunos problemas que tiene (como el de la centralización a causa de las granjas de minado y el gasto energético derivado del poder de computo). PoS solventa este problema atribuyendo la potencia minera a la proporción de monedas que posee un minero. Por lo tanto, en vez de utilizar energía para responder al puzzle matemático como hace PoW, aquí el minero se limita a resolver un porcentaje de las transacciones. Si se tiene un 3\% de las criptomonedas disponibles, se puede minar un 3\% de los bloques, en esta ocasión no hay que resolver ningun puzzle matemático, simplemente generar un \textbf{hash} con los datos, lo que es una tarea trivial. \\
+
+PoS no es una solución definitiva, pues tiene problemas al igual que PoW. Al igual que antes mencionamos el ataque del 51\% (cuando una empresa o alguien tiene un 51\% de los nodos en su poder). En PoS, si tienes un 51\% de las criptomonedas, tienes un 51\% del poder de decision sobre la red, pudiendo hacer los cambios que quieras en ella. Este ataque es frecuente en redes pequeñas con pocas criptomonedas en juego, puesto que de lo contrario, lograr tener un 51\% de las monedas supone tener muchísimo dinero. Para controlar estas fraudulencias, se penaliza económicamente a los nodos que tratan de saltarse las reglas (modificar bloques y transacciones), además, un ataque a la blockchain afecta al poder de la moneda y por lo tanto su valor en mercado disminuye, por lo que no compensa tratar de burlar las reglas de la blockchain. Los nodos de las redes que usan PoS, reciben una comisión al minar correctamente su parte del bloque. \\
+
+Redes que utilizan este algoritmo son: Ethereum2.0\cite{ethereum2.0} y NxT\cite{NxT}.
+
+\subsubsection{Proof of Elapsed Time (PoET)}
+
+La prueba de tiempo transcurrido es un algoritmo que evita la alta utilización de recursos y el alto consumo de energía manteniendo el proceso más eficiente. El algorítmo utiliza un tiempo transcurrido generado aleatóriamente para decidir los derechos de minería y los ganadores de los bloques. Al ejecutar un código de confianza dentro de un entorno seguro, el algoritmo PoET también mejora la transparencia al garantizar que los resultados sean verificables por participantes externos. Este algorítmo se utiliza en redes blockchain permisionadas, por lo que se conoce al dueño de cada nodo. \\
+
+Cada nodo participante en la red debe esperar durante un periodo de tiempo elegido al azar, y el primero en completar el tiempo de espera designado gana el nuevo bloque. Cada nodo de la red blockchain genera un tiempo de espera aleatorio y se pone a dormir durante esa duración especificada. El que se despierta primero, es decir, el que tiene el tiempo de espera más corto, se despierta y consigna un nuevo bloque en la cadena de bloques, transmitiendo la información necesaria a toda la red de pares. El mismo proceso se repite para descubrir el siguiente bloque. \\
 
 % -------------------------------------------------- %
 \subsection{Smart contracts}
 
+Hasta ahora, hemos hablado de blockchain y criptomonedas, pero las criptomonedas son solo un muy pequeño uso del potencial de blockchain. Los \textbf{Smart Contracts}\cite{etherSmartContract} son un programa que se ejecuta en la red blockchain dando así la capacidad a la red de ser más versatil, al poder ejecutar código (escrito en el smart contract). Básicamente, añade una lógica a la blockchain. \\
 
+Una forma de entender los smart contracts es comparandolos a una máquina de ventas automática. Cuando quieres un snack introduces dinero en la máquina y pones el código del snack, la máquina tiene programada una rutina para verificar que has metido la cantidad adecuada y a cambio devuelve el snack seleccionado. Ese programa interno que tiene la máquina, es el equivalente a un \textbf{smart contract}. \\
+
+Los smart contract son muy poderosos al estar programados en la red blockchain no pueden ser modificados sin que todos los nodos se enteren. Si un nodo trata de modificar el smart contract, se creará una transacción la cual ha de ser validada por todos los nodos, al igual que cuando hablabamos de cambiar transacciones en criptomonedas, los algoritmos de consenso se encargarán de prohibir que nodos no permitidos cambien componentes del smart contract. \\
+
+Los smart contracts permiten que se realicen transacciones y acuerdos de confianza entre partes dispares y anónimas sin necesidad de una autoridad central, un sistema legal o un mecanismo de aplicación externo. \\
+
+\label{sec:smartContract}
+\index{SmartContract}
+
+\begin{lstlisting}[language=Java,float=ht,caption={[Smart Contract]Ejemplo de código fuente de un smart contract escrito en Solidity},label=lst:js]
+pragma solidity 0.6.11;
+
+contract VendingMachine {
+
+    // Declare state variables of the contract
+    address public owner;
+    mapping (address => uint) public cupcakeBalances;
+
+    // When 'VendingMachine' contract is deployed:
+    // 1. set the deploying address as the owner of the contract
+    // 2. set the deployed smart contract's cupcake balance to 100
+    constructor() public {
+        owner = msg.sender;
+        cupcakeBalances[address(this)] = 100;
+    }
+
+    // Allow the owner to increase the smart contract's cupcake balance
+    function refill(uint amount) public {
+        require(msg.sender == owner, "Only the owner can refill.");
+        cupcakeBalances[address(this)] += amount;
+    }
+
+    // Allow anyone to purchase cupcakes
+    function purchase(uint amount) public payable {
+        require(msg.value >= amount * 1 ether, "You must pay at least 1 ETH per cupcake");
+        require(cupcakeBalances[address(this)] >= amount, "Not enough cupcakes in stock to complete this purchase");
+        cupcakeBalances[address(this)] -= amount;
+        cupcakeBalances[msg.sender] += amount;
+    }
+}
+\end{lstlisting}
+
+Los smart contracts pueden ser escritos en múltiples lenguajes de programación dependiendo de la red blockchain que se vaya a utilizar. Algunos ejemplos son:
+\begin{itemize}
+\item EOS Blockchain -> \verb|C++|
+\item Ethereum -> \verb|Solidity|
+\item NEO Blockchain -> \verb|JavaScript, Java|
+\item Hyperldger -> \verb|Golang|
+\item Cardano -> \verb|Haskell|
+\end{itemize}
+
+La primera red blockchain en explotar el potencial de los smart contracts fue \textbf{ethereum} y puesto que es la red blockchain sobre la cual se apoyará la aplicación Android que voy a desarrollar en este TFG, procederé a analizarla.
+
+% -------------------------------------------------- %
+\subsection{Ethereum}
+% Ethers
+% Ethereum Account
+% Ethereum Wallet
+% Ethereum Stack
+% Smart Contract
+% Solidity
+% Ethereum Nodes
+% Etehreum 2.0
+
+Ethereum es una red blockchain que permite enviar criptomonedas a cualquier persona por una pequeña comisión. Admeás permite ser programada con ayuda de los smart contracts, permitiendo así desarrollar aplicaciones sobre la red blockchain. \\
+
+\subsubsection{Ether (ETH)}
+La moneda que utiliza la red de Ethereum es el \textbf{ether}, se utiliza para compensar a los mineros que aseguran las transacciones. Recordemos, \emph{Ethereum1.0 utiliza PoW} pero \emph{Ethereum2.0 utiliza PoS}\cite{Ethereum2.0}. Los ethers se utilizan como almacén de valor, prestamos de garantía, medio de intercambio, unidad de cuenta en mercados digitales \dots \\
+
+Cada transacción en ethereum lleva asociado un coste conocido como \textbf{gas}. El gas es la unidad que se utiliza para ver el coste de computo que tiene la transacción, para poder remunerar adecuadamente al minero. La unidad de gas se mide en \textbf{Gwei}\cite{Gwei} si por ejemplo queremos enviar una cantidad \verb|X| de ether a otra persona esta transacción tiene un coste de \verb|21.000|Gwei lo que es equivalente a \verb|0,000021 ETH| (1ETH = $1^9$Gwei)
+
+\subsubsection{Carteras}
+
+Las carteras de ethereum son aplicaciones que permiten a los ususarios interactuar con sus cuentas de ethereum. Se las puede ver como una aplicación bancaria. Tu cartera te permite leer tu saldo, enviar transacciones, conectarte a aplicaciones. Se necesita una cartera para enviar fondos y gestionar tu ETH. Pero únicamente una herramienta para gestionar tu cuenta, puedes cambiar de cartera sin problema pues no es quien custodia tus fondos, eres tú quien los custodia en todo momento. \\
+
+Para terminar de entender esto, existen tres términos, cuenta de ethereum, la cuenta tiene asociada un \textbf{address}, un address es el identificador que tiene tu cuenta en la blockchain. Si alguien quiere enviarte algo, se lo enviará a tu address (como quien envia un correo), y una cartera.
+ 
 % -------------------------------------------------- %
 \subsection{Usos en el presente}
 
