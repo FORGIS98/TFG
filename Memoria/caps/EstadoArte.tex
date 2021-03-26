@@ -76,7 +76,7 @@ Algunos ejemplos de blockchains privadas son R3\cite{webR3}, Ripple\cite{webRipp
 
 \subsubsection{Blockchain híbrida o federada}
 
-Estas redes son utilizadas por grandes empresas y gobiernos, no estan abiertas al público, teniendo la gestión varias entidades. Además no tienen una criptomoneda asociada y no recompensan por el minado de bloques. Sin embargo el software que utilizan es de código abierto, como puede ser \textbf{Hyperldger, Corda}\cite{webHpyer, webCorda}. \\
+Estas redes son utilizadas por grandes empresas y gobiernos, no estan abiertas al público, teniendo la gestión varias entidades. Además no tienen una criptomoneda asociada y no recompensan por el minado de bloques. Sin embargo el software que utilizan es de código abierto, como puede ser \textbf{Hyperldger, Corda}\cite{webHyper, webCorda}. \\
 
 Como ejemplo tenemos la \emph{Enterprise Ethereum Alliance}, en la que participan el Banco Santander y BBVA. Esta red utiliza la blockchain de Ethereum (pública), sin embargo tienen su propia plataforma privada.
 
@@ -140,7 +140,7 @@ Se creó como alternativa a PoW, para solventar algunos problemas que tiene (com
 
 PoS no es una solución definitiva, pues tiene problemas al igual que PoW. Al igual que antes mencionamos el ataque del 51\% (cuando una empresa o alguien tiene un 51\% de los nodos en su poder). En PoS, si tienes un 51\% de las criptomonedas, tienes un 51\% del poder de decision sobre la red, pudiendo hacer los cambios que quieras en ella. Este ataque es frecuente en redes pequeñas con pocas criptomonedas en juego, puesto que de lo contrario, lograr tener un 51\% de las monedas supone tener muchísimo dinero. Para controlar estas fraudulencias, se penaliza económicamente a los nodos que tratan de saltarse las reglas (modificar bloques y transacciones), además, un ataque a la blockchain afecta al poder de la moneda y por lo tanto su valor en mercado disminuye, por lo que no compensa tratar de burlar las reglas de la blockchain. Los nodos de las redes que usan PoS, reciben una comisión al minar correctamente su parte del bloque. \\
 
-Redes que utilizan este algoritmo son: Ethereum2.0\cite{ethereum2.0} y NxT\cite{NxT}.
+Redes que utilizan este algoritmo son: Ethereum2.0\cite{Ethereum2.0} y NxT\cite{NxT}.
 
 \subsubsection{Proof of Elapsed Time (PoET)}
 
@@ -162,7 +162,7 @@ Los smart contracts permiten que se realicen transacciones y acuerdos de confian
 \label{sec:smartContract}
 \index{SmartContract}
 
-\begin{lstlisting}[language=Java,float=ht,caption={[Smart Contract]Ejemplo de código fuente de un smart contract escrito en Solidity},label=lst:js]
+\begin{lstlisting}[language=Java,float=ht,caption={[Smart Contract]Ejemplo de código fuente de un smart contract escrito en Solidity},label=lst:java]
 pragma solidity 0.6.11;
 
 contract VendingMachine {
@@ -207,39 +207,196 @@ Los smart contracts pueden ser escritos en múltiples lenguajes de programación
 La primera red blockchain en explotar el potencial de los smart contracts fue \textbf{ethereum} y puesto que es la red blockchain sobre la cual se apoyará la aplicación Android que voy a desarrollar en este TFG, procederé a analizarla.
 
 % -------------------------------------------------- %
-\subsection{Ethereum}
-% Ethers
-% Ethereum Account
-% Ethereum Wallet
-% Ethereum Stack
-% Smart Contract
-% Solidity
-% Ethereum Nodes
-% Etehreum 2.0
+\subsection{Usos en el presente de Blockchain}
+En el presente estan en desarrollo múltiples aplicaciones basadas en Blockchain:
+
+\begin{itemize}
+\item Criptomonedas: \emph{Bitcoin, Ethereum, Tether, Cardano, XRP, Litecoin, ChainLink, Dogecoin, TRON, VeChain, Monero, BitTorrent, Kusama, Neo, Dai, NEM, Dash, Maker}\dots \cite{listaCripto}.
+\item Firma digital y verificación de la identidad: Startups como \emph{Civic} o \cite{Niuron}\cite{civic, niuron} buscan implementar firmas digitales para notarios y bancos y check-in telemáticos en hoteles y pisos turísticos.
+\item Trazabilidad alimentaria: Empresas como carrefour implementan trazabilidad de sus alimentos con la ayuda de IBM \cite{carrefour}
+\item Turismo y Hoteles: La empresa \emph{TUI Group} cuenta con más de 300 hoteles y esta moviendo sus activos inmobiliarios y procesos internos a una blockchain \cite{tuig}.
+\item Votaciones y elecciones: El \emph{banco santander} utilizó en 2018 con éxito una red blockchain para votar a su Junta General de Accionistas\cite{santanderVotacion}
+\end{itemize}
+
+Y mucho más \cite{appCripto}.
+
+% -------------------------------------------------- %
+\section{Ethereum}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\linewidth]{figs/EstadoArte/Ethereum/ethereumLOGO}
+  \caption[Ethereum]{Logo de ethereum}
+  \label{fig:ethereum}
+\end{figure}
 
 Ethereum es una red blockchain que permite enviar criptomonedas a cualquier persona por una pequeña comisión. Admeás permite ser programada con ayuda de los smart contracts, permitiendo así desarrollar aplicaciones sobre la red blockchain. \\
 
-\subsubsection{Ether (ETH)}
+% -------------------------------------------------- %
+\subsection{Ether (ETH)}
 La moneda que utiliza la red de Ethereum es el \textbf{ether}, se utiliza para compensar a los mineros que aseguran las transacciones. Recordemos, \emph{Ethereum1.0 utiliza PoW} pero \emph{Ethereum2.0 utiliza PoS}\cite{Ethereum2.0}. Los ethers se utilizan como almacén de valor, prestamos de garantía, medio de intercambio, unidad de cuenta en mercados digitales \dots \\
 
-Cada transacción en ethereum lleva asociado un coste conocido como \textbf{gas}. El gas es la unidad que se utiliza para ver el coste de computo que tiene la transacción, para poder remunerar adecuadamente al minero. La unidad de gas se mide en \textbf{Gwei}\cite{Gwei} si por ejemplo queremos enviar una cantidad \verb|X| de ether a otra persona esta transacción tiene un coste de \verb|21.000|Gwei lo que es equivalente a \verb|0,000021 ETH| (1ETH = $1^9$Gwei)
-
-\subsubsection{Carteras}
-
-Las carteras de ethereum son aplicaciones que permiten a los ususarios interactuar con sus cuentas de ethereum. Se las puede ver como una aplicación bancaria. Tu cartera te permite leer tu saldo, enviar transacciones, conectarte a aplicaciones. Se necesita una cartera para enviar fondos y gestionar tu ETH. Pero únicamente una herramienta para gestionar tu cuenta, puedes cambiar de cartera sin problema pues no es quien custodia tus fondos, eres tú quien los custodia en todo momento. \\
-
-Para terminar de entender esto, existen tres términos, cuenta de ethereum, la cuenta tiene asociada un \textbf{address}, un address es el identificador que tiene tu cuenta en la blockchain. Si alguien quiere enviarte algo, se lo enviará a tu address (como quien envia un correo), y una cartera.
- 
-% -------------------------------------------------- %
-\subsection{Usos en el presente}
-
+Cada transacción en ethereum lleva asociado un coste conocido como \textbf{gas}. El gas es la unidad que se utiliza para ver el coste de computo que tiene la transacción, para poder remunerar adecuadamente al minero. La unidad de gas se mide en \textbf{Gwei}\cite{Gwei} si por ejemplo queremos enviar una cantidad \verb|X| de ether a otra persona esta transacción tiene un coste de \verb|21.000|Gwei lo que es equivalente a \verb|0,000021 ETH| (1ETH = $10^9$Gwei)
 
 % -------------------------------------------------- %
-% -------------------------------------------------- %
-\section{Proyectos Blockchain usando aplicaciones móvil}
+\subsection{Carteras}
 
+Las carteras de ethereum son aplicaciones que permiten a los ususarios interactuar con sus cuentas de ethereum. Se las puede ver como una aplicación bancaria. Tu cartera te permite leer tu saldo, enviar transacciones y conectarte a aplicaciones. Se necesita una cartera para enviar fondos y gestionar tu ETH. Pero es únicamente una herramienta para gestionar tu cuenta, puedes cambiar de cartera sin problema pues no es quien custodia tus fondos, eres tú quien los custodia en todo momento. \\
+
+La cartera tiene asociado un \textbf{address}, un address es el identificador que tiene tu cuenta en la red de ethereum, es único para tí. Si alguien quiere enviarte dinero lo hará desde su address a tú address, si quieres hacer una llamada a un Smart Contract, al smart contract le llegará como información tú address. \\
+
+Tres términos importantes:
+\begin{itemize}
+\item \textbf{Cuenta} de ethereum.
+\item \textbf{Address} de la cuenta.
+\item \textbf{Cartera} para gestionar la cuenta.
+\end{itemize}
 
 % -------------------------------------------------- %
-\subsection{App-1}
+\subsection{Ethereum Smart Contract}
+
+Los smart contracts de ethereum están escritos en \textbf{Solidity}\cite{SolidityDocs} o \textbf{Vyper}\cite{VyperDocs}. Cualquier persona es libre de programar un smart contract y desplegarlo en la red de ethereum, los smart contracts son una transacción más y tienen su propio address. Permitiendo que cualquier persona hacer llamadas al smart contract. Desplegar un smart contract cuesta \emph{gas} al igual que cualquier transacción, sin embargo es bastante más caro. 
+
+\begin{figure}[hbt]
+	\centering
+	\begin{subfigure}[b]{0.4\linewidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{figs/EstadoArte/Ethereum/solidityLOGO}
+		\caption{Logo de Solidity}\label{fig:solProgram}
+	\end{subfigure} 
+	\begin{subfigure}[b]{0.4\linewidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{figs/EstadoArte/Ethereum/vyperLOGO}
+		\caption{Logo de Vyper}\label{fig:vyperProgram}
+	\end{subfigure} 
+	\caption[Lenguajes de Smart Contract]{Lenguajes de smart contract para ethereum.}
+	\label{fig:programas}
+\end{figure}
+
+\clearpage
+
+\label{sec:solidity}
+\index{Solidity}
+
+\begin{lstlisting}[language=Java,float=ht,caption={[Solidity Contract]Ejemplo de código fuente de un smart contract escrito en Solidity},label=lst:java]
+// SPDX-License-Identifier: GPL-3.0
+pragma solidity >= 0.7.0;
+
+contract Coin {
+    // The keyword "public" makes variables
+    // accessible from other contracts
+    address public minter;
+    mapping (address => uint) public balances;
+
+    // Events allow clients to react to specific
+    // contract changes you declare
+    event Sent(address from, address to, uint amount);
+
+    // Constructor code is only run when the contract
+    // is created
+    constructor() {
+        minter = msg.sender;
+    }
+
+    // Sends an amount of newly created coins to an address
+    // Can only be called by the contract creator
+    function mint(address receiver, uint amount) public {
+        require(msg.sender == minter);
+        require(amount < 1e60);
+        balances[receiver] += amount;
+    }
+
+    // Sends an amount of existing coins
+    // from any caller to an address
+    function send(address receiver, uint amount) public {
+        require(amount <= balances[msg.sender], "Insufficient balance.");
+        balances[msg.sender] -= amount;
+        balances[receiver] += amount;
+        emit Sent(msg.sender, receiver, amount);
+    }
+}
+\end{lstlisting}
+
+% -------------------------------------------------- %
+\subsection{Funcionamiento básico de Ethereum}
+
+Para entender el funcionamiento básico de Ethereum, vamos a exponerlo por niveles como lo hacen en la documentación oficial\cite{etherStack}. 
+
+% -------------------------------------------------- %
+\subsection{Nivel 1: Máquina Virtual de Ethereum} 
+
+La \textbf{EVM} es el entorno de ejecución de los smart contract. Esta, gestiona todo el procesamiento de transacciones en la red, creando un nivel de abstracción entre el código que se ejecuta y la máquina que lo hace. La EVM es \emph{Turing-Completa} con 140 instrucciones únicas que la permiten ejecutar casi cualquier cosa. 
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\linewidth]{figs/EstadoArte/Ethereum/evm}
+  \caption[Diagrama EVM]{Diagrama de la máquina virtual de ethereum}
+  \label{fig:evm}
+\end{figure}
+
+% -------------------------------------------------- %
+\subsection{Nivel 2: Smart Contract} 
+
+Programas que se ejecutan en la red de ethereum. 
+
+% -------------------------------------------------- %
+\subsection{Nivel 3: Nodos de Ethereum}
+
+Para que una app pueda interactuar con la red, necesita conectarse a un nodo de ethereum. Los nodos son ordenadores que ejecutan el \emph{software} cliente de ethereum, manteniendo el registro de bloques y validando las transacciones. Almacenan colectivamente el estado de la blockchain y llegan a un consenso sobre las transacciones para hacer crecer el número de bloques. Al conectar la app con un nodo, la app puede leer datos de la red, enviar nuevas transacciones\dots
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\linewidth]{figs/EstadoArte/Ethereum/ethereumNodo}
+  \caption[Nodos vista genérica]{Nodo y vista genérica de aplicaciones.}
+  \label{fig:etherNodo}
+\end{figure}
+
+% -------------------------------------------------- %
+\subsection{Nivel 4: API para el cliente de ethereum}
+
+Las APIs permiten a los desarrolladores absatraer parte de la dificultad de interactuar directamente con los nodos de ethereum. Además proporcionan herramientas como para convertir datos de ETh a Gwei\dots Existen APIs en \verb|JavaScript, Java, Python| por ejemplo, una de las más conocidas es \textbf{Web3}\cite{web3}
+
+% -------------------------------------------------- %
+\subsection{Nivel 5: Aplicaciones para usuario}
+
+En el nivel superior estan las apps orientadas al usuario. Principalmente son aplicaciones web y móvil. Las aplicaciones se contruyen de la manera tradicional, y utilizan las APIs necesarias para comunicarse con la red y/o smart contracts.
+
+% -------------------------------------------------- %
+% -------------------------------------------------- %
+\section{Aplicaciones móvil que usan Blockchain}
+
+Ahora que entendemos que es Blockchain, visto múltiples ejemplos de redes, visto múltiples aplicaciones de la red Blockchain, y hemos indagado más sobre Ethereum y lo Smart Contract, vamos a pasar a ver los proyectos actuales que utilizan aplicaciones móvil y blockchain. Puesto que el objetivo de este \textbf{TFG} es el desarrollo de una aplicación Android que comunique con una blockchain. 
+
+% -------------------------------------------------- %
+\subsection{GUTS Tickets}
+
+Esta aplicación móvil usa blockchain para emitir entradas honestas que ponen fin a los vergonzosos precios del mercado de la ``reventa'' y al fraude en las entradas. \emph{GUTS} es el primer sistema de ventas de entradas que hace uso del \textbf{Protocolo de Entrada Garantizada} {\small (\emph{Guaranteed Entrance Protocol (GET)})}\cite{GET}. Este protocolo permite crear entradas inteligentes y seguras permitiendo el seguimiento de las mismas así como el control de su precio original y secundario (reventa). 
+
+\begin{figure}[hbt]
+	\centering
+	\begin{subfigure}[b]{0.4\linewidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{figs/EstadoArte/Apps/getTOKEN.png}
+		\caption{Logo del token de GET}\label{fig:getTOKEN}
+	\end{subfigure} 
+	\begin{subfigure}[b]{0.4\linewidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{figs/EstadoArte/Apps/gutsLOGO.png}
+		\caption{Logo de la aplicación Guts}\label{fig:gutsLOGO}
+	\end{subfigure} 
+	\caption[Logos de Guts y GET]{Logos}
+	\label{fig:Logos}
+\end{figure}
+
+\subsubsection{Protocolo GET}
+
+El protocolo GET ofrece una solución de emisión de billetes inteligentes basadas en blockchain que puede ser utilizada por todos los que necesitan emitir billetes de forma transparente, segura y honesta. Evitando fraudes, y vergonzosas subidas del precio de las entradas en el mercado de la reventa. La funcionalidad de registro de entradas de GET funciona con un SmartContract escrito en solidity, su codigo fuente es de código abierto \cite{srcGET}. La blockchain que utiliza para apoyarse es la de \emph{Ethereum}, y disponen de \textbf{Token} propio para realizar las transacciones\cite{tokGET}. GET guarda un historial para cada tickets utilizando \textbf{IPFS}\cite{IPFS} que luego guarda en la red blockchain con el smart contract, \emph{sobre IPFS, pretende superar a HTTP para contruir una web mejor para todos}.
+
+% -------------------------------------------------- %
+\subsection{LifeID}
+
+Esta aplicación esta construyendo una plataforma de identidad digital segura y basada en blockchain. Con una sencilla aplicación móvil te ofrece el control sobre la gestión de tú identidad digital. Permite iniciar sesión en cualquier sitio, entrar en cualquier edificio en el que se requiera de autenticación o participar en transacciones basadas en la identidad (como puede ser en un sistema de votación) todo con la tranquilidad, fiabilidad y control que da la blockchain. \\ 
+
+Para ello utiliza la red blockchain de \textbf{ArcBlock}\cite{webArc,alianzaArc}. ArcBlock es una plataforma para desarrollar aplicaciones en blockchains conocidas como \textbf{DApps}\cite{dapps}. 
 
 
