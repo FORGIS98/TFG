@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Estublock</string>
+    <string name="edit_msg">Enter a msg</string>
+    <string name="button_send">Send</string>
+</resources>
