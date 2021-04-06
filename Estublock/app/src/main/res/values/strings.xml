@@ -13,4 +13,8 @@
     <string name="register">Register</string>
     <string name="re_type_password">Re-type Password</string>
     <string name="your_name">Full Name</string>
+    <string name="empty_name">!Necesitamos tú nombre para el registro!</string>
+    <string name="empty_email">Email vacío</string>
+    <string name="not_valid_email">Email no valido</string>
+    <string name="password_missmatch">Las contraseñas no coinciden</string>
 </resources>

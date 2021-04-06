@@ -1,62 +1,91 @@
 package com.example.estublock;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RegisterFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class RegisterFragment extends Fragment {
 
-  // TODO: Rename parameter arguments, choose names that match
-  // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-  private static final String ARG_PARAM1 = "param1";
-  private static final String ARG_PARAM2 = "param2";
+  EditText et_name;
+  public static final String et_name_key = "com.example.estublock.et_name";
+  EditText et_email;
+  public static final String et_email_key = "com.example.estublock.et_email";
 
-  // TODO: Rename and change types of parameters
-  private String mParam1;
-  private String mParam2;
+  EditText et_password;
+  EditText et_repassword;
 
   public RegisterFragment() {
-    // Required empty public constructor
-  }
 
-  /**
-   * Use this factory method to create a new instance of
-   * this fragment using the provided parameters.
-   *
-   * @param param1 Parameter 1.
-   * @param param2 Parameter 2.
-   * @return A new instance of fragment RegisterFragment.
-   */
-  // TODO: Rename and change types and number of parameters
-  public static RegisterFragment newInstance(String param1, String param2) {
-    RegisterFragment fragment = new RegisterFragment();
-    Bundle args = new Bundle();
-    args.putString(ARG_PARAM1, param1);
-    args.putString(ARG_PARAM2, param2);
-    fragment.setArguments(args);
-    return fragment;
-  }
-
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    if (getArguments() != null) {
-      mParam1 = getArguments().getString(ARG_PARAM1);
-      mParam2 = getArguments().getString(ARG_PARAM2);
-    }
   }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
+
     return inflater.inflate(R.layout.fragment_register, container, false);
+  }
+
+  // Called when the user taps the Register Button in "fragment_register.xml"
+  public void registerUser(View view){
+    et_name = view.findViewById(R.id.et_name);
+    et_email = view.findViewById(R.id.et_email);
+    et_password = view.findViewById(R.id.et_password);
+    et_repassword = view.findViewById(R.id.et_repassword);
+    if(!checkDataEntered(view)){
+      Intent intent = new Intent(getActivity(), MenuPageActivity.class);
+      intent.putExtra(et_name_key, et_name.getText().toString());
+      intent.putExtra(et_email_key, et_email.getText().toString());
+      startActivity(intent);
+      getActivity().finish();
+    }
+  }
+
+  private boolean checkDataEntered(View view){
+    boolean error = false;
+    if(isEmpty(et_name)){
+      et_name.setError(getString(R.string.empty_name));
+      error = true;
+    }
+    switch(isEmail(et_email)){
+      case 0:
+        et_email.setError(getString(R.string.empty_email));
+        error = true;
+        break;
+      case 1:
+        et_email.setError(getString(R.string.not_valid_email));
+        error = true;
+        break;
+    }
+    if(!et_password.equals(et_repassword)){
+      et_repassword.setError(getString(R.string.password_missmatch));
+      error = true;
+    }
+    return error;
+  }
+
+  // return 0 ==> Empty email
+  // return 1 ==> Email not valid
+  // return 2 ==> Good Email
+  private int isEmail(EditText email){
+    CharSequence str = email.getText().toString();
+    String regex = "^[-a-z0-9~!$%^&*_=+}{'?]+(\\.[-a-z0-9~!$%^&*_=+}{'?]+)*" +
+        "@(alumnos.upm.es|fi.upm.es|upm.es)$";
+    if(TextUtils.isEmpty(str))
+      return 0;
+    else if(!str.toString().matches(regex))
+      return 1;
+    else
+      return 2;
+  }
+  private boolean isEmpty(EditText txt){
+    CharSequence str = txt.getText().toString();
+    return TextUtils.isEmpty(str);
   }
 }

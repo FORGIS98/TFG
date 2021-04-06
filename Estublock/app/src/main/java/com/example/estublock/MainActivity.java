@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     String message = editText.getText().toString();
     intent.putExtra(EXTRA_MSG, message);
     startActivity(intent);
+    this.finish();
   }*/
 }
 
