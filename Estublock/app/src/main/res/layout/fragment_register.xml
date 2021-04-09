@@ -99,7 +99,6 @@
             android:layout_marginBottom="30dp"
             android:background="@drawable/btn_custom"
             android:fontFamily="@font/roboto_regular"
-            android:onClick="registerUser"
             android:text="@string/register"
             android:textColor="@android:color/white" />
 

@@ -8,6 +8,7 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -29,16 +30,28 @@ public class RegisterFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
 
-    return inflater.inflate(R.layout.fragment_register, container, false);
-  }
+    View view = inflater.inflate(R.layout.fragment_register, container, false);
 
-  // Called when the user taps the Register Button in "fragment_register.xml"
-  public void registerUser(View view){
     et_name = view.findViewById(R.id.et_name);
     et_email = view.findViewById(R.id.et_email);
     et_password = view.findViewById(R.id.et_password);
     et_repassword = view.findViewById(R.id.et_repassword);
-    if(!checkDataEntered(view)){
+
+
+    Button btn = (Button) view.findViewById(R.id.btn_register);
+    btn.setOnClickListener(new View.OnClickListener(){
+
+      @Override
+      public void onClick(View v){
+        registerUser();
+      }
+    });
+    return view;
+  }
+
+  // Called when the user taps the Register Button in "fragment_register.xml"
+  public void registerUser(){
+    if(!checkDataEntered()){
       Intent intent = new Intent(getActivity(), MenuPageActivity.class);
       intent.putExtra(et_name_key, et_name.getText().toString());
       intent.putExtra(et_email_key, et_email.getText().toString());
@@ -47,7 +60,7 @@ public class RegisterFragment extends Fragment {
     }
   }
 
-  private boolean checkDataEntered(View view){
+  private boolean checkDataEntered(){
     boolean error = false;
     if(isEmpty(et_name)){
       et_name.setError(getString(R.string.empty_name));
@@ -63,7 +76,7 @@ public class RegisterFragment extends Fragment {
         error = true;
         break;
     }
-    if(!et_password.equals(et_repassword)){
+    if(!et_password.getText().toString().equals(et_repassword.getText().toString()) && !isEmpty(et_password)){
       et_repassword.setError(getString(R.string.password_missmatch));
       error = true;
     }

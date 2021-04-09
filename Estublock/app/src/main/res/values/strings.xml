@@ -16,5 +16,5 @@
     <string name="empty_name">!Necesitamos tú nombre para el registro!</string>
     <string name="empty_email">Email vacío</string>
     <string name="not_valid_email">Email no valido</string>
-    <string name="password_missmatch">Las contraseñas no coinciden</string>
+    <string name="password_missmatch">Las contraseñas no coinciden o estan vacías</string>
 </resources>
