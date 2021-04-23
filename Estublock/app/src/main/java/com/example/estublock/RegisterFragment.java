@@ -2,15 +2,16 @@ package com.example.estublock;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import java.util.HashMap;
 
 public class RegisterFragment extends Fragment {
 
@@ -32,26 +33,55 @@ public class RegisterFragment extends Fragment {
 
     View view = inflater.inflate(R.layout.fragment_register, container, false);
 
-    et_name = view.findViewById(R.id.et_name);
-    et_email = view.findViewById(R.id.et_email);
-    et_password = view.findViewById(R.id.et_password);
-    et_repassword = view.findViewById(R.id.et_repassword);
+    // Esto arregla la guerra con las llamadas a APIs
+    // Mi SDK --> 26
+    int SDK_INT = android.os.Build.VERSION.SDK_INT;
+    if (SDK_INT > 8) {
+      StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+          .permitAll().build();
+      StrictMode.setThreadPolicy(policy);
+
+      et_name = view.findViewById(R.id.et_name);
+      et_email = view.findViewById(R.id.et_email);
+      et_password = view.findViewById(R.id.et_password);
+      et_repassword = view.findViewById(R.id.et_repassword);
 
 
-    Button btn = (Button) view.findViewById(R.id.btn_register);
-    btn.setOnClickListener(new View.OnClickListener(){
+      Button btn = (Button) view.findViewById(R.id.btn_register);
+      btn.setOnClickListener(new View.OnClickListener(){
 
-      @Override
-      public void onClick(View v){
-        registerUser();
-      }
-    });
+        @Override
+        public void onClick(View v){
+          registerUser();
+        }
+      });
+    }
     return view;
   }
 
   // Called when the user taps the Register Button in "fragment_register.xml"
   public void registerUser(){
     if(!checkDataEntered()){
+
+      try{
+        CallsToAPI api = new CallsToAPI();
+        String url = "http://192.168.1.7:10010/user";
+        HashMap<String, String> dataMap = new HashMap<>();
+        dataMap.put("correo", et_email.getText().toString());
+        dataMap.put("id_huella", "00000000");
+        dataMap.put("matricula", "00000000");
+        dataMap.put("password", api.hashPassword(et_password.getText().toString()));
+        dataMap.put("apellido1", "ApellidoPeter");
+        dataMap.put("apellido2", "ApellidoAnguila");
+        dataMap.put("nombre", et_name.getText().toString());
+
+        String json = api.createJson(dataMap);
+        String response = api.createUser(url, json);
+        System.out.println("DEBUG -- " + response);
+
+      } catch (Exception e){
+        e.printStackTrace();
+      }
       Intent intent = new Intent(getActivity(), MenuPageActivity.class);
       intent.putExtra(et_name_key, et_name.getText().toString());
       intent.putExtra(et_email_key, et_email.getText().toString());
