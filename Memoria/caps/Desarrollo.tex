@@ -1,4 +1,60 @@
 \chapter{Desarrollo}
 \label{cap:Desarrollo}
 
-Desarrollo
+\setlength{\parindent}{0pt}
+
+En este capítulo se hablará del desarrollo de la aplicación Android (diseño, funcionalidades\dots) que he estado realizando a lo largo del TFG, así como el registro de claves para poder interacturar con la red blockchain que se ha levantado. También, se explicará en que consiste el SDK desarrollado, cuales son sus funcionalidades y como poder utilizarlo para otras aplicaciones Android.
+
+% ##################################################
+% ##################################################
+\section{Aplicación Android}
+
+Para el desarrollo de la aplicación móvil, se ha decidido enfocarlo únicamente a aplicaciones Android. Lógicamente, en un futuro, se tendrá que adapatar una aplicación para otros sistemas como iOS. O por el contrario reescribir él código con lenguajes ````cross platform'' para permitir el correcto funcionamiento nativo tanto en Android como en iOS, una buena opción es utilizar \textbf{flutter}\cite{flutter}.
+
+% --------------------------------------------------
+\subsection{Conceptos Básicos de Android}
+
+A la hora de programar aplicaciones en Android, lo ideal es trabajar en paralelo con la documentación para desarrolladores\cite{androidDocs}. En ella se detalla el completo funcionamiento y diferentes APIs disponibles para programar las aplicaciones. Para este apartado resumo algunos de los conceptos de la guia, siendo una gran recomendación si se quiere profundizar más ir direcamente a la guia. \\
+
+Las aplicaciones de Android se pueden escribir con \textbf{Kotlin, Java y C++}\cite{kotlin,java,c++}. Una vez escrito el código fuente, las herramientas de Android SDK compilan el código generando un paquete o APK, el cual incluye todos los contenidos de la aplicación Android y permite ser ejecutado en un dispositivo móvil (el dispositivo requerirá de la versión Android mínima para poder ejecutar.). \\
+
+Cada aplicación de Android resite en su propia ``zona virtual'', un conjunto de factores permiten tener aisladas las aplicaciones Android del resto del móvil. Entre otras, puesto que Android reside en un sistema Linux, el cual es multiusuario, cada aplicación en el móvil es un usuario el cual puede acceder solo a sus archivos y documentos teniendo sus propios permisos como usuario dentro del dispositivo y creando lo grupos que necesite. Cada proceso que se ejecuta tiene su propia máquina virtual, ejecutandose el código de forma independiente al reso de aplicaciones. Es el sistema operativo el que se encarga de mantener los distintos procesos, así como arrancar procesos que sean requeridos por la aplicación. \\
+
+Un ejemplo, si desde la aplicación de galeria queremos compartir una foto por whatsapp, la aplicación ``galeria'' le pedirá al SO que ejecute una actividad de ``whatsapp'' y será el SO quien se encarge de decidir si tiene permiso para eso o no, o si tiene recursos para ejecutarlo o no. En ningún momento la aplicación ``galeria'' tiene libertad para ejecutar otros procesos. \\
+
+De forma predeterminada las aplicaciones solo tiene derecho de usar sus propios archivos, pero puede pedir permiso al sistema operativo para guardar información en el dispositivo, en el caso de mi aplicación Android por ejemplo, el registro de claves para acceder a la blockchain se guardan de forma local en el dispositivo. También, la aplicaciones pueden pedir permiso para utilizar cámara, conexión bluetooth\dots
+
+\subsubsection{Componentes de la aplicación}
+
+Las aplicaciones Android tienen:
+\begin{itemize}
+    \item Actividades
+    \item Servicios
+    \item Receptores de emisiones
+    \item Proveedores de contenido
+\end{itemize}
+
+% --------------------------------------------------
+\subsection{Diseño de la Aplicación}
+% --------------------------------------------------
+\subsection{Desarrollo de Microservicio Externo}
+% --------------------------------------------------
+\subsection{Comunicación con la Red Blockchain}
+% --------------------------------------------------
+\subsection{A Futuro}
+
+
+
+% ##################################################
+% ##################################################
+\section{SDK}
+% --------------------------------------------------
+\subsection{Diseño del SDK}
+% --------------------------------------------------
+\subsection{Como Incorporarlo en Otras Aplicaciones}
+
+
+
+% ##################################################
+% ##################################################
+\section{Documentación}

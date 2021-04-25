@@ -1,5 +1,6 @@
 package com.example.estublock;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -10,8 +11,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
+
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class RegisterFragment extends Fragment {
 
@@ -23,6 +39,15 @@ public class RegisterFragment extends Fragment {
   EditText et_password;
   EditText et_repassword;
 
+  // Creamos un progress dialog por si la API tarda más de lo normal
+  ProgressDialog progressDialog;
+
+  // Volley RequestQueue
+  RequestQueue requestQueue;
+
+  // URL de la API
+  String URL = "http://hubble.ls.fi.upm.es:10012";
+
   public RegisterFragment() {
 
   }
@@ -33,29 +58,25 @@ public class RegisterFragment extends Fragment {
 
     View view = inflater.inflate(R.layout.fragment_register, container, false);
 
-    // Esto arregla la guerra con las llamadas a APIs
-    // Mi SDK --> 26
-    int SDK_INT = android.os.Build.VERSION.SDK_INT;
-    if (SDK_INT > 8) {
-      StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-          .permitAll().build();
-      StrictMode.setThreadPolicy(policy);
+    et_name = view.findViewById(R.id.et_name);
+    et_email = view.findViewById(R.id.et_email);
+    et_password = view.findViewById(R.id.et_password);
+    et_repassword = view.findViewById(R.id.et_repassword);
 
-      et_name = view.findViewById(R.id.et_name);
-      et_email = view.findViewById(R.id.et_email);
-      et_password = view.findViewById(R.id.et_password);
-      et_repassword = view.findViewById(R.id.et_repassword);
+    // Creating Volley newRequestQueue .
+    requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
+    // Assigning Activity this to progress dialog.
+    // progressDialog = new ProgressDialog(getActivity());
 
-      Button btn = (Button) view.findViewById(R.id.btn_register);
-      btn.setOnClickListener(new View.OnClickListener(){
+    Button btn = (Button) view.findViewById(R.id.btn_register);
+    btn.setOnClickListener(new View.OnClickListener(){
 
-        @Override
-        public void onClick(View v){
-          registerUser();
-        }
-      });
-    }
+      @Override
+      public void onClick(View v){
+        registerUser();
+      }
+    });
     return view;
   }
 
@@ -63,30 +84,58 @@ public class RegisterFragment extends Fragment {
   public void registerUser(){
     if(!checkDataEntered()){
 
+      // progressDialog.setMessage("Cargando...");
+      // progressDialog.show();
+
       try{
-        CallsToAPI api = new CallsToAPI();
-        String url = "http://192.168.1.7:10010/user";
         HashMap<String, String> dataMap = new HashMap<>();
         dataMap.put("correo", et_email.getText().toString());
         dataMap.put("id_huella", "00000000");
         dataMap.put("matricula", "00000000");
-        dataMap.put("password", api.hashPassword(et_password.getText().toString()));
-        dataMap.put("apellido1", "ApellidoPeter");
-        dataMap.put("apellido2", "ApellidoAnguila");
+        dataMap.put("password", securePassword(et_password.getText().toString()));
+        dataMap.put("apellido1", "Movil");
+        dataMap.put("apellido2", "Movil");
         dataMap.put("nombre", et_name.getText().toString());
+        dataMap.put("wallet", createWallet(dataMap.get("password")));
 
-        String json = api.createJson(dataMap);
-        String response = api.createUser(url, json);
-        System.out.println("DEBUG -- " + response);
+        JSONObject params = new JSONObject(dataMap);
 
+        System.out.println("Antes de la llamada");
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+            (URL + "/user"), params,
+            new Response.Listener<JSONObject>() {
+              @Override
+              public void onResponse(JSONObject response) {
+
+                System.out.println("Dentro de la llamada");
+                System.out.println("Response: " + response);
+
+                Toast.makeText(getActivity().getApplicationContext(),
+                    ("Bienvenido " + et_name.getText().toString()), Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(getActivity(), MenuPageActivity.class);
+                intent.putExtra(et_name_key, et_name.getText().toString());
+                intent.putExtra(et_email_key, et_email.getText().toString());
+                startActivity(intent);
+
+                getActivity().finish();
+              }
+            }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+              System.out.println("Error en la llamada");
+              System.out.println(error);
+              Toast.makeText(getActivity().getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+            }
+          });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this.getContext());
+        requestQueue.add(jsonObjectRequest);
       } catch (Exception e){
+        System.out.println("Dentro del catch");
         e.printStackTrace();
       }
-      Intent intent = new Intent(getActivity(), MenuPageActivity.class);
-      intent.putExtra(et_name_key, et_name.getText().toString());
-      intent.putExtra(et_email_key, et_email.getText().toString());
-      startActivity(intent);
-      getActivity().finish();
     }
   }
 
@@ -130,5 +179,14 @@ public class RegisterFragment extends Fragment {
   private boolean isEmpty(EditText txt){
     CharSequence str = txt.getText().toString();
     return TextUtils.isEmpty(str);
+  }
+
+  private String securePassword(String plainText){
+   return BCrypt.withDefaults().hashToString(10, plainText.toCharArray());
+  }
+
+  private String createWallet(String password){
+
+    return "";
   }
 }

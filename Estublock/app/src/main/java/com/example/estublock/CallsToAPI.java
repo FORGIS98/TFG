@@ -1,40 +1,39 @@
 package com.example.estublock;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-
 public class CallsToAPI {
-  OkHttpClient client = new OkHttpClient();
-  public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
-  protected String createUser(String url, String json) throws IOException {
+  String URL = "http://hubble.ls.fi.upm.es:10012";
 
-    RequestBody body = RequestBody.create(json, JSON);
-    Request request = new Request.Builder()
-        .url(url)
-        .post(body)
-        .build();
+  protected String createUser(JSONObject params) throws IOException {
+    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+        (Request.Method.POST, (URL + "/user"), params,
 
-    try {
-      Response response = client.newCall(request).execute();
-      return response.body().string();
-    }catch (Exception e){
-      e.printStackTrace();
-    }
-    return null;
+            new Response.Listener<JSONObject>() {
+              @Override
+              public void onResponse(JSONObject response) {
+
+              }
+            }, new Response.ErrorListener() {
+          @Override
+          public void onErrorResponse(VolleyError error) {
+
+          }
+        }); // FIN JsonObjectRequest
+    return "";
   }
 
-  protected String createJson(HashMap<String, String> params){
+  protected JSONObject createJson(HashMap<String, String> params){
     JSONObject json = new JSONObject();
     try {
       json.put("email", params.get("email"));
@@ -47,10 +46,7 @@ public class CallsToAPI {
     } catch (JSONException e) {
       e.printStackTrace();
     }
-    return json.toString();
+    return json;
   }
 
-  protected String hashPassword(String password){
-    return BCrypt.withDefaults().hashToString(12, password.toCharArray());
-  }
 }
