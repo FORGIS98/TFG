@@ -1,9 +1,9 @@
 package com.example.estublock;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -19,13 +18,19 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.json.JSONObject;
+import org.web3j.crypto.Credentials;
+import org.web3j.crypto.WalletUtils;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.http.HttpService;
 
+import java.io.File;
+import java.security.Provider;
+import java.security.Security;
 import java.util.HashMap;
-import java.util.Map;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
@@ -35,6 +40,8 @@ public class RegisterFragment extends Fragment {
   public static final String et_name_key = "com.example.estublock.et_name";
   EditText et_email;
   public static final String et_email_key = "com.example.estublock.et_email";
+
+  public static final String file_directory = "com.example.estublock.file_directory";
 
   EditText et_password;
   EditText et_repassword;
@@ -47,6 +54,10 @@ public class RegisterFragment extends Fragment {
 
   // URL de la API
   String URL = "http://hubble.ls.fi.upm.es:10012";
+
+  private Web3j web3;
+  private String walletPath;
+  private File walletDir;
 
   public RegisterFragment() {
 
@@ -62,6 +73,10 @@ public class RegisterFragment extends Fragment {
     et_email = view.findViewById(R.id.et_email);
     et_password = view.findViewById(R.id.et_password);
     et_repassword = view.findViewById(R.id.et_repassword);
+
+    // SDK
+    workaroundECDA();
+    walletPath = getActivity().getApplicationInfo().dataDir;
 
     // Creating Volley newRequestQueue .
     requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
@@ -96,7 +111,7 @@ public class RegisterFragment extends Fragment {
         dataMap.put("apellido1", "Movil");
         dataMap.put("apellido2", "Movil");
         dataMap.put("nombre", et_name.getText().toString());
-        dataMap.put("wallet", createWallet(dataMap.get("password")));
+        dataMap.put("wallet", createWallet(et_password.getText().toString()));
 
         JSONObject params = new JSONObject(dataMap);
 
@@ -117,6 +132,7 @@ public class RegisterFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), MenuPageActivity.class);
                 intent.putExtra(et_name_key, et_name.getText().toString());
                 intent.putExtra(et_email_key, et_email.getText().toString());
+                intent.putExtra(file_directory, walletDir);
                 startActivity(intent);
 
                 getActivity().finish();
@@ -185,8 +201,48 @@ public class RegisterFragment extends Fragment {
    return BCrypt.withDefaults().hashToString(10, plainText.toCharArray());
   }
 
+  @SuppressLint("CheckResult")
   private String createWallet(String password){
+    web3 = Web3j.build(new HttpService("http://deneb.ls.fi.upm.es:22000"));
 
-    return "";
+    // Creamos el wallet al usuario
+    try{
+      String fileName = WalletUtils.generateLightNewWalletFile(password, new File(walletPath));
+      walletDir = new File(walletPath + "/" + fileName);
+
+      toastAsync("Wallet Generated");
+    } catch (Exception e){
+      System.out.println("Error en el try catch");
+      e.printStackTrace();
+    }
+
+    return getAddress(password);
+  }
+
+  public void toastAsync(String message) {
+    getActivity().runOnUiThread(() -> {
+      Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+    });
+  }
+
+  // https://github.com/web3j/web3j/issues/915
+  private void workaroundECDA(){
+    final Provider provider = Security.getProvider(BouncyCastleProvider.PROVIDER_NAME);
+    if(provider != null || !provider.getClass().equals(BouncyCastleProvider.class)){
+      System.out.println("PROVDIER: " + BouncyCastleProvider.PROVIDER_NAME);
+      Security.removeProvider(BouncyCastleProvider.PROVIDER_NAME);
+      Security.insertProviderAt(new BouncyCastleProvider(), 1);
+    }
+  }
+
+  public String getAddress(String password){
+    try {
+      Credentials credentials = WalletUtils.loadCredentials(password, walletDir);
+      return credentials.getAddress();
+    }
+    catch (Exception e){
+      toastAsync(e.getMessage());
+      return "";
+    }
   }
 }

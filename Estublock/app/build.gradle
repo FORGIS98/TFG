@@ -38,4 +38,5 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation group: 'at.favre.lib', name: 'bcrypt', version: '0.9.0'
     implementation 'com.android.volley:volley:1.1.1'
+    implementation 'org.web3j:core:4.6.0-android' // Mas alta imposible, porque no la encuentra
 }
