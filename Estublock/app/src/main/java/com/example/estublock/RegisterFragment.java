@@ -25,7 +25,9 @@ import org.json.JSONObject;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.methods.response.Web3ClientVersion;
 import org.web3j.protocol.http.HttpService;
+import org.web3j.quorum.Quorum;
 
 import java.io.File;
 import java.security.Provider;
@@ -53,9 +55,11 @@ public class RegisterFragment extends Fragment {
   RequestQueue requestQueue;
 
   // URL de la API
-  String URL = "http://hubble.ls.fi.upm.es:10012";
+  // String URL = "http://hubble.ls.fi.upm.es:10012";
+  String URL = "http://192.168.1.8:10012";
 
   private Web3j web3;
+  private Quorum quorum;
   private String walletPath;
   private File walletDir;
 
@@ -107,7 +111,7 @@ public class RegisterFragment extends Fragment {
         dataMap.put("correo", et_email.getText().toString());
         dataMap.put("id_huella", "00000000");
         dataMap.put("matricula", "00000000");
-        dataMap.put("password", securePassword(et_password.getText().toString()));
+        dataMap.put("password", et_password.getText().toString());
         dataMap.put("apellido1", "Movil");
         dataMap.put("apellido2", "Movil");
         dataMap.put("nombre", et_name.getText().toString());
@@ -115,20 +119,11 @@ public class RegisterFragment extends Fragment {
 
         JSONObject params = new JSONObject(dataMap);
 
-        System.out.println("Antes de la llamada");
-
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
             (URL + "/user"), params,
             new Response.Listener<JSONObject>() {
               @Override
               public void onResponse(JSONObject response) {
-
-                System.out.println("Dentro de la llamada");
-                System.out.println("Response: " + response);
-
-                Toast.makeText(getActivity().getApplicationContext(),
-                    ("Bienvenido " + et_name.getText().toString()), Toast.LENGTH_LONG).show();
-
                 Intent intent = new Intent(getActivity(), MenuPageActivity.class);
                 intent.putExtra(et_name_key, et_name.getText().toString());
                 intent.putExtra(et_email_key, et_email.getText().toString());
@@ -138,18 +133,15 @@ public class RegisterFragment extends Fragment {
                 getActivity().finish();
               }
             }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-              System.out.println("Error en la llamada");
-              System.out.println(error);
-              Toast.makeText(getActivity().getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
-            }
-          });
+          @Override
+          public void onErrorResponse(VolleyError error) {
+            Toast.makeText(getActivity().getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+          }
+        });
 
         RequestQueue requestQueue = Volley.newRequestQueue(this.getContext());
         requestQueue.add(jsonObjectRequest);
       } catch (Exception e){
-        System.out.println("Dentro del catch");
         e.printStackTrace();
       }
     }
@@ -192,27 +184,28 @@ public class RegisterFragment extends Fragment {
     else
       return 2;
   }
+
   private boolean isEmpty(EditText txt){
     CharSequence str = txt.getText().toString();
     return TextUtils.isEmpty(str);
   }
 
-  private String securePassword(String plainText){
-   return BCrypt.withDefaults().hashToString(10, plainText.toCharArray());
-  }
-
   @SuppressLint("CheckResult")
   private String createWallet(String password){
     web3 = Web3j.build(new HttpService("http://deneb.ls.fi.upm.es:22000"));
+    quorum = Quorum.build(new HttpService("http://deneb.ls.fi.upm.es:22000"));
 
     // Creamos el wallet al usuario
     try{
+
       String fileName = WalletUtils.generateLightNewWalletFile(password, new File(walletPath));
       walletDir = new File(walletPath + "/" + fileName);
+      System.out.println("WALLET WALLET WALLET");
+      System.out.println(walletDir);
+      System.out.println("WALLET WALLET WALLET");
 
       toastAsync("Wallet Generated");
     } catch (Exception e){
-      System.out.println("Error en el try catch");
       e.printStackTrace();
     }
 
@@ -229,7 +222,6 @@ public class RegisterFragment extends Fragment {
   private void workaroundECDA(){
     final Provider provider = Security.getProvider(BouncyCastleProvider.PROVIDER_NAME);
     if(provider != null || !provider.getClass().equals(BouncyCastleProvider.class)){
-      System.out.println("PROVDIER: " + BouncyCastleProvider.PROVIDER_NAME);
       Security.removeProvider(BouncyCastleProvider.PROVIDER_NAME);
       Security.insertProviderAt(new BouncyCastleProvider(), 1);
     }

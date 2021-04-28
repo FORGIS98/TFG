@@ -17,4 +17,5 @@
     <string name="empty_email">Email vacío</string>
     <string name="not_valid_email">Email no valido</string>
     <string name="password_missmatch">Las contraseñas no coinciden o estan vacías</string>
+    <string name="error_user_not_found">Credenciales erróneas.</string>
 </resources>
