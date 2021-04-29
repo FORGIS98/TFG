@@ -1,9 +1,9 @@
 <resources>
+    <!-- APP -->
     <string name="app_name">Estublock</string>
     <string name="edit_msg">Enter a msg</string>
     <string name="button_send">Send</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- LOGIN & REGISTER-->
     <string name="swipe_left_for_register">Swipe Left for Register</string>
     <string name="login">Login</string>
     <string name="password">Password</string>
@@ -18,4 +18,6 @@
     <string name="not_valid_email">Email no valido</string>
     <string name="password_missmatch">Las contraseñas no coinciden o estan vacías</string>
     <string name="error_user_not_found">Credenciales erróneas.</string>
+    <!-- MENU -->
+    <string name="mis_asignaturas">Asignaturas</string>
 </resources>

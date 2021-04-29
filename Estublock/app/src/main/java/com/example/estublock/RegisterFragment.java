@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,9 @@ import org.json.JSONObject;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameter;
+import org.web3j.protocol.core.methods.response.EthBlockNumber;
+import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.core.methods.response.Web3ClientVersion;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.quorum.Quorum;
@@ -56,12 +61,13 @@ public class RegisterFragment extends Fragment {
 
   // URL de la API
   // String URL = "http://hubble.ls.fi.upm.es:10012";
-  String URL = "http://192.168.1.8:10012";
+  String URL = "http://192.168.1.65:10012";
+  String URL_Block = "http://192.168.1.65:8545";
 
-  private Web3j web3;
-  private Quorum quorum;
-  private String walletPath;
-  private File walletDir;
+  Web3j web3j;
+  protected Quorum quorum;
+  protected File walletPath;
+  protected File walletDir;
 
   public RegisterFragment() {
 
@@ -80,7 +86,7 @@ public class RegisterFragment extends Fragment {
 
     // SDK
     workaroundECDA();
-    walletPath = getActivity().getApplicationInfo().dataDir;
+    walletPath = getContext().getFilesDir();
 
     // Creating Volley newRequestQueue .
     requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
@@ -192,19 +198,14 @@ public class RegisterFragment extends Fragment {
 
   @SuppressLint("CheckResult")
   private String createWallet(String password){
-    web3 = Web3j.build(new HttpService("http://deneb.ls.fi.upm.es:22000"));
-    quorum = Quorum.build(new HttpService("http://deneb.ls.fi.upm.es:22000"));
+    // web3j = Web3j.build(new HttpService("http://138.100.12.160:22000"));
+    web3j = Web3j.build(new HttpService(URL_Block));
+    // quorum = Quorum.build(new HttpService("http://deneb.ls.fi.upm.es:22000"));
 
     // Creamos el wallet al usuario
     try{
-
-      String fileName = WalletUtils.generateLightNewWalletFile(password, new File(walletPath));
-      walletDir = new File(walletPath + "/" + fileName);
-      System.out.println("WALLET WALLET WALLET");
-      System.out.println(walletDir);
-      System.out.println("WALLET WALLET WALLET");
-
-      toastAsync("Wallet Generated");
+      String fileName = WalletUtils.generateLightNewWalletFile(password, new File(walletPath.toString()));
+      walletDir = new File(walletPath + "/keystore/" + fileName);
     } catch (Exception e){
       e.printStackTrace();
     }

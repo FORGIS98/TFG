@@ -30,8 +30,8 @@ public class LoginFragment extends Fragment {
 
   // URL de la API
   // String URL = "http://hubble.ls.fi.upm.es:10012";
-  String URL = "http://192.168.1.8:10012";
-  String URL_DB = "http://192.168.1.8:10011";
+  String URL = "http://192.168.1.65:10012";
+  String URL_DB = "http://192.168.1.65:10011";
 
   EditText et_password;
   EditText et_email;
@@ -117,7 +117,6 @@ public class LoginFragment extends Fragment {
               try {
                 JSONObject obj = response.getJSONObject(0);
                 String name = obj.getString("Nombre");
-                System.out.println(name);
               } catch (JSONException e) {
                 e.printStackTrace();
               }
@@ -137,5 +136,4 @@ public class LoginFragment extends Fragment {
       System.out.println("CATCH CATCH CATCH");
     }
   }
-
 }
