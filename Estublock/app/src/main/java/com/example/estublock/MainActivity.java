@@ -14,8 +14,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-  public static final String EXTRA_MSG = "com.example.estublock.MESSAGE";
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -31,17 +29,6 @@ public class MainActivity extends AppCompatActivity {
     viewPager.setAdapter(pagerAdapter);
 
   }
-
-  // Called when the user taps the Send button
-  // DELETE
-  /* public void sendMessage(View view){
-    Intent intent = new Intent(this, DisplayMessageActivity.class);
-    EditText editText = (EditText) findViewById(R.id.editText);
-    String message = editText.getText().toString();
-    intent.putExtra(EXTRA_MSG, message);
-    startActivity(intent);
-    this.finish();
-  }*/
 }
 
 class AuthenticationPagerAdapter extends FragmentPagerAdapter {

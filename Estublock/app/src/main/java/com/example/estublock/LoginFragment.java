@@ -30,12 +30,13 @@ public class LoginFragment extends Fragment {
 
   // URL de la API
   // String URL = "http://hubble.ls.fi.upm.es:10012";
-  String URL = "http://192.168.1.65:10012";
-  String URL_DB = "http://192.168.1.65:10011";
+  String URL = "http://192.168.1.8:10012";
+  String URL_DB = "http://192.168.1.8:10011";
 
   EditText et_password;
   EditText et_email;
-  public static final String et_email_key = "com.example.estublock.et_email";
+  public static final String email_login = "com.example.estublock.et_email";
+  public static final String name_login = "com.example.estublock.et_name";
 
   private String walletPath;
   Activity myActivity;
@@ -69,7 +70,6 @@ public class LoginFragment extends Fragment {
   }
 
   private void loadMenu(){
-    // TODO: Pillar usuario de manera juanchisima con el email
     try{
       HashMap<String, String> dataMap = new HashMap<>();
       dataMap.put("correo", et_email.getText().toString());
@@ -92,7 +92,14 @@ public class LoginFragment extends Fragment {
           }
           // TODO: Arreglar blockchain?
           if(error.networkResponse.statusCode == 503){
-            getUserCredentials();
+            String name = getUserCredentials();
+            Intent intent = new Intent(getActivity(), MenuPageActivity.class);
+            intent.putExtra(name_login, name);
+            intent.putExtra(email_login, et_email.getText().toString());
+            // intent.putExtra(file_directory, walletDir);
+            startActivity(intent);
+
+            getActivity().finish();
           }
         }
       });
@@ -106,7 +113,8 @@ public class LoginFragment extends Fragment {
     }
   }
 
-  private void getUserCredentials(){
+  private String getUserCredentials(){
+    final String[] name = {""};
     try{
       JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET,
           (URL_DB + "/usuarios/" + et_email.getText().toString()), null,
@@ -116,7 +124,7 @@ public class LoginFragment extends Fragment {
               System.out.println("RESPONSE ------------------ ");
               try {
                 JSONObject obj = response.getJSONObject(0);
-                String name = obj.getString("Nombre");
+                name[0] = obj.getString("Nombre");
               } catch (JSONException e) {
                 e.printStackTrace();
               }
@@ -135,5 +143,7 @@ public class LoginFragment extends Fragment {
       e.printStackTrace();
       System.out.println("CATCH CATCH CATCH");
     }
+
+    return name[0];
   }
 }

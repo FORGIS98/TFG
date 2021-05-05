@@ -1,4 +1,38 @@
 \chapter{Introducción}
 \label{cap:Introduccion}
 
-Intro
+En esta sección se presenta el contexto del TFG, la motivación detras de este trabajo, los objetivos a cumplir y una breve explicación de la estructura del documento.
+
+\section{Contexto}
+
+El proyecto ``Estublock'' surge ante la necesidad de un sistema fiable, robusto y rápido, de registro de asistencias a exámenes. A partir de esta necesidad, se ha expandido la funcionalidad de la aplicación para cubrir otros tipos de eventos como prácticas, talleres, laboratorios\dots Anualmente son múltiples los casos de estudiantes que presentan una queja en la Delegación de Alumnos con respecto a exámenes perdidos. Es decir, el alumno asegura haber asistido a un exámen y haberlo entregado, pero a la hora de la corrección su nota es de cero y el corrector asegura no tener dicho exámen. A falta de un sistema de registro, el alumno no tiene pruebas de haber asistido al exámen, y se ve obligado a aceptar el suspenso.
+
+\section{Motivación}
+
+``Estublock'' viene a resolver este problema, pues aunque en algunas asignaturas se trata de llevar un control haciendo que los alumnos firmen una hoja al entregar los exámenes, estas firmas no siempre se realizan y la hoja puede extraviarse también. La aplicación ``Estublock'' permitirá registrar estas asistencias, escaneando un código QR y registrando la información en una red blockchain. Además, dará soporte para otros eventos como talleres, el congreso anual que se realiza en la escuela ``TryIT''\dots. Con el tiempo, la aplicación irá creciendo y mejorando, trayendo mejoras poco a poco y con la capacidad de expandirse a otros campus de la Universidad Politécnica de Madrid y posteriormente crecer a otras universidades públicas para que todas puedan aprovechar el potencial de ``Estublock''. \\
+
+Tanto por el bien del alumno, como del profesor, me motiva este proyecto pues ante todo me gusta que la vida sea justa, y me hace feliz saber que con esta aplicación evitaré los fraudes con los que se tiene que lidiar en el presente. Tanto alumnos irresponsables que no quieren aceptar la realidad, como docentes despistados a los que se les ha extraviado un exámen. Las reglas estan para romperlas, pero con esta aplicación, quiero tratar de evitar que se rompan. Además, hacer crecer este proyecto y ser capaces de validar mucho más que la asistencia a exámenes hace de este proyecto una oportunidad de mostrar todo lo que se y todo lo que he aprendido, y poder verlo en funcionamiento en un futuro me da muchas ganas de trabajar en ello. \\
+
+Además, tengo el gusto de trabajar en la Cátedra Inetum, en el Campus Blockchain, lo que me facilita la comunicación con profesionales en la materia del mundo del blockchain y la tecnología punta. Haciendo de esta, una gran oportunidad para aprender y hacer crecer mi circulo de relaciones. Así como la oportunidad de mejorar mi trabajo en equipo y aprender como es la vida en una empresa y con que problemas hay que lidiar a la hora de hacer crecer un proyecto.
+
+\section{Objetivos}
+
+En base a las necesidades que debe solventar la aplicación, se centran todos los objetivos principales que han sido desarrollados en este Trabajo de Fin de Grado. No se mencionan las partes ya desarrolladas previas al trabajo realizado:
+\begin{itemize}
+\item Desarrollo de una API que sirva de microservicio para comunicarse con la Base de Datos y la Red Blockchain
+\item Desarrollo de una Aplicación Android capaz de comunicar con la API anteriormente mencionada así como con la Red Blockchain directamente.
+\item Desarrollo de un SDK Android que permita sacar la funcionalidad de ``comunicación con la Red Blockchain'' y permitir su uso en otras aplicaciones.
+\item Desarrollo de un Documentación para el uso del SDK, así como pruebas unitarias.
+\end{itemize}
+Siendo de los puntos anteriormente mencionados, la Aplicación Android, el corazón del trabajo realizado.
+
+\section{Estructura}
+Para lograr cumplir con los objetivos propuestos, se ha divido la estructura del trabajo en las siguientes secciones. \\
+
+El capítulo \emph{Estado del Arte} contiene una introducción a la tecnología Blockchain, haciendo especial incapié en la red de \emph{Ethereum}\cite{webEthereum}. La razón de esta decisión es que la red que se ha utilizado para este proyecto es una red de Quorum\cite{webQuorum} la cual permite aprovechar el potencial de \emph{Ethereum} en aplicaciones blockchain. Admeás, se introducen al final del capítulo ejemplos de otras aplicaciones móviles existentes en el presente con funcionalidades diferentes pero que utilizan la red de \emph{Ethereum} para sus transacciones. \\
+
+El siguiente capítulo \emph{Desarrollo}, explica en una primera instancia detalles sobre las aplicaciones android, para pasar al diseño de la aplicación móvil tanto a nivel de interfaz de usuario como a nivel interno. Además, se hace incapié en la comunicación con la red blockchain así como las librerias utilizadas en el proceso. Terminada la parte android, se pasa al desarrollo del SDK, siendo un apartado más corto pues muchos elementos quedan detallados en la parte Android. Terminando con la documentación del SDK. \\
+
+Para cumplir con los objetivos de desarrollo sostenible, se ha añadido un capítulo \emph{Impacto Medioambiental} en el que se expone el impacto tanto positivo como negativo del uso de la aplicación desarrollada. \\
+
+Por último, y no por ello menos importante, la \emph{Conclusión}, la cual recoge los resultados del trabajo, mis conclusiones personales, y más importante, cuales son los pasos a seguir para hacer crecer al proyecto ``Estublock''.

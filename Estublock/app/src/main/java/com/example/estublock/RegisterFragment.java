@@ -44,11 +44,11 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 public class RegisterFragment extends Fragment {
 
   EditText et_name;
-  public static final String et_name_key = "com.example.estublock.et_name";
+  public static final String name_register = "com.example.estublock.et_name";
   EditText et_email;
-  public static final String et_email_key = "com.example.estublock.et_email";
+  public static final String email_register = "com.example.estublock.et_email";
 
-  public static final String file_directory = "com.example.estublock.file_directory";
+  public static final String file_register = "com.example.estublock.file_directory";
 
   EditText et_password;
   EditText et_repassword;
@@ -61,8 +61,8 @@ public class RegisterFragment extends Fragment {
 
   // URL de la API
   // String URL = "http://hubble.ls.fi.upm.es:10012";
-  String URL = "http://192.168.1.65:10012";
-  String URL_Block = "http://192.168.1.65:8545";
+  String URL = "http://192.168.1.73:10012";
+  String URL_Block = "http://192.168.1.73:8545";
 
   Web3j web3j;
   protected Quorum quorum;
@@ -131,9 +131,9 @@ public class RegisterFragment extends Fragment {
               @Override
               public void onResponse(JSONObject response) {
                 Intent intent = new Intent(getActivity(), MenuPageActivity.class);
-                intent.putExtra(et_name_key, et_name.getText().toString());
-                intent.putExtra(et_email_key, et_email.getText().toString());
-                intent.putExtra(file_directory, walletDir);
+                intent.putExtra(name_register, et_name.getText().toString());
+                intent.putExtra(email_register, et_email.getText().toString());
+                intent.putExtra(file_register, walletDir);
                 startActivity(intent);
 
                 getActivity().finish();

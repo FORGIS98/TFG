@@ -20,4 +20,5 @@
     <string name="error_user_not_found">Credenciales erróneas.</string>
     <!-- MENU -->
     <string name="mis_asignaturas">Asignaturas</string>
+    <string name="saveProceed">Guardando</string>
 </resources>

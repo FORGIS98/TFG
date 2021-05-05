@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".DynamicCheckboxes"
+    tools:ignore="ExtraText">
+
+    <LinearLayout android:id="@+id/childlyt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button android:id="@+id/saveProceed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/saveProceed"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/btn_custom"/>
+
+
+    </LinearLayout>
+    <ScrollView android:id="@+id/scrlvw"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/childlyt"
+        android:fillViewport="true"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="9dp"
+        >
+        <LinearLayout android:id="@+id/chkboxlyt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View android:id="@+id/customline"
+                android:layout_width="fill_parent"
+                android:layout_height="5dp"
+                android:background="@color/teal_200"/>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
