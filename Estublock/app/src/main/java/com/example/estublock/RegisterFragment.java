@@ -117,7 +117,7 @@ public class RegisterFragment extends Fragment {
         dataMap.put("correo", et_email.getText().toString());
         dataMap.put("id_huella", "00000000");
         dataMap.put("matricula", "00000000");
-        dataMap.put("password", et_password.getText().toString());
+        dataMap.put("password", hashPassword(et_password.getText().toString()));
         dataMap.put("apellido1", "Movil");
         dataMap.put("apellido2", "Movil");
         dataMap.put("nombre", et_name.getText().toString());
@@ -237,5 +237,9 @@ public class RegisterFragment extends Fragment {
       toastAsync(e.getMessage());
       return "";
     }
+  }
+
+  protected String hashPassword(String password){
+    return BCrypt.hashpw(password, BCrypt.gensalt(logRounds));
   }
 }
