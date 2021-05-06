@@ -60,9 +60,7 @@ public class RegisterFragment extends Fragment {
   RequestQueue requestQueue;
 
   // URL de la API
-  // String URL = "http://hubble.ls.fi.upm.es:10012";
-  String URL = "http://192.168.1.73:10012";
-  String URL_Block = "http://192.168.1.73:8545";
+  String URL = "http://hubble.ls.fi.upm.es:10012";
 
   Web3j web3j;
   protected Quorum quorum;
@@ -198,8 +196,7 @@ public class RegisterFragment extends Fragment {
 
   @SuppressLint("CheckResult")
   private String createWallet(String password){
-    // web3j = Web3j.build(new HttpService("http://138.100.12.160:22000"));
-    web3j = Web3j.build(new HttpService(URL_Block));
+    web3j = Web3j.build(new HttpService("http://138.100.12.160:22000"));
     // quorum = Quorum.build(new HttpService("http://deneb.ls.fi.upm.es:22000"));
 
     // Creamos el wallet al usuario
@@ -240,6 +237,6 @@ public class RegisterFragment extends Fragment {
   }
 
   protected String hashPassword(String password){
-    return BCrypt.hashpw(password, BCrypt.gensalt(logRounds));
+    return BCrypt.withDefaults().hashToString(10, password.toCharArray());
   }
 }

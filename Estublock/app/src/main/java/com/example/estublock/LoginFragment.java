@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,9 +30,8 @@ import java.util.HashMap;
 public class LoginFragment extends Fragment {
 
   // URL de la API
-  // String URL = "http://hubble.ls.fi.upm.es:10012";
-  String URL = "http://192.168.1.8:10012";
-  String URL_DB = "http://192.168.1.8:10011";
+  String URL = "http://hubble.ls.fi.upm.es:10012";
+  String URL_DB = "http://hubble.ls.fi.upm.es:10011";
 
   EditText et_password;
   EditText et_email;
@@ -86,12 +86,15 @@ public class LoginFragment extends Fragment {
           }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-          if(error.networkResponse.statusCode == 404){
+          if(error.networkResponse == null){
+            Log.d("ERROR: ", String.valueOf(error));
+          }
+          else if(error.networkResponse.statusCode == 404){
             et_email.setError(getString(R.string.error_user_not_found));
             et_password.setError(getString(R.string.error_user_not_found));
           }
           // TODO: Arreglar blockchain?
-          if(error.networkResponse.statusCode == 503){
+          else if(error.networkResponse.statusCode == 503){
             String name = getUserCredentials();
             Intent intent = new Intent(getActivity(), MenuPageActivity.class);
             intent.putExtra(name_login, name);

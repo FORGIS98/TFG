@@ -2,6 +2,8 @@ package com.example.estublock;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -26,9 +28,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Suscripciones extends AppCompatActivity {
 
-  String URL_micro = "http://192.168.1.8:10012";
+  String URL_mic = "http://hubble.ls.fi.upm.es:10012";
+  String URL_bdd = "http://hubble.ls.fi.upm.es:10011";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +47,17 @@ public class Suscripciones extends AppCompatActivity {
   protected void getTemasFromDatabase(){
     try{
       JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET,
-          (URL_micro + "/temas"), null,
+          (URL_bdd + "/temas"), null,
           new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
               System.out.println("RESPONSE ------------------ ");
               try {
-                JSONObject obj = response.getJSONObject(0);
-                createListCheckBox();
+                HashMap<Integer, String> temas = new HashMap<>();
+                for(int i = 0; i < response.length(); i++){
+                  temas.put((int) response.getJSONObject(i).get("TemaId"), (String) response.getJSONObject(i).get("Nombre"));
+                }
+                createListCheckBox(temas, response.length());
               } catch (JSONException e) {
                 e.printStackTrace();
               }
@@ -56,8 +65,6 @@ public class Suscripciones extends AppCompatActivity {
           }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-          // TODO: Eliminar esto cuando funque la API
-          createListCheckBox();
           System.out.println(error);
         }
       });
@@ -71,28 +78,28 @@ public class Suscripciones extends AppCompatActivity {
     }
   }
 
-  protected void createListCheckBox(){
-    System.out.println("HOLA ESTOY EN EL PUTO CREATE LIST CHECKBOX");
+  protected void createListCheckBox(HashMap<Integer, String> temasHashMap, int amount){
+    System.out.println("Generando CHECKBOXES");
 
-    CheckBox [] temas = new CheckBox[5];
     LinearLayout checkboxLayout = findViewById(R.id.chkboxlyt);
-    CheckBox checkBox = new CheckBox(this);
+    CheckBox [] dynamicCheckbox = new CheckBox[amount];
 
-    checkBox.setText("Scalable Systems");
-    checkBox.setTextSize(10);
-    checkBox.setTextColor(Color.rgb(150, 190, 200));
-    checkBox.setTypeface(Typeface.MONOSPACE);
-    checkBox.setButtonDrawable(R.drawable.checkboxselector);
-    temas[0] = checkBox;
-    checkBox.setText("Programming Project");
-    checkBox.setTextSize(10);
-    checkBox.setTextColor(Color.rgb(150, 190, 200));
-    checkBox.setTypeface(Typeface.MONOSPACE);
-    checkBox.setButtonDrawable(R.drawable.checkboxselector);
-    temas[1] = checkBox;
+    int i = 0;
+    for (Map.Entry<Integer, String> entry : temasHashMap.entrySet()) {
+      Integer key = entry.getKey();
+      String value = entry.getValue();
+      CheckBox checkBox = new CheckBox(this);
+      checkBox.setText(value);
+      checkBox.setTextSize(10);
+      checkBox.setTextColor(Color.rgb(150, 190, 200));
+      checkBox.setTypeface(Typeface.MONOSPACE);
+      checkBox.setButtonDrawable(R.drawable.checkboxselector);
+      dynamicCheckbox[i] = checkBox;
+      checkboxLayout.addView(checkBox);
+      checkBox.setOnCheckedChangeListener(this::onCheckedChanged);
 
-    checkboxLayout.addView(checkBox);
-    checkBox.setOnCheckedChangeListener(this::onCheckedChanged);
+      i += 1;
+    }
   }
 
   public void onCheckedChanged(CompoundButton cb, boolean isChecked){
