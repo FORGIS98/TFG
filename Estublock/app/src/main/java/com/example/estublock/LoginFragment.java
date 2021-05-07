@@ -104,6 +104,9 @@ public class LoginFragment extends Fragment {
 
             getActivity().finish();
           }
+          else{
+            Log.d("ERROR: ", String.valueOf(error));
+          }
         }
       });
 

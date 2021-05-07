@@ -1,20 +1,16 @@
 package com.example.estublock;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -22,25 +18,52 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Suscripciones extends AppCompatActivity {
+public class Suscripciones extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
   String URL_mic = "http://hubble.ls.fi.upm.es:10012";
   String URL_bdd = "http://hubble.ls.fi.upm.es:10011";
+  int flag = 0;
+  ArrayList <String> temasElegidos = new ArrayList<String>();
+  ArrayList <String> recuperarTemasElegidos;
+  Button saveTemas;
+  public static final String temas_elegidos = "com.example.estublock.temas_elegidos";
+  GlobalState gs;
+  // La variable temas para todos los temas que devuelve la BDD
+  HashMap<String, Integer> temas = new HashMap<>();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_suscripciones);
 
+    gs = (GlobalState) getApplication();
+
+    if(savedInstanceState != null){
+      recuperarTemasElegidos = savedInstanceState.getStringArrayList(temas_elegidos);
+      flag = savedInstanceState.getInt("savedFlag");
+    }
+
+    saveTemas = (Button) findViewById(R.id.saveProceed);
+    saveTemas.setOnClickListener(new View.OnClickListener(){
+
+      @Override
+      public void onClick(View v){
+        saveTopicsToDatabase();
+        Intent intent = new Intent(Suscripciones.this, MenuPageActivity.class);
+        startActivity(intent);
+      }
+    });
     getTemasFromDatabase();
   }
 
@@ -51,11 +74,9 @@ public class Suscripciones extends AppCompatActivity {
           new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-              System.out.println("RESPONSE ------------------ ");
               try {
-                HashMap<Integer, String> temas = new HashMap<>();
                 for(int i = 0; i < response.length(); i++){
-                  temas.put((int) response.getJSONObject(i).get("TemaId"), (String) response.getJSONObject(i).get("Nombre"));
+                  temas.put((String) response.getJSONObject(i).get("Nombre"), (int) response.getJSONObject(i).get("TemaId"));
                 }
                 createListCheckBox(temas, response.length());
               } catch (JSONException e) {
@@ -72,43 +93,92 @@ public class Suscripciones extends AppCompatActivity {
       RequestQueue requestQueue = Volley.newRequestQueue(this);
       requestQueue.add(jsonObjectRequest);
     } catch(Exception e){
-      System.out.println("CATCH CATCH CATCH");
       e.printStackTrace();
-      System.out.println("CATCH CATCH CATCH");
     }
   }
 
-  protected void createListCheckBox(HashMap<Integer, String> temasHashMap, int amount){
-    System.out.println("Generando CHECKBOXES");
-
+  protected void createListCheckBox(HashMap<String, Integer> temasHashMap, int amount){
     LinearLayout checkboxLayout = findViewById(R.id.chkboxlyt);
     CheckBox [] dynamicCheckbox = new CheckBox[amount];
 
     int i = 0;
-    for (Map.Entry<Integer, String> entry : temasHashMap.entrySet()) {
-      Integer key = entry.getKey();
-      String value = entry.getValue();
+    for (Map.Entry<String, Integer> entry : temasHashMap.entrySet()) {
+      String key = entry.getKey();
       CheckBox checkBox = new CheckBox(this);
-      checkBox.setText(value);
-      checkBox.setTextSize(10);
+      checkBox.setText(key);
+      checkBox.setTextSize(27);
       checkBox.setTextColor(Color.rgb(150, 190, 200));
       checkBox.setTypeface(Typeface.MONOSPACE);
       checkBox.setButtonDrawable(R.drawable.checkboxselector);
+
       dynamicCheckbox[i] = checkBox;
       checkboxLayout.addView(checkBox);
-      checkBox.setOnCheckedChangeListener(this::onCheckedChanged);
+      checkBox.setOnCheckedChangeListener(this);
 
       i += 1;
     }
+
+    if(flag != 0){
+      for(CheckBox checkBox: dynamicCheckbox){
+        for(i = 0; i < recuperarTemasElegidos.size(); i++){
+          if((checkBox.getText() + "").equals(recuperarTemasElegidos.get(i))){
+            checkBox.toggle();
+          }
+        }
+      }
+    }
   }
 
-  public void onCheckedChanged(CompoundButton cb, boolean isChecked){
-    String checkedText = cb.getText()+"";
+  public void onCheckedChanged(CompoundButton checkbox, boolean isChecked){
+    String checkedText = checkbox.getText() + "";
 
     if(isChecked){
-      Toast.makeText(this, cb.getText()+" is checked!!!", Toast.LENGTH_SHORT).show();
+      temasElegidos.add(checkedText);
+      Toast.makeText(this, checkbox.getText()+" is checked!!!", Toast.LENGTH_SHORT).show();
     } else {
-      Toast.makeText(this, cb.getText()+" is not checked!!!", Toast.LENGTH_SHORT).show();
+      temasElegidos.remove(checkedText);
+      Toast.makeText(this, checkbox.getText()+" is not checked!!!", Toast.LENGTH_SHORT).show();
     }
+  }
+
+  public void onSaveInstanceState(Bundle savedState){
+    super.onSaveInstanceState(savedState);
+    flag = 1;
+    savedState.putStringArrayList(temas_elegidos, temasElegidos);
+    savedState.putInt("savedFlag", flag);
+  }
+
+  protected void saveTopicsToDatabase(){
+    HashMap<String, Object> dataMap = new HashMap<>();
+    dataMap.put("correo", gs.getUserEmail());
+    dataMap.put("correo", "anakin@upm.es");
+
+    for (String tema : temasElegidos) {
+      try{
+        dataMap.put("topic", temas.get(tema));
+        System.out.println("Enviando suscirpciones :D");
+        System.out.println(dataMap.get("correo"));
+        System.out.println(dataMap.get("topic"));
+        JSONObject params = new JSONObject(dataMap);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+            (URL_mic + "/subscription"), params,
+            new Response.Listener<JSONObject>() {
+              @Override
+              public void onResponse(JSONObject response) {
+              }
+            }, new Response.ErrorListener() {
+          @Override
+          public void onErrorResponse(VolleyError error) {
+            Log.d("ERROR: ", String.valueOf(error));
+          }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonObjectRequest);
+      } catch(Exception e){
+        e.printStackTrace();
+      }
+    } // END - forEach()
   }
 }
