@@ -14,12 +14,16 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+  GlobalState gs;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
     ViewPager viewPager = findViewById(R.id.viewPager);
+
+    gs = new GlobalState();
 
     AuthenticationPagerAdapter pagerAdapter = new
       AuthenticationPagerAdapter(getSupportFragmentManager());

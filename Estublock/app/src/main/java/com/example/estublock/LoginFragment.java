@@ -40,6 +40,7 @@ public class LoginFragment extends Fragment {
 
   private String walletPath;
   Activity myActivity;
+  GlobalState gs;
 
   public LoginFragment() {
   }
@@ -53,6 +54,9 @@ public class LoginFragment extends Fragment {
     View view = inflater.inflate(R.layout.fragment_login, container, false);
 
     walletPath = getActivity().getApplicationInfo().dataDir;
+
+
+    gs = (GlobalState) this.getActivity().getApplication();
 
     et_email = view.findViewById(R.id.et_email);
     et_password = view.findViewById(R.id.et_password);
@@ -81,7 +85,13 @@ public class LoginFragment extends Fragment {
           new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-              getUserCredentials();
+              String name = getUserCredentials();
+              Intent intent = new Intent(getActivity(), MenuPageActivity.class);
+              gs.setUserEmail(et_email.getText().toString());
+              gs.setUserName(name);
+              startActivity(intent);
+
+              getActivity().finish();
             }
           }, new Response.ErrorListener() {
         @Override
@@ -97,9 +107,8 @@ public class LoginFragment extends Fragment {
           else if(error.networkResponse.statusCode == 503){
             String name = getUserCredentials();
             Intent intent = new Intent(getActivity(), MenuPageActivity.class);
-            intent.putExtra(name_login, name);
-            intent.putExtra(email_login, et_email.getText().toString());
-            // intent.putExtra(file_directory, walletDir);
+            gs.setUserEmail(et_email.getText().toString());
+            gs.setUserName(name);
             startActivity(intent);
 
             getActivity().finish();
@@ -113,9 +122,7 @@ public class LoginFragment extends Fragment {
       RequestQueue requestQueue = Volley.newRequestQueue(this.getContext());
       requestQueue.add(jsonObjectRequest);
     } catch(Exception e){
-      System.out.println("CATCH CATCH CATCH");
       e.printStackTrace();
-      System.out.println("CATCH CATCH CATCH");
     }
   }
 
@@ -127,7 +134,6 @@ public class LoginFragment extends Fragment {
           new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-              System.out.println("RESPONSE ------------------ ");
               try {
                 JSONObject obj = response.getJSONObject(0);
                 name[0] = obj.getString("Nombre");
@@ -145,9 +151,7 @@ public class LoginFragment extends Fragment {
       RequestQueue requestQueue = Volley.newRequestQueue(this.getContext());
       requestQueue.add(jsonObjectRequest);
     } catch(Exception e){
-      System.out.println("CATCH CATCH CATCH");
       e.printStackTrace();
-      System.out.println("CATCH CATCH CATCH");
     }
 
     return name[0];

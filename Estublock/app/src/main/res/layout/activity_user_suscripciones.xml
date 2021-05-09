@@ -7,20 +7,30 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".activity_suscripciones"
+    tools:context=".activity_user_suscripciones"
     tools:ignore="ExtraText">
 
     <LinearLayout android:id="@+id/childlyt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <Button android:id="@+id/saveProceed"
+        <Button android:id="@+id/addTopics"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/saveProceed"
+            android:text="@string/add"
             android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
             android:background="@drawable/btn_custom"/>
+
+        <Button
+            android:id="@+id/delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/btn_custom"
+            android:layout_weight="1"
+            android:text="@string/delete" />
 
 
     </LinearLayout>

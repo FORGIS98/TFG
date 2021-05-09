@@ -3,8 +3,8 @@ package com.example.estublock;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,56 +29,63 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Suscripciones extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
+public class UserSuscripciones extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
-  String URL_mic = "http://hubble.ls.fi.upm.es:10012";
-  String URL_bdd = "http://hubble.ls.fi.upm.es:10011";
-  int flag = 0;
-  ArrayList <String> temasElegidos = new ArrayList<String>();
-  ArrayList <String> recuperarTemasElegidos;
-  Button saveTemas;
-  public static final String temas_elegidos = "com.example.estublock.temas_elegidos";
+  // ----- Variables Globales ----- //
+  ArrayList<String> topicsToBeDeleted = new ArrayList<String>();
+  HashMap<String, Integer> userTopics = new HashMap<String, Integer>();
+
+  Button addTopics;
+  Button deleteTopics;
   GlobalState gs;
-  // La variable temas para todos los temas que devuelve la BDD
-  HashMap<String, Integer> temas = new HashMap<>();
 
+
+  // ----- onCreate() ----- //
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_suscripciones);
+    setContentView(R.layout.activity_user_suscripciones);
 
     gs = (GlobalState) getApplication();
 
-    if(savedInstanceState != null){
-      recuperarTemasElegidos = savedInstanceState.getStringArrayList(temas_elegidos);
-      flag = savedInstanceState.getInt("savedFlag");
-    }
+    addTopics = (Button) findViewById(R.id.addTopics);
+    deleteTopics = (Button) findViewById(R.id.delete);
 
-    saveTemas = (Button) findViewById(R.id.saveProceed);
-    saveTemas.setOnClickListener(new View.OnClickListener(){
-
+    // Mandar al usuario a Suscripciones para añadir nuevas suscripciones.
+    addTopics.setOnClickListener(new View.OnClickListener(){
       @Override
       public void onClick(View v){
-        saveTopicsToDatabase();
-        Intent intent = new Intent(Suscripciones.this, MenuPageActivity.class);
+        Intent intent = new Intent(UserSuscripciones.this, Suscripciones.class);
         startActivity(intent);
       }
     });
-    getTemasFromDatabase();
+
+    // Eliminar suscripciones de la BDD y luego devolverlo al Menu
+    deleteTopics.setOnClickListener(new View.OnClickListener(){
+      @Override
+      public void onClick(View v){
+        updateTopicsDatabase();
+        Intent intent = new Intent(UserSuscripciones.this, MenuPageActivity.class);
+        startActivity(intent);
+      }
+    });
+
+    getSuscripcionesUsuario();
   }
 
-  protected void getTemasFromDatabase(){
+  // ----- Pillar las suscripciones de un usuario ----- //
+  public void getSuscripcionesUsuario(){
     try{
       JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET,
-          (URL_bdd + "/temas"), null,
+          (gs.getDataBase_URL() + "/temas"), null,
           new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
               try {
                 for(int i = 0; i < response.length(); i++){
-                  temas.put((String) response.getJSONObject(i).get("Nombre"), (int) response.getJSONObject(i).get("TemaId"));
+                  userTopics.put((String) response.getJSONObject(i).get("Nombre"), (int) response.getJSONObject(i).get("TemaId"));
                 }
-                createListCheckBox(temas, response.length());
+                createListCheckBox(userTopics, response.length());
               } catch (JSONException e) {
                 e.printStackTrace();
               }
@@ -92,6 +99,7 @@ public class Suscripciones extends AppCompatActivity implements CompoundButton.O
 
       RequestQueue requestQueue = Volley.newRequestQueue(this);
       requestQueue.add(jsonObjectRequest);
+
     } catch(Exception e){
       e.printStackTrace();
     }
@@ -99,7 +107,7 @@ public class Suscripciones extends AppCompatActivity implements CompoundButton.O
 
   protected void createListCheckBox(HashMap<String, Integer> temasHashMap, int amount){
     LinearLayout checkboxLayout = findViewById(R.id.chkboxlyt);
-    CheckBox [] dynamicCheckbox = new CheckBox[amount];
+    CheckBox[] dynamicCheckbox = new CheckBox[amount];
 
     int i = 0;
     for (Map.Entry<String, Integer> entry : temasHashMap.entrySet()) {
@@ -117,48 +125,37 @@ public class Suscripciones extends AppCompatActivity implements CompoundButton.O
 
       i += 1;
     }
-
-    if(flag != 0){
-      for(CheckBox checkBox: dynamicCheckbox){
-        for(i = 0; i < recuperarTemasElegidos.size(); i++){
-          if((checkBox.getText() + "").equals(recuperarTemasElegidos.get(i))){
-            checkBox.toggle();
-          }
-        }
-      }
-    }
   }
 
   public void onCheckedChanged(CompoundButton checkbox, boolean isChecked){
     String checkedText = checkbox.getText() + "";
 
     if(isChecked){
-      temasElegidos.add(checkedText);
+      topicsToBeDeleted.add(checkedText);
       Toast.makeText(this, checkbox.getText()+" is checked!!!", Toast.LENGTH_SHORT).show();
     } else {
-      temasElegidos.remove(checkedText);
+      topicsToBeDeleted.remove(checkedText);
       Toast.makeText(this, checkbox.getText()+" is not checked!!!", Toast.LENGTH_SHORT).show();
     }
   }
 
-  public void onSaveInstanceState(Bundle savedState){
-    super.onSaveInstanceState(savedState);
-    flag = 1;
-    savedState.putStringArrayList(temas_elegidos, temasElegidos);
-    savedState.putInt("savedFlag", flag);
-  }
-
-  protected void saveTopicsToDatabase(){
+  // Aquí se llega cundo el usuario le da a Eliminar
+  // En la variable topicsToBeDeleted estan los topics que quiere eliminar
+  public void updateTopicsDatabase(){
     HashMap<String, Object> dataMap = new HashMap<>();
     dataMap.put("correo", gs.getUserEmail());
 
-    for (String tema : temasElegidos) {
+    for (String tema : topicsToBeDeleted) {
+      System.out.println("UPDATE TOPICS DATABASE: ");
       try{
-        dataMap.put("topic", temas.get(tema));
+        dataMap.put("topic", userTopics.get(tema));
         JSONObject params = new JSONObject(dataMap);
+        System.out.println("UPDATE TOPICS DATABASE: ");
+        System.out.println(params);
+        System.out.println(gs.getMicro_URL() + "/subscription");
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-            (URL_mic + "/subscription"), params,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.DELETE,
+            (gs.getMicro_URL() + "/subscription"), params,
             new Response.Listener<JSONObject>() {
               @Override
               public void onResponse(JSONObject response) {

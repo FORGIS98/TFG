@@ -7,30 +7,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import static com.example.estublock.LoginFragment.name_login;
-import static com.example.estublock.RegisterFragment.name_register;
-
 public class MenuPageActivity extends AppCompatActivity {
+
+  GlobalState gs;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_menu_page);
 
-    Intent intent = getIntent();
-    String name = "";
-    if(intent.hasExtra(name_login)){
-      name = intent.getStringExtra(name_login);
-    }else{
-      name = intent.getStringExtra(name_register);
-    }
-
+    gs = (GlobalState) getApplication();
+    String name = gs.getUserName();
     TextView userName = findViewById(R.id.nombre_logueado);
     userName.setText(name);
-
 
     Button btn = findViewById(R.id.mis_asignaturas);
     btn.setOnClickListener(new View.OnClickListener(){
@@ -42,7 +31,7 @@ public class MenuPageActivity extends AppCompatActivity {
   }
 
   protected void loadSuscripciones(){
-    Intent subIntent = new Intent(this, Suscripciones.class);
+    Intent subIntent = new Intent(this, UserSuscripciones.class);
     startActivity(subIntent);
     this.finish();
   }

@@ -21,4 +21,6 @@
     <!-- MENU -->
     <string name="mis_asignaturas">Asignaturas</string>
     <string name="saveProceed">Guardando</string>
+    <string name="add">Añadir</string>
+    <string name="delete">Eliminar</string>
 </resources>
