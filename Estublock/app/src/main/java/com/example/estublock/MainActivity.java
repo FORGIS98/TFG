@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     gs = new GlobalState();
 
     AuthenticationPagerAdapter pagerAdapter = new
-      AuthenticationPagerAdapter(getSupportFragmentManager());
+        AuthenticationPagerAdapter(getSupportFragmentManager());
     pagerAdapter.addFragment(new LoginFragment());
     pagerAdapter.addFragment(new RegisterFragment());
 

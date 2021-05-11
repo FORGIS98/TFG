@@ -25,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.HashMap;
 
 public class LoginFragment extends Fragment {
@@ -54,6 +55,7 @@ public class LoginFragment extends Fragment {
     View view = inflater.inflate(R.layout.fragment_login, container, false);
 
     walletPath = getActivity().getApplicationInfo().dataDir;
+    walletPath += "/files";
 
 
     gs = (GlobalState) this.getActivity().getApplication();
@@ -89,6 +91,8 @@ public class LoginFragment extends Fragment {
               Intent intent = new Intent(getActivity(), MenuPageActivity.class);
               gs.setUserEmail(et_email.getText().toString());
               gs.setUserName(name);
+              gs.setUserPassword(et_password.getText().toString());
+              gs.setPathToWallet(getTheWalletFile());
               startActivity(intent);
 
               getActivity().finish();
@@ -109,6 +113,8 @@ public class LoginFragment extends Fragment {
             Intent intent = new Intent(getActivity(), MenuPageActivity.class);
             gs.setUserEmail(et_email.getText().toString());
             gs.setUserName(name);
+            gs.setUserPassword(et_password.getText().toString());
+            gs.setPathToWallet(getTheWalletFile());
             startActivity(intent);
 
             getActivity().finish();
@@ -155,5 +161,12 @@ public class LoginFragment extends Fragment {
     }
 
     return name[0];
+  }
+
+  // TODO: Pillar el archivo donde esta la keystore :D
+  protected File getTheWalletFile(){
+    System.out.println("El path donde esta el wallet es: " + walletPath);
+    File[] listfiles = new File(walletPath).listFiles();
+    return listfiles[0];
   }
 }

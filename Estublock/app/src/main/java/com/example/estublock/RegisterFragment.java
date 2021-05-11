@@ -62,9 +62,11 @@ public class RegisterFragment extends Fragment {
   // URL de la API
   String URL = "http://hubble.ls.fi.upm.es:10012";
 
+  GlobalState gs;
+
   Web3j web3j;
   protected Quorum quorum;
-  protected File walletPath;
+  protected String walletPath;
   protected File walletDir;
 
   public RegisterFragment() {
@@ -75,6 +77,7 @@ public class RegisterFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
 
+
     View view = inflater.inflate(R.layout.fragment_register, container, false);
 
     et_name = view.findViewById(R.id.et_name);
@@ -82,9 +85,12 @@ public class RegisterFragment extends Fragment {
     et_password = view.findViewById(R.id.et_password);
     et_repassword = view.findViewById(R.id.et_repassword);
 
+    gs = (GlobalState) this.getActivity().getApplication();
+
     // SDK
     workaroundECDA();
-    walletPath = getContext().getFilesDir();
+    walletPath = getContext().getFilesDir().getAbsolutePath();
+    walletDir = new File(walletPath);
 
     // Creating Volley newRequestQueue .
     requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
@@ -128,6 +134,12 @@ public class RegisterFragment extends Fragment {
             new Response.Listener<JSONObject>() {
               @Override
               public void onResponse(JSONObject response) {
+
+                gs.setUserEmail(et_email.getText().toString());
+                gs.setUserName(et_name.getText().toString());
+                gs.setUserPassword(et_password.getText().toString());
+                gs.setPathToWallet(walletDir);
+
                 Intent intent = new Intent(getActivity(), MenuPageActivity.class);
                 intent.putExtra(name_register, et_name.getText().toString());
                 intent.putExtra(email_register, et_email.getText().toString());
@@ -196,13 +208,13 @@ public class RegisterFragment extends Fragment {
 
   @SuppressLint("CheckResult")
   private String createWallet(String password){
-    web3j = Web3j.build(new HttpService("http://138.100.12.160:22000"));
-    // quorum = Quorum.build(new HttpService("http://deneb.ls.fi.upm.es:22000"));
+    web3j = Web3j.build(new HttpService(gs.getQuorum_RPC()));
 
     // Creamos el wallet al usuario
     try{
-      String fileName = WalletUtils.generateLightNewWalletFile(password, new File(walletPath.toString()));
-      walletDir = new File(walletPath + "/keystore/" + fileName);
+      System.out.println("This is walletDir my friends: " + walletDir);
+      String fileName = WalletUtils.generateLightNewWalletFile(password, walletDir);
+      walletDir = new File(walletPath + "/" + fileName);
     } catch (Exception e){
       e.printStackTrace();
     }
@@ -231,7 +243,7 @@ public class RegisterFragment extends Fragment {
       return credentials.getAddress();
     }
     catch (Exception e){
-      toastAsync(e.getMessage());
+      e.printStackTrace();
       return "";
     }
   }

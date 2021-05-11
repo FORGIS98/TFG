@@ -31,8 +31,6 @@ import java.util.Map;
 
 public class Suscripciones extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
-  String URL_mic = "http://hubble.ls.fi.upm.es:10012";
-  String URL_bdd = "http://hubble.ls.fi.upm.es:10011";
   int flag = 0;
   ArrayList <String> temasElegidos = new ArrayList<String>();
   ArrayList <String> recuperarTemasElegidos;
@@ -70,7 +68,7 @@ public class Suscripciones extends AppCompatActivity implements CompoundButton.O
   protected void getTemasFromDatabase(){
     try{
       JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET,
-          (URL_bdd + "/temas"), null,
+          (gs.getDataBase_URL() + "/temas"), null,
           new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -152,13 +150,17 @@ public class Suscripciones extends AppCompatActivity implements CompoundButton.O
     HashMap<String, Object> dataMap = new HashMap<>();
     dataMap.put("correo", gs.getUserEmail());
 
+    RequestQueue requestQueue = Volley.newRequestQueue(this);
     for (String tema : temasElegidos) {
       try{
         dataMap.put("topic", temas.get(tema));
         JSONObject params = new JSONObject(dataMap);
 
+        System.out.println(" ----- Suscripciones.saveTopicsToDatabase ----- ");
+        System.out.println(params);
+
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-            (URL_mic + "/subscription"), params,
+            (gs.getMicro_URL() + "/subscription"), params,
             new Response.Listener<JSONObject>() {
               @Override
               public void onResponse(JSONObject response) {
@@ -170,7 +172,6 @@ public class Suscripciones extends AppCompatActivity implements CompoundButton.O
           }
         });
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonObjectRequest);
       } catch(Exception e){
         e.printStackTrace();

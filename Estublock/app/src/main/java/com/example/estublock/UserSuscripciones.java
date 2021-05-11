@@ -77,7 +77,7 @@ public class UserSuscripciones extends AppCompatActivity implements CompoundButt
   public void getSuscripcionesUsuario(){
     try{
       JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET,
-          (gs.getDataBase_URL() + "/temas"), null,
+          (gs.getMicro_URL() + "/user/" + gs.getUserEmail() + "/subscription"), null,
           new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -107,7 +107,6 @@ public class UserSuscripciones extends AppCompatActivity implements CompoundButt
 
   protected void createListCheckBox(HashMap<String, Integer> temasHashMap, int amount){
     LinearLayout checkboxLayout = findViewById(R.id.chkboxlyt);
-    CheckBox[] dynamicCheckbox = new CheckBox[amount];
 
     int i = 0;
     for (Map.Entry<String, Integer> entry : temasHashMap.entrySet()) {
@@ -119,7 +118,6 @@ public class UserSuscripciones extends AppCompatActivity implements CompoundButt
       checkBox.setTypeface(Typeface.MONOSPACE);
       checkBox.setButtonDrawable(R.drawable.checkboxselector);
 
-      dynamicCheckbox[i] = checkBox;
       checkboxLayout.addView(checkBox);
       checkBox.setOnCheckedChangeListener(this);
 
@@ -145,14 +143,14 @@ public class UserSuscripciones extends AppCompatActivity implements CompoundButt
     HashMap<String, Object> dataMap = new HashMap<>();
     dataMap.put("correo", gs.getUserEmail());
 
+    RequestQueue requestQueue = Volley.newRequestQueue(this);
     for (String tema : topicsToBeDeleted) {
       System.out.println("UPDATE TOPICS DATABASE: ");
       try{
         dataMap.put("topic", userTopics.get(tema));
         JSONObject params = new JSONObject(dataMap);
-        System.out.println("UPDATE TOPICS DATABASE: ");
+        System.out.println(" ----- UserSuscripciones.udpateTopicsDatabase() ----- ");
         System.out.println(params);
-        System.out.println(gs.getMicro_URL() + "/subscription");
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.DELETE,
             (gs.getMicro_URL() + "/subscription"), params,
@@ -163,13 +161,16 @@ public class UserSuscripciones extends AppCompatActivity implements CompoundButt
             }, new Response.ErrorListener() {
           @Override
           public void onErrorResponse(VolleyError error) {
+            System.out.println(" -- Error de Volley -- ");
+            System.out.println(error);
             Log.d("ERROR: ", String.valueOf(error));
           }
         });
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonObjectRequest);
       } catch(Exception e){
+        System.out.println(" -- Error en el catch -- ");
+        System.out.println(e.getMessage());
         e.printStackTrace();
       }
     } // END - forEach()
