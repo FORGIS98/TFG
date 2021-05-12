@@ -10,7 +10,6 @@ public class GlobalState extends Application {
   private String userName;
   private String userPassword;
 
-  // APIs y la Blockchain
   private String quorum_RPC = "http://138.100.10.226:22000"; // Dejarlo con IP en vez de dominio, no se conecta a la blockchain con el dominio :/
   private String blockchain_URL = "http://hubble.ls.fi.upm.es:10010";
   private String dataBase_URL = "http://hubble.ls.fi.upm.es:10011";

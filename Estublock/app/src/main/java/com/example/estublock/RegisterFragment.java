@@ -1,10 +1,7 @@
 package com.example.estublock;
 
-import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,12 +23,7 @@ import org.json.JSONObject;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.DefaultBlockParameter;
-import org.web3j.protocol.core.methods.response.EthBlockNumber;
-import org.web3j.protocol.core.methods.response.EthGetBalance;
-import org.web3j.protocol.core.methods.response.Web3ClientVersion;
 import org.web3j.protocol.http.HttpService;
-import org.web3j.quorum.Quorum;
 
 import java.io.File;
 import java.security.Provider;
@@ -43,35 +34,18 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class RegisterFragment extends Fragment {
 
+  // VARIABLES GLOBALES
+  RequestQueue requestQueue;
+  GlobalState gs;
+  Web3j web3j;
+
+  String walletPath;
+  File walletDir;
+
   EditText et_name;
-  public static final String name_register = "com.example.estublock.et_name";
   EditText et_email;
-  public static final String email_register = "com.example.estublock.et_email";
-
-  public static final String file_register = "com.example.estublock.file_directory";
-
   EditText et_password;
   EditText et_repassword;
-
-  // Creamos un progress dialog por si la API tarda más de lo normal
-  ProgressDialog progressDialog;
-
-  // Volley RequestQueue
-  RequestQueue requestQueue;
-
-  // URL de la API
-  String URL = "http://hubble.ls.fi.upm.es:10012";
-
-  GlobalState gs;
-
-  Web3j web3j;
-  protected Quorum quorum;
-  protected String walletPath;
-  protected File walletDir;
-
-  public RegisterFragment() {
-
-  }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -87,17 +61,13 @@ public class RegisterFragment extends Fragment {
 
     gs = (GlobalState) this.getActivity().getApplication();
 
-    // SDK
     workaroundECDA();
     walletPath = getContext().getFilesDir().getAbsolutePath();
     walletDir = new File(walletPath);
 
-    // Creating Volley newRequestQueue .
     requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
-    // Assigning Activity this to progress dialog.
-    // progressDialog = new ProgressDialog(getActivity());
-
+    // Boton para registrar al usuario en la BDD
     Button btn = (Button) view.findViewById(R.id.btn_register);
     btn.setOnClickListener(new View.OnClickListener(){
 
@@ -109,14 +79,11 @@ public class RegisterFragment extends Fragment {
     return view;
   }
 
-  // Called when the user taps the Register Button in "fragment_register.xml"
   public void registerUser(){
+    // Si la info metida esta bien (osea, correo de la uno, password repetido...)
     if(!checkDataEntered()){
-
-      // progressDialog.setMessage("Cargando...");
-      // progressDialog.show();
-
       try{
+        // Preparamos el json con un HashMap
         HashMap<String, String> dataMap = new HashMap<>();
         dataMap.put("correo", et_email.getText().toString());
         dataMap.put("id_huella", "00000000");
@@ -130,7 +97,7 @@ public class RegisterFragment extends Fragment {
         JSONObject params = new JSONObject(dataMap);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-            (URL + "/user"), params,
+            (gs.getMicro_URL() + "/user"), params,
             new Response.Listener<JSONObject>() {
               @Override
               public void onResponse(JSONObject response) {
@@ -141,21 +108,15 @@ public class RegisterFragment extends Fragment {
                 gs.setPathToWallet(walletDir);
 
                 Intent intent = new Intent(getActivity(), MenuPageActivity.class);
-                intent.putExtra(name_register, et_name.getText().toString());
-                intent.putExtra(email_register, et_email.getText().toString());
-                intent.putExtra(file_register, walletDir);
                 startActivity(intent);
-
-                getActivity().finish();
               }
             }, new Response.ErrorListener() {
           @Override
           public void onErrorResponse(VolleyError error) {
-            Toast.makeText(getActivity().getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+            error.printStackTrace();
           }
         });
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this.getContext());
         requestQueue.add(jsonObjectRequest);
       } catch (Exception e){
         e.printStackTrace();
@@ -186,9 +147,9 @@ public class RegisterFragment extends Fragment {
     return error;
   }
 
-  // return 0 ==> Empty email
-  // return 1 ==> Email not valid
-  // return 2 ==> Good Email
+  // return 0 ==> Email vacio
+  // return 1 ==> Email no valido (por regex)
+  // return 2 ==> Buen email
   private int isEmail(EditText email){
     CharSequence str = email.getText().toString();
     String regex = "^[-a-z0-9~!$%^&*_=+}{'?]+(\\.[-a-z0-9~!$%^&*_=+}{'?]+)*" +
@@ -206,26 +167,17 @@ public class RegisterFragment extends Fragment {
     return TextUtils.isEmpty(str);
   }
 
-  @SuppressLint("CheckResult")
   private String createWallet(String password){
     web3j = Web3j.build(new HttpService(gs.getQuorum_RPC()));
-
-    // Creamos el wallet al usuario
     try{
-      System.out.println("This is walletDir my friends: " + walletDir);
+      // Cremos el wallet en la carpeta files que hemos definido en la variable walletDir
       String fileName = WalletUtils.generateLightNewWalletFile(password, walletDir);
       walletDir = new File(walletPath + "/" + fileName);
     } catch (Exception e){
-      e.printStackTrace();
+      Log.e("ReFra.Catch", e.getMessage());
     }
-
+    // Recuperamos el address del wallet para la BDD
     return getAddress(password);
-  }
-
-  public void toastAsync(String message) {
-    getActivity().runOnUiThread(() -> {
-      Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
-    });
   }
 
   // https://github.com/web3j/web3j/issues/915
@@ -243,11 +195,12 @@ public class RegisterFragment extends Fragment {
       return credentials.getAddress();
     }
     catch (Exception e){
-      e.printStackTrace();
+      Log.e("LoFra.Catch", e.getMessage());
       return "";
     }
   }
 
+  // Hasheamos el password con la libreria BCrypt
   protected String hashPassword(String password){
     return BCrypt.withDefaults().hashToString(10, password.toCharArray());
   }

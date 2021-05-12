@@ -31,22 +31,24 @@ import java.util.Map;
 
 public class UserSuscripciones extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
-  // ----- Variables Globales ----- //
-  ArrayList<String> topicsToBeDeleted = new ArrayList<String>();
-  HashMap<String, Integer> userTopics = new HashMap<String, Integer>();
+  // VARIABLES GLOBALES
+  ArrayList<String> topicsToBeDeleted = new ArrayList<>();
+  HashMap<String, Integer> userTopics = new HashMap<>();
 
   Button addTopics;
   Button deleteTopics;
+
+  RequestQueue requestQueue;
   GlobalState gs;
 
 
-  // ----- onCreate() ----- //
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_user_suscripciones);
 
     gs = (GlobalState) getApplication();
+    requestQueue = Volley.newRequestQueue(this);
 
     addTopics = (Button) findViewById(R.id.addTopics);
     deleteTopics = (Button) findViewById(R.id.delete);
@@ -73,7 +75,7 @@ public class UserSuscripciones extends AppCompatActivity implements CompoundButt
     getSuscripcionesUsuario();
   }
 
-  // ----- Pillar las suscripciones de un usuario ----- //
+  // Pillar las suscripciones de un usuario
   public void getSuscripcionesUsuario(){
     try{
       JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET,
@@ -85,19 +87,18 @@ public class UserSuscripciones extends AppCompatActivity implements CompoundButt
                 for(int i = 0; i < response.length(); i++){
                   userTopics.put((String) response.getJSONObject(i).get("Nombre"), (int) response.getJSONObject(i).get("TemaId"));
                 }
-                createListCheckBox(userTopics, response.length());
+                createListCheckBox(userTopics);
               } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e("UsSus.Catch", e.getMessage());
               }
             }
           }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-          System.out.println(error);
+          Log.e("UsSus.Volley", error.getMessage());
         }
       });
 
-      RequestQueue requestQueue = Volley.newRequestQueue(this);
       requestQueue.add(jsonObjectRequest);
 
     } catch(Exception e){
@@ -105,10 +106,10 @@ public class UserSuscripciones extends AppCompatActivity implements CompoundButt
     }
   }
 
-  protected void createListCheckBox(HashMap<String, Integer> temasHashMap, int amount){
+  // Se crea una lista para que el usuario pueda decidir que borrar
+  protected void createListCheckBox(HashMap<String, Integer> temasHashMap){
     LinearLayout checkboxLayout = findViewById(R.id.chkboxlyt);
 
-    int i = 0;
     for (Map.Entry<String, Integer> entry : temasHashMap.entrySet()) {
       String key = entry.getKey();
       CheckBox checkBox = new CheckBox(this);
@@ -120,8 +121,6 @@ public class UserSuscripciones extends AppCompatActivity implements CompoundButt
 
       checkboxLayout.addView(checkBox);
       checkBox.setOnCheckedChangeListener(this);
-
-      i += 1;
     }
   }
 
@@ -130,27 +129,22 @@ public class UserSuscripciones extends AppCompatActivity implements CompoundButt
 
     if(isChecked){
       topicsToBeDeleted.add(checkedText);
-      Toast.makeText(this, checkbox.getText()+" is checked!!!", Toast.LENGTH_SHORT).show();
     } else {
       topicsToBeDeleted.remove(checkedText);
-      Toast.makeText(this, checkbox.getText()+" is not checked!!!", Toast.LENGTH_SHORT).show();
     }
   }
 
   // Aquí se llega cundo el usuario le da a Eliminar
   // En la variable topicsToBeDeleted estan los topics que quiere eliminar
   public void updateTopicsDatabase(){
+    // Preparamos json con HashMap
     HashMap<String, Object> dataMap = new HashMap<>();
     dataMap.put("correo", gs.getUserEmail());
 
-    RequestQueue requestQueue = Volley.newRequestQueue(this);
     for (String tema : topicsToBeDeleted) {
-      System.out.println("UPDATE TOPICS DATABASE: ");
       try{
         dataMap.put("topic", userTopics.get(tema));
         JSONObject params = new JSONObject(dataMap);
-        System.out.println(" ----- UserSuscripciones.udpateTopicsDatabase() ----- ");
-        System.out.println(params);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.DELETE,
             (gs.getMicro_URL() + "/subscription"), params,
@@ -161,17 +155,13 @@ public class UserSuscripciones extends AppCompatActivity implements CompoundButt
             }, new Response.ErrorListener() {
           @Override
           public void onErrorResponse(VolleyError error) {
-            System.out.println(" -- Error de Volley -- ");
-            System.out.println(error);
-            Log.d("ERROR: ", String.valueOf(error));
+            Log.e("UsSus.Volley", error.getMessage());
           }
         });
 
         requestQueue.add(jsonObjectRequest);
       } catch(Exception e){
-        System.out.println(" -- Error en el catch -- ");
-        System.out.println(e.getMessage());
-        e.printStackTrace();
+        Log.e("UsSus.Catch", e.getMessage());
       }
     } // END - forEach()
   }

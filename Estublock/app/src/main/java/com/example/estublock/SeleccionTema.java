@@ -2,12 +2,11 @@ package com.example.estublock;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import com.android.volley.Request;
@@ -19,18 +18,17 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.web3j.abi.datatypes.Int;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class SeleccionTema extends AppCompatActivity implements View.OnClickListener {
 
-  // ----- Variables Globales ----- //
-  HashMap<String, Integer> userTopics = new HashMap<String, Integer>();
-  HashMap<Integer, String> botonSeleccionado = new HashMap<Integer, String>();
+  // VARIABLES GLOBALES
+  HashMap<String, Integer> userTopics = new HashMap<>();
+  HashMap<Integer, String> botonSeleccionado = new HashMap<>();
   GlobalState gs;
+  RequestQueue requestQueue;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +36,12 @@ public class SeleccionTema extends AppCompatActivity implements View.OnClickList
     setContentView(R.layout.activity_seleccion_tema);
 
     gs = (GlobalState) getApplication();
+    requestQueue = Volley.newRequestQueue(this);
 
     getSuscripcionesUsuario();
   }
 
-  // ----- Pillar las suscripciones de un usuario ----- //
+  // Pillar las suscripciones de un usuario
   public void getSuscripcionesUsuario(){
     try{
       JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET,
@@ -54,31 +53,31 @@ public class SeleccionTema extends AppCompatActivity implements View.OnClickList
                 for(int i = 0; i < response.length(); i++){
                   userTopics.put((String) response.getJSONObject(i).get("Nombre"), (int) response.getJSONObject(i).get("TemaId"));
                 }
-                createButtonList(userTopics, response.length());
+                createButtonList(userTopics);
               } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e("SeTem.Catch", e.getMessage());
               }
             }
           }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-          System.out.println(error);
+          Log.e("SeTem.Volley", error.getMessage());
         }
       });
 
-      RequestQueue requestQueue = Volley.newRequestQueue(this);
+      // Encolamos las llamadas a la API
       requestQueue.add(jsonObjectRequest);
-
     } catch(Exception e){
       e.printStackTrace();
     }
   }
 
-  public void createButtonList(HashMap<String, Integer> buttonList, int amount){
+  // Creacion dinamica de botones
+  public void createButtonList(HashMap<String, Integer> buttonList){
+    // Pillamos al Layout donde se van a poner los botones
     LinearLayout buttonLayout = findViewById(R.id.btnlyt);
-    System.out.println("----- SeleccionTema.createButtonlist() -----");
 
-    int i = 0;
+    // Recorro todos los temas a los que esta suscrito el usuario y los añado a botones
     for (Map.Entry<String, Integer> entry : buttonList.entrySet()) {
       String key = entry.getKey();
       System.out.println(key);
@@ -92,14 +91,11 @@ public class SeleccionTema extends AppCompatActivity implements View.OnClickList
 
       buttonLayout.addView(button);
       button.setOnClickListener(this);
-
-      i += 1;
     }
   }
 
   @Override
   public void onClick(View view) {
-    System.out.println(" ----- SeleccionTema.onClick() -----");
-    System.out.println(botonSeleccionado.get(view.getId()));
+    Log.d("SeTem.Boton", botonSeleccionado.get(view.getId()));
   }
 }

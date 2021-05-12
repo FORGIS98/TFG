@@ -2,7 +2,6 @@ package com.example.estublock;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -11,11 +10,9 @@ import android.widget.TextView;
 
 import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.datatypes.Function;
-import org.web3j.abi.datatypes.Type;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.methods.request.Transaction;
 import org.web3j.protocol.core.methods.response.EthBlockNumber;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
@@ -27,29 +24,27 @@ import org.web3j.tx.response.PollingTransactionReceiptProcessor;
 import org.web3j.tx.response.TransactionReceiptProcessor;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
-
-// Para los experimentos
 
 public class MenuPageActivity extends AppCompatActivity {
 
+  // VARIABLES GLOBALES
   GlobalState gs;
   Web3j web3j;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_menu_page);
 
-
     gs = (GlobalState) getApplication();
-    String name = gs.getUserName();
-    TextView userName = findViewById(R.id.nombre_logueado);
-    userName.setText(name);
 
+    TextView userName = findViewById(R.id.nombre_logueado);
+    userName.setText(gs.getUserName());
+
+    // Boton que te lleva a suscribirte a temas como redes, arqui...
     Button btn_suscripciones = findViewById(R.id.mis_asignaturas);
     btn_suscripciones.setOnClickListener(new View.OnClickListener(){
       @Override
@@ -59,6 +54,7 @@ public class MenuPageActivity extends AppCompatActivity {
       }
     });
 
+    // Boton que lleva a los PROFES a poder crear eventos
     Button btn_eventos = findViewById(R.id.crear_eventos);
     btn_eventos.setOnClickListener(new View.OnClickListener(){
       @Override
@@ -68,6 +64,7 @@ public class MenuPageActivity extends AppCompatActivity {
       }
     });
 
+    // Boton que te lleva a una lista de eventos a los que asistir
     Button btn_asistencia = findViewById(R.id.asistencia);
     btn_asistencia.setOnClickListener(new View.OnClickListener(){
       @Override
@@ -81,27 +78,11 @@ public class MenuPageActivity extends AppCompatActivity {
     try {
       web3j = Web3j.build(new HttpService(gs.getQuorum_RPC()));
       EthBlockNumber result = web3j.ethBlockNumber().sendAsync().get();
-      System.out.println("The Block Number is: " + result.getBlockNumber().toString());
+      Log.d("MePag.Blockchain", "The Block Number is: " + result.getBlockNumber().toString());
       sendTransactionThread();
-
-//      BigInteger nonce = BigInteger.valueOf(100);
-//      BigInteger gasprice = BigInteger.valueOf(100);
-//      BigInteger gaslimit = BigInteger.valueOf(100);
-//
-//      Transaction transaction = Transaction
-//          .createFunctionCallTransaction(address,
-//              nonce, gasprice, gaslimit, "0x121f8ed9280ff940cd121361f9f3dd177e903817", encodedFunction);
-//
-//      EthSendTransaction transactionResponse = web3j.ethSendTransaction(transaction).sendAsync().get();
-//      String transactionHash = transactionResponse.getTransactionHash();
-//      System.out.println("Transaction Hash: " + transactionHash);
-
-
     } catch (Exception e){
-      System.out.println("ERROR ERROR ERROR");
-      e.printStackTrace();
+      Log.e("MePag.Catch", e.getMessage());
     }
-
   }
 
   protected void sendTransactionThread(){
@@ -109,8 +90,6 @@ public class MenuPageActivity extends AppCompatActivity {
       @Override
       public void run() {
         try {
-          System.out.println("-------------------------------------");
-          System.out.println("2222222222222222222222222222222222222");
           Credentials credentials = WalletUtils.loadCredentials(gs.getUserPassword(), gs.getPathToWallet());
           String address = credentials.getAddress();
           System.out.println("Path to wallet: " + gs.getPathToWallet());
@@ -135,22 +114,12 @@ public class MenuPageActivity extends AppCompatActivity {
                   TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH);
 
           TransactionReceipt txReceipt = receiptProcessor.waitForTransactionReceipt(txHash.getTransactionHash());
-          System.out.println("-------------------------------------");
-          System.out.println("3333333333333333333333333333333333333");
           System.out.println("receiptProcessor: " + receiptProcessor.toString());
           System.out.println("txReceipt: " + txReceipt.toString());
         }catch(Exception e){
-          e.printStackTrace();
+          Log.e("MePag.Catch", e.getMessage());
         }
       }
     }).start();
   }
-
-
-
-
-
-
-
-
 } // END - public class MenuPage

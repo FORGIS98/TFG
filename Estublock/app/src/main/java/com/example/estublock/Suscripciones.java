@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -31,14 +30,14 @@ import java.util.Map;
 
 public class Suscripciones extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
-  int flag = 0;
-  ArrayList <String> temasElegidos = new ArrayList<String>();
-  ArrayList <String> recuperarTemasElegidos;
-  Button saveTemas;
-  public static final String temas_elegidos = "com.example.estublock.temas_elegidos";
-  GlobalState gs;
-  // La variable temas para todos los temas que devuelve la BDD
+  // VARIABLES FLOBALES
+  ArrayList <String> temasElegidos = new ArrayList<>();
   HashMap<String, Integer> temas = new HashMap<>();
+
+  RequestQueue requestQueue;
+  GlobalState gs;
+
+  Button saveTemas;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +45,9 @@ public class Suscripciones extends AppCompatActivity implements CompoundButton.O
     setContentView(R.layout.activity_suscripciones);
 
     gs = (GlobalState) getApplication();
+    requestQueue = Volley.newRequestQueue(this);
 
-    if(savedInstanceState != null){
-      recuperarTemasElegidos = savedInstanceState.getStringArrayList(temas_elegidos);
-      flag = savedInstanceState.getInt("savedFlag");
-    }
-
+    // Boton para guardar los temas seleccionados y guardarlos en la BDD
     saveTemas = (Button) findViewById(R.id.saveProceed);
     saveTemas.setOnClickListener(new View.OnClickListener(){
 
@@ -65,6 +61,7 @@ public class Suscripciones extends AppCompatActivity implements CompoundButton.O
     getTemasFromDatabase();
   }
 
+  // Recuperar todos los temas disponibles
   protected void getTemasFromDatabase(){
     try{
       JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET,
@@ -76,30 +73,28 @@ public class Suscripciones extends AppCompatActivity implements CompoundButton.O
                 for(int i = 0; i < response.length(); i++){
                   temas.put((String) response.getJSONObject(i).get("Nombre"), (int) response.getJSONObject(i).get("TemaId"));
                 }
-                createListCheckBox(temas, response.length());
+                createListCheckBox(temas);
               } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e("Susc.Catch", e.getMessage());
               }
             }
           }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-          System.out.println(error);
+          Log.e("Susc.Volley", error.getMessage());
         }
       });
 
-      RequestQueue requestQueue = Volley.newRequestQueue(this);
       requestQueue.add(jsonObjectRequest);
     } catch(Exception e){
-      e.printStackTrace();
+      Log.e("Susc.Catch", e.getMessage());
     }
   }
 
-  protected void createListCheckBox(HashMap<String, Integer> temasHashMap, int amount){
+  // Creamos una lista con todos los temas que no devulve la base de datos
+  protected void createListCheckBox(HashMap<String, Integer> temasHashMap){
     LinearLayout checkboxLayout = findViewById(R.id.chkboxlyt);
-    CheckBox [] dynamicCheckbox = new CheckBox[amount];
 
-    int i = 0;
     for (Map.Entry<String, Integer> entry : temasHashMap.entrySet()) {
       String key = entry.getKey();
       CheckBox checkBox = new CheckBox(this);
@@ -109,55 +104,34 @@ public class Suscripciones extends AppCompatActivity implements CompoundButton.O
       checkBox.setTypeface(Typeface.MONOSPACE);
       checkBox.setButtonDrawable(R.drawable.checkboxselector);
 
-      dynamicCheckbox[i] = checkBox;
       checkboxLayout.addView(checkBox);
       checkBox.setOnCheckedChangeListener(this);
 
-      i += 1;
-    }
-
-    if(flag != 0){
-      for(CheckBox checkBox: dynamicCheckbox){
-        for(i = 0; i < recuperarTemasElegidos.size(); i++){
-          if((checkBox.getText() + "").equals(recuperarTemasElegidos.get(i))){
-            checkBox.toggle();
-          }
-        }
-      }
     }
   }
 
+  // Añadie o quita del ArrayList los temas seleccionados
   public void onCheckedChanged(CompoundButton checkbox, boolean isChecked){
     String checkedText = checkbox.getText() + "";
 
     if(isChecked){
       temasElegidos.add(checkedText);
-      Toast.makeText(this, checkbox.getText()+" is checked!!!", Toast.LENGTH_SHORT).show();
     } else {
       temasElegidos.remove(checkedText);
-      Toast.makeText(this, checkbox.getText()+" is not checked!!!", Toast.LENGTH_SHORT).show();
     }
   }
 
-  public void onSaveInstanceState(Bundle savedState){
-    super.onSaveInstanceState(savedState);
-    flag = 1;
-    savedState.putStringArrayList(temas_elegidos, temasElegidos);
-    savedState.putInt("savedFlag", flag);
-  }
-
+  // Guarda los temas elegidos en la BDD
   protected void saveTopicsToDatabase(){
+    // Creamos el json con un hashmap
     HashMap<String, Object> dataMap = new HashMap<>();
     dataMap.put("correo", gs.getUserEmail());
 
-    RequestQueue requestQueue = Volley.newRequestQueue(this);
+    // Iteramos en los temas para meterlos de uno en uno
     for (String tema : temasElegidos) {
       try{
         dataMap.put("topic", temas.get(tema));
         JSONObject params = new JSONObject(dataMap);
-
-        System.out.println(" ----- Suscripciones.saveTopicsToDatabase ----- ");
-        System.out.println(params);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
             (gs.getMicro_URL() + "/subscription"), params,
@@ -168,13 +142,14 @@ public class Suscripciones extends AppCompatActivity implements CompoundButton.O
             }, new Response.ErrorListener() {
           @Override
           public void onErrorResponse(VolleyError error) {
-            Log.d("ERROR: ", String.valueOf(error));
+            Log.e("ERROR: ", String.valueOf(error));
           }
         });
 
         requestQueue.add(jsonObjectRequest);
+
       } catch(Exception e){
-        e.printStackTrace();
+        Log.e("Susc.Catch", e.getMessage());
       }
     } // END - forEach()
   }
