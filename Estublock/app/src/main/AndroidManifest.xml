@@ -17,16 +17,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Estublock"
         tools:ignore="MissingClass">
+        <activity android:name=".CrearNuevoEvento"></activity>
         <activity android:name=".SeleccionTema" />
         <activity android:name=".UserSuscripciones" />
         <activity android:name=".Suscripciones" />
         <activity android:name=".MenuPageActivity" />
-        <activity android:name=".MainActivity"
-            android:theme="@style/Theme.Estublock.NoActionBar" >
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/Theme.Estublock.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

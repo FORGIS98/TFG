@@ -3,7 +3,6 @@ package com.example.estublock;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -78,10 +77,10 @@ public class MenuPageActivity extends AppCompatActivity {
     try {
       web3j = Web3j.build(new HttpService(gs.getQuorum_RPC()));
       EthBlockNumber result = web3j.ethBlockNumber().sendAsync().get();
-      Log.d("MePag.Blockchain", "The Block Number is: " + result.getBlockNumber().toString());
+      System.out.println("The Block Number is: " + result.getBlockNumber().toString());
       sendTransactionThread();
     } catch (Exception e){
-      Log.e("MePag.Catch", e.getMessage());
+      e.printStackTrace();
     }
   }
 
@@ -117,7 +116,7 @@ public class MenuPageActivity extends AppCompatActivity {
           System.out.println("receiptProcessor: " + receiptProcessor.toString());
           System.out.println("txReceipt: " + txReceipt.toString());
         }catch(Exception e){
-          Log.e("MePag.Catch", e.getMessage());
+          e.printStackTrace();
         }
       }
     }).start();

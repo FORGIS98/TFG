@@ -1,10 +1,10 @@
 package com.example.estublock;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -25,8 +25,8 @@ import java.util.Map;
 public class SeleccionTema extends AppCompatActivity implements View.OnClickListener {
 
   // VARIABLES GLOBALES
+  public static final String ID_TEMA_ELEGIDO = "com.exmaple.estublock.temaElegido";
   HashMap<String, Integer> userTopics = new HashMap<>();
-  HashMap<Integer, String> botonSeleccionado = new HashMap<>();
   GlobalState gs;
   RequestQueue requestQueue;
 
@@ -55,13 +55,13 @@ public class SeleccionTema extends AppCompatActivity implements View.OnClickList
                 }
                 createButtonList(userTopics);
               } catch (JSONException e) {
-                Log.e("SeTem.Catch", e.getMessage());
+                e.printStackTrace();
               }
             }
           }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-          Log.e("SeTem.Volley", error.getMessage());
+          error.printStackTrace();
         }
       });
 
@@ -87,7 +87,7 @@ public class SeleccionTema extends AppCompatActivity implements View.OnClickList
       button.setTextSize(27);
       button.setTextColor(Color.rgb(150, 190, 200));
       button.setTypeface(Typeface.MONOSPACE);
-      botonSeleccionado.put(button.getId(), key);
+      button.setTag(key);
 
       buttonLayout.addView(button);
       button.setOnClickListener(this);
@@ -96,6 +96,8 @@ public class SeleccionTema extends AppCompatActivity implements View.OnClickList
 
   @Override
   public void onClick(View view) {
-    Log.d("SeTem.Boton", botonSeleccionado.get(view.getId()));
+    Intent intent = new Intent(view.getContext(), CrearNuevoEvento.class);
+    intent.putExtra(ID_TEMA_ELEGIDO, userTopics.get(view.getTag().toString()));
+    startActivity(intent);
   }
 }

@@ -3,15 +3,13 @@ package com.example.estublock;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -89,13 +87,13 @@ public class UserSuscripciones extends AppCompatActivity implements CompoundButt
                 }
                 createListCheckBox(userTopics);
               } catch (JSONException e) {
-                Log.e("UsSus.Catch", e.getMessage());
+                e.printStackTrace();
               }
             }
           }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-          Log.e("UsSus.Volley", error.getMessage());
+          error.printStackTrace();
         }
       });
 
@@ -151,17 +149,18 @@ public class UserSuscripciones extends AppCompatActivity implements CompoundButt
             new Response.Listener<JSONObject>() {
               @Override
               public void onResponse(JSONObject response) {
+                System.out.println("LLORAMOS LLORAMOS LLORAMOS LLORAMOS");
               }
             }, new Response.ErrorListener() {
           @Override
           public void onErrorResponse(VolleyError error) {
-            Log.e("UsSus.Volley", error.getMessage());
+            error.printStackTrace();
           }
         });
 
         requestQueue.add(jsonObjectRequest);
       } catch(Exception e){
-        Log.e("UsSus.Catch", e.getMessage());
+        e.printStackTrace();
       }
     } // END - forEach()
   }
