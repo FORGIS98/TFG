@@ -25,7 +25,8 @@ import java.util.Map;
 public class SeleccionTema extends AppCompatActivity implements View.OnClickListener {
 
   // VARIABLES GLOBALES
-  public static final String ID_TEMA_ELEGIDO = "com.exmaple.estublock.temaElegido";
+  public static final String ID_TEMA_ELEGIDO = "com.exmaple.estublock.idTemaElegido";
+  public static final String STRING_TEMA_ELEGIDO = "com.exmaple.estublock.stringTemaElegido";
   HashMap<String, Integer> userTopics = new HashMap<>();
   GlobalState gs;
   RequestQueue requestQueue;
@@ -80,7 +81,6 @@ public class SeleccionTema extends AppCompatActivity implements View.OnClickList
     // Recorro todos los temas a los que esta suscrito el usuario y los añado a botones
     for (Map.Entry<String, Integer> entry : buttonList.entrySet()) {
       String key = entry.getKey();
-      System.out.println(key);
 
       Button button = new Button(this);
       button.setText(key);
@@ -96,8 +96,11 @@ public class SeleccionTema extends AppCompatActivity implements View.OnClickList
 
   @Override
   public void onClick(View view) {
+    System.out.println("ID_TEMA_ELEGIDO");
+    System.out.println(userTopics.get(view.getTag().toString()));
     Intent intent = new Intent(view.getContext(), CrearNuevoEvento.class);
     intent.putExtra(ID_TEMA_ELEGIDO, userTopics.get(view.getTag().toString()));
+    intent.putExtra(STRING_TEMA_ELEGIDO, view.getTag().toString());
     startActivity(intent);
   }
 }

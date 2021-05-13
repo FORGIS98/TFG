@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Estublock"
         tools:ignore="MissingClass">
-        <activity android:name=".CrearNuevoEvento"></activity>
+        <activity android:name=".CrearNuevoEvento" />
         <activity android:name=".SeleccionTema" />
         <activity android:name=".UserSuscripciones" />
         <activity android:name=".Suscripciones" />

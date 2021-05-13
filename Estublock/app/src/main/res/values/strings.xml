@@ -29,4 +29,13 @@
     <string name="saveProceed">Guardando</string>
     <string name="add">Añadir</string>
     <string name="delete">Eliminar</string>
+
+    <!-- Crear Temas -->
+    <string name="texto_tipo_tema">¿Que tipo de tema es?</string>
+    <string name="select_dia">DIA</string>
+    <string name="select_hora">HORA</string>
+    <string name="creditos">Creditos</string>
+    <string name="texto_descripcion">Escribe mas detalles del evento</string>
+    <string name="boton_guardar">Guardar</string>
+
 </resources>
