@@ -96,8 +96,6 @@ public class SeleccionTema extends AppCompatActivity implements View.OnClickList
 
   @Override
   public void onClick(View view) {
-    System.out.println("ID_TEMA_ELEGIDO");
-    System.out.println(userTopics.get(view.getTag().toString()));
     Intent intent = new Intent(view.getContext(), CrearNuevoEvento.class);
     intent.putExtra(ID_TEMA_ELEGIDO, userTopics.get(view.getTag().toString()));
     intent.putExtra(STRING_TEMA_ELEGIDO, view.getTag().toString());

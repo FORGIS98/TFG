@@ -35,7 +35,9 @@
     <string name="select_dia">DIA</string>
     <string name="select_hora">HORA</string>
     <string name="creditos">Creditos</string>
-    <string name="texto_descripcion">Escribe mas detalles del evento</string>
+    <string name="default_creditos">0</string>
     <string name="boton_guardar">Guardar</string>
+    <string name="hint_texto_descripcion">Escribe mas detalles del evento</string>
+    <string name="hint_titulo_evento">Ponle un titulo al evento</string>
 
 </resources>

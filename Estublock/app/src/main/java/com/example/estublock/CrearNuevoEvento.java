@@ -1,7 +1,9 @@
 package com.example.estublock;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.net.wifi.hotspot2.pps.Credential;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,9 +14,25 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+import org.web3j.crypto.Credentials;
+import org.web3j.crypto.RawTransaction;
+import org.web3j.crypto.TransactionEncoder;
+import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.http.HttpService;
+import org.web3j.utils.Numeric;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -26,9 +44,9 @@ import static com.example.estublock.SeleccionTema.STRING_TEMA_ELEGIDO;
 public class CrearNuevoEvento extends AppCompatActivity implements View.OnClickListener{
 
   // VARIABLES GLOBALES
+  RequestQueue requestQueue;
   GlobalState gs;
   Web3j web3j;
-  HashMap<String, Integer> catalogoEventos = new HashMap<>();
 
   TextView titulo_tema;
   EditText titulo_evento, fecha_dia, fecha_hora, numeroCreditos, descripcion;
@@ -48,6 +66,7 @@ public class CrearNuevoEvento extends AppCompatActivity implements View.OnClickL
     setContentView(R.layout.activity_crear_nuevo_evento);
 
     gs = (GlobalState) getApplication();
+    requestQueue = Volley.newRequestQueue(this);
 
     // Recupero el ID y Nombre del tema al que se le va a crear un evento
     Intent intent = getIntent();
@@ -74,8 +93,8 @@ public class CrearNuevoEvento extends AppCompatActivity implements View.OnClickL
     boton_guardar.setOnClickListener(new View.OnClickListener(){
       @Override
       public void onClick(View v){
+        // Se pide que preparen la transaccion y se firma también
         askForTransaction();
-        signTransaction();
       }
     });
 
@@ -87,15 +106,96 @@ public class CrearNuevoEvento extends AppCompatActivity implements View.OnClickL
 
   // Se le pide a la API de microservicios que prepare la transaccion
   // la API devuelve una transacción lista para ser firmada.
-  protected void askForTransaction(){
+  public void askForTransaction(){
+    try {
+      Credentials credentials = WalletUtils.loadCredentials(gs.getUserPassword(), gs.getPathToWallet());
+      String address = credentials.getAddress();
 
+      Calendar cal = Calendar.getInstance();
+      cal.set(year, month, day, hour, minute);
+
+      // Preparamos el JSON
+      HashMap<String, Object> dataMap = new HashMap<>();
+      dataMap.put("organizer", address);
+      dataMap.put("title", titulo_evento.getText().toString());
+      dataMap.put("topic", idTema);
+      dataMap.put("date", cal.getTimeInMillis());
+      dataMap.put("credits", Integer.valueOf(numeroCreditos.getText().toString()));
+      dataMap.put("summarize", descripcion.getText().toString());
+      dataMap.put("type", idTipoEvento);
+
+      JSONObject params = new JSONObject(dataMap);
+      System.out.println("EL JSON QUE ENVIO ES: ");
+      System.out.println(params);
+
+      // Se hace la llamada POST para que nos preparen la transaccion que luego firmaremos
+      JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+          (gs.getMicro_URL() + "/event"), params,
+          new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+              signTransaction(response);
+            }
+          }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+          error.printStackTrace();
+        }
+      });
+
+      // Encolamos la llamada
+      requestQueue.add(jsonObjectRequest);
+    }catch(Exception e){
+      e.printStackTrace();
+    }
   }
 
   // El usuario firma la transacción con su wallet
   // y se envia a la API para que la mande a la blockchain
   // SDK: Saltarse a la API y enviar directamente la transaccion firmada
-  protected void signTransaction(){
+  public void signTransaction(JSONObject tx){
+    System.out.println("LA TRANSACCION LISTA PARA SER FIRMADA SI ESO ES: ");
+    System.out.println(tx.toString());
 
+    try {
+      web3j = Web3j.build(new HttpService(gs.getQuorum_RPC()));
+      Credentials credentials = WalletUtils.loadCredentials(gs.getUserPassword(), gs.getPathToWallet());
+
+      RawTransaction rawTransaction = RawTransaction.createTransaction(
+          (BigInteger) Numeric.toBigInt((String) tx.get("nonce")),
+          (BigInteger) Numeric.toBigInt((String) tx.get("gasPrice")),
+          (BigInteger) Numeric.toBigInt((String) tx.get("gas")),
+          (String) tx.get("to"),
+          (String) tx.get("data")
+      );
+
+      byte [] signedTx = TransactionEncoder.signMessage(rawTransaction, credentials);
+      String hexSignedMessage = Numeric.toHexString(signedTx);
+
+      HashMap<String, String> dataMap = new HashMap<>();
+      dataMap.put("tx", hexSignedMessage);
+
+      JSONObject params = new JSONObject(dataMap);
+
+      JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+          (gs.getMicro_URL() + "/transaction"), params,
+          new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response){
+              System.out.println(response);
+            }
+          }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+          error.printStackTrace();
+        }
+      });
+
+      // Encolamos la llamada
+      requestQueue.add(jsonObjectRequest);
+    }catch(Exception e){
+      e.printStackTrace();
+    }
   }
 
   // Contruye el dropdown
@@ -103,8 +203,8 @@ public class CrearNuevoEvento extends AppCompatActivity implements View.OnClickL
   // TODO: El hashMap catalogoEventos debería pillar la info
   //  de la base de datos también
   protected void construirSpinner(){
-    System.out.println("CREAR NUEVO EVENTO --- CONSTRUIR SPINNER");
     List<String> listaDeTipos = new ArrayList<>();
+    HashMap<String, Integer> catalogoEventos = new HashMap<>();
     listaDeTipos.add("Examen"); catalogoEventos.put(listaDeTipos.get(0), 1);
     listaDeTipos.add("Practica"); catalogoEventos.put(listaDeTipos.get(1), 2);
     listaDeTipos.add("Charla"); catalogoEventos.put(listaDeTipos.get(2), 3);
@@ -129,9 +229,10 @@ public class CrearNuevoEvento extends AppCompatActivity implements View.OnClickL
   @Override
   public void onClick(View v){
 
+    final Calendar calendar = Calendar.getInstance();
+
     // Se quiere añadir el DIA
     if(v == boton_fecha_dia){
-      final Calendar calendar = Calendar.getInstance();
       year = calendar.get(Calendar.YEAR);
       month = calendar.get(Calendar.MONTH);
       day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -149,15 +250,22 @@ public class CrearNuevoEvento extends AppCompatActivity implements View.OnClickL
       datePickerDialog.show();
     }
 
-    System.out.println("EL DIA ELEGIDO POR MI ES");
-    System.out.println(year);
-    System.out.println(month);
-    System.out.println(day);
-
 
     // Se quiere añadir la HORA
     if(v == boton_fecha_hora){
+      hour = calendar.get(Calendar.HOUR_OF_DAY);
+      minute = calendar.get(Calendar.MINUTE);
 
+      TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker timePicker, int tmpHour, int tmpMinute) {
+          hour = tmpHour;
+          minute = tmpMinute;
+
+          fecha_hora.setText(tmpHour + ":" + tmpMinute);
+        }
+      }, hour, minute, true);
+      timePickerDialog.show();
     }
   }
 }

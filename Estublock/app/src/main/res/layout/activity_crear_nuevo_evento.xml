@@ -16,7 +16,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Tema"
         android:textAlignment="center"
         android:textSize="30sp" />
 
@@ -27,6 +26,7 @@
         android:layout_below="@+id/titulo_tema"
         android:layout_centerHorizontal="true"
         android:textSize="15sp"
+        android:hint="@string/hint_titulo_evento"
         android:layout_marginTop="10dp" />
 
     <LinearLayout
@@ -134,7 +134,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="@string/creditos"
+            android:text="@string/default_creditos"
             android:layout_alignBottom="@+id/num_creditos"
             android:layout_toRightOf="@+id/num_creditos"
             android:layout_toEndOf="@+id/num_creditos" />
@@ -146,7 +146,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout_creditos"
-        android:text="@string/texto_descripcion"
+        android:hint="@string/hint_texto_descripcion"
         android:layout_centerHorizontal="true"
         android:textSize="15sp"
         android:layout_marginTop="10dp" />
