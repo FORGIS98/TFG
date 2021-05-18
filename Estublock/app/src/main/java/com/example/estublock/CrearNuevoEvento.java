@@ -29,6 +29,9 @@ import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
+import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.utils.Numeric;
 
@@ -154,48 +157,82 @@ public class CrearNuevoEvento extends AppCompatActivity implements View.OnClickL
   // y se envia a la API para que la mande a la blockchain
   // SDK: Saltarse a la API y enviar directamente la transaccion firmada
   public void signTransaction(JSONObject tx){
-    System.out.println("LA TRANSACCION LISTA PARA SER FIRMADA SI ESO ES: ");
-    System.out.println(tx.toString());
-
     try {
       web3j = Web3j.build(new HttpService(gs.getQuorum_RPC()));
       Credentials credentials = WalletUtils.loadCredentials(gs.getUserPassword(), gs.getPathToWallet());
 
-      RawTransaction rawTransaction = RawTransaction.createTransaction(
-          (BigInteger) Numeric.toBigInt((String) tx.get("nonce")),
-          (BigInteger) Numeric.toBigInt((String) tx.get("gasPrice")),
-          (BigInteger) Numeric.toBigInt((String) tx.get("gas")),
-          (String) tx.get("to"),
-          (String) tx.get("data")
-      );
+      sendTransactionThread(credentials, tx);
 
-      byte [] signedTx = TransactionEncoder.signMessage(rawTransaction, credentials);
-      String hexSignedMessage = Numeric.toHexString(signedTx);
+      // TODO: Eliminar esto, esta en el thread que hay en sendTransactionThread();
+      // TODO: Pero incluso se puede eliminar este método y llamar solo a sendTransactionThread() desde
+      // TODO: La llamada anterior
+      // RawTransaction rawTransaction = RawTransaction.createTransaction(
+      //     (BigInteger) Numeric.toBigInt("0x01"),
+      //     (BigInteger) Numeric.toBigInt((String) tx.get("gasPrice")),
+      //     (BigInteger) Numeric.toBigInt((String) tx.get("gas")),
+      //     (String) tx.get("to"),
+      //     (String) tx.get("data")
+      // );
 
-      HashMap<String, String> dataMap = new HashMap<>();
-      dataMap.put("tx", hexSignedMessage);
+      // byte [] signedTx = TransactionEncoder.signMessage(rawTransaction, credentials);
+      // String hexSignedMessage = Numeric.toHexString(signedTx);
 
-      JSONObject params = new JSONObject(dataMap);
+      // HashMap<String, String> dataMap = new HashMap<>();
+      // dataMap.put("tx", hexSignedMessage);
 
-      JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-          (gs.getMicro_URL() + "/transaction"), params,
-          new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response){
-              System.out.println(response);
-            }
-          }, new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-          error.printStackTrace();
-        }
-      });
+      // JSONObject params = new JSONObject(dataMap);
 
-      // Encolamos la llamada
-      requestQueue.add(jsonObjectRequest);
+      // JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+      //     (gs.getMicro_URL() + "/transaction"), params,
+      //     new Response.Listener<JSONObject>() {
+      //       @Override
+      //       public void onResponse(JSONObject response){
+      //         System.out.println(response);
+      //       }
+      //     }, new Response.ErrorListener() {
+      //   @Override
+      //   public void onErrorResponse(VolleyError error) {
+      //     error.printStackTrace();
+      //   }
+      // });
+
+      // // Encolamos la llamada
+      // requestQueue.add(jsonObjectRequest);
     }catch(Exception e){
       e.printStackTrace();
     }
+  }
+
+  protected void sendTransactionThread(Credentials credentials, JSONObject tx){
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        try{
+
+          EthGetTransactionCount ethGetTransactionCount = web3j.ethGetTransactionCount(credentials.getAddress(), DefaultBlockParameterName.LATEST).send();
+          BigInteger nonce = ethGetTransactionCount.getTransactionCount();
+
+          RawTransaction rawTransaction = RawTransaction.createTransaction(
+              nonce,
+              (BigInteger) Numeric.toBigInt((String) tx.get("gasPrice")),
+              (BigInteger) Numeric.toBigInt((String) tx.get("gas")),
+              (String) tx.get("to"),
+              (String) tx.get("data")
+          );
+
+          byte [] signedTx = TransactionEncoder.signMessage(rawTransaction, credentials);
+          String hexSignedMessage = Numeric.toHexString(signedTx);
+
+          EthSendTransaction ethSendTransaction = web3j.ethSendRawTransaction(hexSignedMessage).send();
+          String transactionHash = ethSendTransaction.getTransactionHash();
+          System.out.println("LA TRANSACCIONES QUE SE HA ENVIADO TIENE ESTE HASH:");
+          System.out.println(transactionHash);
+
+        } catch (Exception e){
+          e.printStackTrace();
+        }
+      }
+    }).start();
   }
 
   // Contruye el dropdown

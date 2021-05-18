@@ -39,8 +39,9 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation group: 'at.favre.lib', name: 'bcrypt', version: '0.9.0'
     implementation 'com.android.volley:volley:1.1.1'
-    implementation 'org.web3j:core:4.6.0-android' // Mas alta imposible, porque no la encuentra
-    implementation ('org.web3j:quorum:4.8.4'){
+    implementation 'org.web3j:core:4.6.0-android' // Maven.Central: May, 2020
+    implementation ('org.web3j:quorum:4.8.4'){ // Mave.Central: Jan, 2021
         exclude group: 'org.jetbrains.kotlin', module: 'kotlin-reflect'
     }
+    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.4' // Mave.JCenter: Dec, 2019
 }

@@ -24,6 +24,7 @@
     <string name="mis_asignaturas">Asignaturas</string>
     <string name="crear_eventos">Crear Eventos</string>
     <string name="asistencia">Asistencia</string>
+    <string name="escanear">Escanear QR</string>
 
     <!-- Suscripciones -->
     <string name="saveProceed">Guardando</string>
@@ -39,5 +40,8 @@
     <string name="boton_guardar">Guardar</string>
     <string name="hint_texto_descripcion">Escribe mas detalles del evento</string>
     <string name="hint_titulo_evento">Ponle un titulo al evento</string>
+
+    <!-- Crear Temas -->
+    <string name="qr">Codigo QR</string>
 
 </resources>

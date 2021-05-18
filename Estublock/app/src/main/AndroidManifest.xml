@@ -7,6 +7,7 @@
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".GlobalState"
@@ -17,6 +18,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Estublock"
         tools:ignore="MissingClass">
+        <activity android:name=".EscanearQR" />
+        <activity android:name=".GenerarQR" />
+        <activity android:name=".AsistenciasEventos" />
+        <activity android:name=".AsistenciasTemas" />
         <activity android:name=".CrearNuevoEvento" />
         <activity android:name=".SeleccionTema" />
         <activity android:name=".UserSuscripciones" />

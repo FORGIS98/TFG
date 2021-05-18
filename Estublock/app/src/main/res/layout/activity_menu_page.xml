@@ -49,6 +49,18 @@
         android:text="@string/asistencia"
         android:textColor="@android:color/white"
         app:layout_constraintTop_toBottomOf="@+id/crear_eventos"
+        app:layout_constraintBottom_toTopOf="@+id/escanearQR" />
+
+
+    <Button
+        android:id="@+id/escanearQR"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_custom"
+        android:fontFamily="@font/roboto_regular"
+        android:text="@string/escanear"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@+id/asistencia"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 
