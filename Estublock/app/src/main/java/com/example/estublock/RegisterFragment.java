@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -66,7 +67,6 @@ public class RegisterFragment extends Fragment {
 
     workaroundECDA();
     walletPath = getContext().getFilesDir().getAbsolutePath();
-    walletDir = new File(walletPath);
 
     requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
@@ -86,6 +86,10 @@ public class RegisterFragment extends Fragment {
     // Si la info metida esta bien (osea, correo de la uni, password repetido...)
     if(!checkDataEntered()){
       try{
+        // Esto esta aqui por que si sale mal el registro walletDir tiene el dir al keystore
+        // Y si vuelvo a ejecutar el registro, walletDir peta por que ya es un keystore por así decirlo
+        // Dudas? Pregunta a tu desarrollador de confianza :)
+        walletDir = new File(walletPath);
         // Preparamos el json con un HashMap
         HashMap<String, String> dataMap = new HashMap<>();
         dataMap.put("correo", et_email.getText().toString());
@@ -113,7 +117,7 @@ public class RegisterFragment extends Fragment {
                 SharedPreferences sharedPreferences = getActivity().getSharedPreferences(gs.getMyPref(), Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString(et_email.getText().toString(), walletDir.toString());
-                editor.commit();
+                editor.apply();
                 Toast.makeText(getContext(),"Thanks",Toast.LENGTH_LONG).show();
 
                 Intent intent = new Intent(getActivity(), MenuPageActivity.class);
@@ -180,8 +184,20 @@ public class RegisterFragment extends Fragment {
     web3j = Web3j.build(new HttpService(gs.getQuorum_RPC()));
     try{
       // Cremos el wallet en la carpeta files que hemos definido en la variable walletDir
+
+      System.out.println("EL WALLET DIR QUE ME LLEGA AQUI ES: ");
+      System.out.println(walletDir);
+
       String fileName = WalletUtils.generateLightNewWalletFile(password, walletDir);
+
+      System.out.println("EL NOMBRE DEL KEYSOTRE DE ESTE USUAIRO ES: ");
+      System.out.println(fileName);
+
       walletDir = new File(walletPath + "/" + fileName);
+
+      System.out.println("EL WALLET DIR DEPUES DE CREAR EL ARCHIVO ES: ");
+      System.out.println(walletDir);
+
     } catch (Exception e){
       Log.e("ReFra.Catch", e.getMessage());
     }

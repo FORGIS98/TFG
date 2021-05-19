@@ -3,7 +3,7 @@ package com.example.estublock;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.Surface;
@@ -17,14 +17,44 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.web3j.crypto.CipherException;
+import org.web3j.crypto.Credentials;
+import org.web3j.crypto.RawTransaction;
+import org.web3j.crypto.TransactionEncoder;
+import org.web3j.crypto.WalletUtils;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
+import org.web3j.protocol.core.methods.response.EthSendTransaction;
+import org.web3j.protocol.http.HttpService;
+import org.web3j.utils.Numeric;
+
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class EscanearQRTutorial extends AppCompatActivity {
+
+  // VARIABLES GLOBALES
+  RequestQueue requestQueue;
+  GlobalState gs;
+  Web3j web3j;
 
   SurfaceView surfaceView;
   TextView txtBarcodeValue;
@@ -35,12 +65,16 @@ public class EscanearQRTutorial extends AppCompatActivity {
   private static final int REQUEST_CAMERA_PERMISSION = 201;
 
   String intentData = "";
+  String oldIntentData = "";
   boolean isEmail = false;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_escanear_qrtutorial);
+
+    gs = (GlobalState) getApplication();
+    requestQueue = Volley.newRequestQueue(this);
 
     initViews();
   }
@@ -54,10 +88,8 @@ public class EscanearQRTutorial extends AppCompatActivity {
       @Override
       public void onClick(View view) {
         if(intentData.length() > 0){
-          if(isEmail)
-            System.out.println("SE HA ESCANEADO UN CORREO QUE NO VA A PASAR NUNCA");
-          else
-            System.out.println("SE HA ESCANEADO UN JASON COMO UNA CASA");
+          System.out.println("EL JASON QUE HEMOS LIDO ES: ");
+          System.out.println(intentData);
         }
       }
     });
@@ -114,23 +146,102 @@ public class EscanearQRTutorial extends AppCompatActivity {
           txtBarcodeValue.post(new Runnable() {
             @Override
             public void run() {
-              if(barcodes.valueAt(0).email != null){
-                txtBarcodeValue.removeCallbacks(null);
-                intentData = barcodes.valueAt(0).email.address;
-                txtBarcodeValue.setText(intentData);
-                isEmail = true;
-                button.setText("Add content to the email :D");
-              } else {
-                isEmail = false;
-                button.setText("Launch url");
-                intentData = barcodes.valueAt(0).displayValue;
-                txtBarcodeValue.setText(intentData);
+              button.setText("LISTO");
+              intentData = barcodes.valueAt(0).displayValue;
+              if(!intentData.equals(oldIntentData)){
+                oldIntentData = intentData;
+                askForTransaction(intentData);
               }
             }
           });
         }
       }
-    });
+    }); // END - new Detector.Processor
+  } // END - initialiseDetectorAndSources
+
+
+  protected void askForTransaction(String intentData){
+    try {
+
+      System.out.println("EL JSON QUE ESTOY CREANDO ES EL SIGUIENTE: ");
+      System.out.println(intentData);
+      JSONObject data = new JSONObject(intentData);
+
+      Credentials credentials = WalletUtils.loadCredentials(gs.getUserPassword(), gs.getPathToWallet());
+      String address = credentials.getAddress();
+
+      // Preparamos el JSON
+      HashMap<String, Object> dataMap = new HashMap<>();
+      dataMap.put("validator", address);
+      dataMap.put("account", data.getString("UserWalletAddress"));
+
+      JSONObject params = new JSONObject(dataMap);
+      System.out.println("EL JSON QUE ENVIO ES: ");
+      System.out.println(params);
+
+      // Se hace la llamada POST para que nos preparen la transaccion que luego firmaremos
+      JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+          (gs.getMicro_URL() + "/event/" + data.getInt("id") + "/attendance"), params,
+          new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+              sendTransactionThread(response);
+            }
+          }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+          error.printStackTrace();
+        }
+      });
+
+      // Encolamos la llamada
+      requestQueue.add(jsonObjectRequest);
+    }catch(Exception e){
+      e.printStackTrace();
+    }
+  }
+
+
+  protected void sendTransactionThread(JSONObject tx){
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        try {
+          web3j = Web3j.build(new HttpService(gs.getQuorum_RPC()));
+          Credentials credentials = WalletUtils.loadCredentials(gs.getUserPassword(), gs.getPathToWallet());
+
+
+          EthGetTransactionCount ethGetTransactionCount = web3j.ethGetTransactionCount(credentials.getAddress(), DefaultBlockParameterName.LATEST).send();
+          BigInteger nonce = ethGetTransactionCount.getTransactionCount();
+
+          RawTransaction rawTransaction = RawTransaction.createTransaction(
+              nonce,
+              (BigInteger) Numeric.toBigInt((String) tx.get("gasPrice")),
+              (BigInteger) Numeric.toBigInt((String) tx.get("gas")),
+              (String) tx.get("to"),
+              (String) tx.get("data")
+          );
+
+          byte [] signedTx = TransactionEncoder.signMessage(rawTransaction, credentials);
+          String hexSignedMessage = Numeric.toHexString(signedTx);
+
+          EthSendTransaction ethSendTransaction = web3j.ethSendRawTransaction(hexSignedMessage).send();
+          String transactionHash = ethSendTransaction.getTransactionHash();
+          System.out.println("LA TRANSACCIONES QUE SE HA ENVIADO TIENE ESTE HASH:");
+          System.out.println(transactionHash);
+
+
+
+        } catch (IOException e) {
+          e.printStackTrace();
+        } catch (CipherException e) {
+          e.printStackTrace();
+        } catch (JSONException e) {
+          e.printStackTrace();
+        }
+
+      }
+    }).start();
   }
 
   @Override

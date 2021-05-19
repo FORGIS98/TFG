@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -19,7 +19,11 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.web3j.crypto.CipherException;
+import org.web3j.crypto.Credentials;
+import org.web3j.crypto.WalletUtils;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,10 +62,18 @@ public class AsistenciasEventos extends AppCompatActivity implements View.OnClic
             public void onResponse(JSONArray response) {
               try {
                 for(int i = 0; i < response.length(); i++){
+                  Credentials credentials = WalletUtils.loadCredentials(gs.getUserPassword(), gs.getPathToWallet());
+                  String address = credentials.getAddress();
+
+                  response.getJSONObject(i).put("UserWalletAddress", address);
                   eventsFullInfo.put((Integer) response.getJSONObject(i).get("id"), (JSONObject) response.getJSONObject(i));
                 }
                 createButtonList(eventsFullInfo);
               } catch (JSONException e) {
+                e.printStackTrace();
+              } catch (CipherException e) {
+                e.printStackTrace();
+              } catch (IOException e) {
                 e.printStackTrace();
               }
             }
