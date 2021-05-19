@@ -72,8 +72,6 @@ public class GenerarQR extends AppCompatActivity {
 
     int smallerDimension = Math.min(w, h);
 
-    System.out.println("EL SMALLER DIMENSIONS ES: " + smallerDimension);
-
     qrgEncoder = new QRGEncoder(evento.toString(), null, QRGContents.Type.TEXT, smallerDimension);
     try{
       bitmap = qrgEncoder.getBitmap();

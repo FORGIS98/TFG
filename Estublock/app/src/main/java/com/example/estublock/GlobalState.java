@@ -9,6 +9,7 @@ public class GlobalState extends Application {
   private String userEmail;
   private String userName;
   private String userPassword;
+  private String myPref = "UserToWallet";
 
   private String quorum_RPC = "http://138.100.10.226:22000"; // Dejarlo con IP en vez de dominio, no se conecta a la blockchain con el dominio :/
   private String blockchain_URL = "http://hubble.ls.fi.upm.es:10010";
@@ -26,6 +27,8 @@ public class GlobalState extends Application {
 
   public void setUserPassword(String userPassword){ this.userPassword = userPassword; }
   public String getUserPassword(){ return this.userPassword; }
+
+  public String getMyPref(){ return this.myPref; }
 
   public String getBlockchain_URL(){ return this.blockchain_URL; }
   public String getDataBase_URL(){ return this.dataBase_URL; }

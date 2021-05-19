@@ -9,6 +9,10 @@
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <meta-data
+        android:name="com.google.android.gms.vision.DEPENDENCIES"
+        android:value="barcode" />
+
     <application
         android:name=".GlobalState"
         android:allowBackup="true"
@@ -18,6 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Estublock"
         tools:ignore="MissingClass">
+        <activity android:name=".EscanearQRTutorial"></activity>
         <activity android:name=".EscanearQR" />
         <activity android:name=".GenerarQR" />
         <activity android:name=".AsistenciasEventos" />

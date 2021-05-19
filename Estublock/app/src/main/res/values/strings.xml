@@ -44,4 +44,7 @@
     <!-- Crear Temas -->
     <string name="qr">Codigo QR</string>
 
+    <!-- Escanear QR -->
+    <string name="escanear_qr">Escanear QR</string>
+
 </resources>

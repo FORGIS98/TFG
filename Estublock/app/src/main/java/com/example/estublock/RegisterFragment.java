@@ -1,6 +1,8 @@
 package com.example.estublock;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -80,7 +83,7 @@ public class RegisterFragment extends Fragment {
   }
 
   public void registerUser(){
-    // Si la info metida esta bien (osea, correo de la uno, password repetido...)
+    // Si la info metida esta bien (osea, correo de la uni, password repetido...)
     if(!checkDataEntered()){
       try{
         // Preparamos el json con un HashMap
@@ -106,6 +109,12 @@ public class RegisterFragment extends Fragment {
                 gs.setUserName(et_name.getText().toString());
                 gs.setUserPassword(et_password.getText().toString());
                 gs.setPathToWallet(walletDir);
+
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(gs.getMyPref(), Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(et_email.getText().toString(), walletDir.toString());
+                editor.commit();
+                Toast.makeText(getContext(),"Thanks",Toast.LENGTH_LONG).show();
 
                 Intent intent = new Intent(getActivity(), MenuPageActivity.class);
                 startActivity(intent);

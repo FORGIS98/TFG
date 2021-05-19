@@ -98,6 +98,8 @@ public class CrearNuevoEvento extends AppCompatActivity implements View.OnClickL
       public void onClick(View v){
         // Se pide que preparen la transaccion y se firma también
         askForTransaction();
+        Intent asistencias = new Intent(v.getContext(), MenuPageActivity.class);
+        startActivity(asistencias);
       }
     });
 

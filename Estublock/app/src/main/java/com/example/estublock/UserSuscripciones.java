@@ -27,6 +27,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
+
 public class UserSuscripciones extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
   // VARIABLES GLOBALES
@@ -36,6 +40,9 @@ public class UserSuscripciones extends AppCompatActivity implements CompoundButt
   Button addTopics;
   Button deleteTopics;
 
+  // OkHttp no es listo y no entiende un JSONObject, tiene que ser un RequestBody
+  public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+  OkHttpClient client;
   RequestQueue requestQueue;
   GlobalState gs;
 
@@ -47,6 +54,7 @@ public class UserSuscripciones extends AppCompatActivity implements CompoundButt
 
     gs = (GlobalState) getApplication();
     requestQueue = Volley.newRequestQueue(this);
+    client = new OkHttpClient();
 
     addTopics = (Button) findViewById(R.id.addTopics);
     deleteTopics = (Button) findViewById(R.id.delete);
@@ -134,34 +142,39 @@ public class UserSuscripciones extends AppCompatActivity implements CompoundButt
 
   // Aquí se llega cundo el usuario le da a Eliminar
   // En la variable topicsToBeDeleted estan los topics que quiere eliminar
+  // Usamos okhttp por que la libreria Volley funciona como y cuando quiere :))
   public void updateTopicsDatabase(){
-    // Preparamos json con HashMap
-    HashMap<String, Object> dataMap = new HashMap<>();
-    dataMap.put("correo", gs.getUserEmail());
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        HashMap<String, Object> dataMap = new HashMap<>();
+        dataMap.put("correo", gs.getUserEmail());
 
-    for (String tema : topicsToBeDeleted) {
-      try{
-        dataMap.put("topic", userTopics.get(tema));
-        JSONObject params = new JSONObject(dataMap);
+        for (String tema : topicsToBeDeleted) {
+          try{
+            dataMap.put("topic", userTopics.get(tema));
+            JSONObject params = new JSONObject(dataMap);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.DELETE,
-            (gs.getMicro_URL() + "/subscription"), params,
-            new Response.Listener<JSONObject>() {
-              @Override
-              public void onResponse(JSONObject response) {
-                System.out.println("LLORAMOS LLORAMOS LLORAMOS LLORAMOS");
-              }
-            }, new Response.ErrorListener() {
-          @Override
-          public void onErrorResponse(VolleyError error) {
-            error.printStackTrace();
+            okhttp3.RequestBody body = okhttp3.RequestBody.create(params.toString(), JSON);
+
+            okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(gs.getMicro_URL() + "/subscription")
+                .delete(body)
+                .build();
+
+            okhttp3.Response response = client.newCall(request).execute();
+            if(!response.isSuccessful()){
+              System.out.println("HA SALIDO MAL");
+              System.out.println(response);
+            } else {
+              System.out.println("HA SALIDO BIEN");
+              System.out.println(response.code());
+            }
+          } catch(Exception e){
+            e.printStackTrace();
           }
-        });
-
-        requestQueue.add(jsonObjectRequest);
-      } catch(Exception e){
-        e.printStackTrace();
+        } // END - forEach()
       }
-    } // END - forEach()
+    }).start();
   }
 }

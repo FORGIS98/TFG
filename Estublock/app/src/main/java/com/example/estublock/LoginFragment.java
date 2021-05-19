@@ -1,6 +1,8 @@
 package com.example.estublock;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -163,8 +165,9 @@ public class LoginFragment extends Fragment {
   // Devuelve el path hasta el keystore, que tiene que existir si o si o peta por NULL
   // TODO: Que no pete por que el archivo no exista
   protected File getTheWalletFile(){
-    File[] listfiles = new File(walletPath).listFiles();
-    Log.d("LoFra.Wallet", listfiles[0].toString());
-    return listfiles[0];
+    SharedPreferences sharedPreferences = getActivity().getSharedPreferences(gs.getMyPref(), Context.MODE_PRIVATE);
+    File keystore = new File(sharedPreferences.getString(gs.getUserEmail(), null));
+
+    return keystore;
   }
 }
