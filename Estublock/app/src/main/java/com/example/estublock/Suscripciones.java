@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -75,19 +74,19 @@ public class Suscripciones extends AppCompatActivity implements CompoundButton.O
                 }
                 createListCheckBox(temas);
               } catch (JSONException e) {
-                Log.e("Susc.Catch", e.getMessage());
+                e.printStackTrace();
               }
             }
           }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-          Log.e("Susc.Volley", error.getMessage());
+          error.printStackTrace();
         }
       });
 
       requestQueue.add(jsonObjectRequest);
     } catch(Exception e){
-      Log.e("Susc.Catch", e.getMessage());
+      e.printStackTrace();
     }
   }
 
@@ -142,14 +141,14 @@ public class Suscripciones extends AppCompatActivity implements CompoundButton.O
             }, new Response.ErrorListener() {
           @Override
           public void onErrorResponse(VolleyError error) {
-            Log.e("ERROR: ", String.valueOf(error));
+            error.printStackTrace();
           }
         });
 
         requestQueue.add(jsonObjectRequest);
 
       } catch(Exception e){
-        Log.e("Susc.Catch", e.getMessage());
+        e.printStackTrace();
       }
     } // END - forEach()
   }

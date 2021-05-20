@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
@@ -22,7 +23,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.easyblockchain.EasyBlockchainListener;
+import com.example.easyblockchain.TransactionsHelper;
+import com.example.easyblockchain.WalletHelper;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.RawTransaction;
@@ -44,12 +49,14 @@ import java.util.List;
 import static com.example.estublock.SeleccionTema.ID_TEMA_ELEGIDO;
 import static com.example.estublock.SeleccionTema.STRING_TEMA_ELEGIDO;
 
-public class CrearNuevoEvento extends AppCompatActivity implements View.OnClickListener{
+public class CrearNuevoEvento extends AppCompatActivity implements View.OnClickListener {
 
   // VARIABLES GLOBALES
   RequestQueue requestQueue;
   GlobalState gs;
   Web3j web3j;
+  WalletHelper walletHelper;
+  TransactionsHelper transactionHelper;
 
   TextView titulo_tema;
   EditText titulo_evento, fecha_dia, fecha_hora, numeroCreditos, descripcion;
@@ -70,6 +77,10 @@ public class CrearNuevoEvento extends AppCompatActivity implements View.OnClickL
 
     gs = (GlobalState) getApplication();
     requestQueue = Volley.newRequestQueue(this);
+
+    walletHelper = new WalletHelper();
+    transactionHelper = new TransactionsHelper(gs.getQuorum_RPC());
+
 
     // Recupero el ID y Nombre del tema al que se le va a crear un evento
     Intent intent = getIntent();
@@ -113,8 +124,7 @@ public class CrearNuevoEvento extends AppCompatActivity implements View.OnClickL
   // la API devuelve una transacción lista para ser firmada.
   public void askForTransaction(){
     try {
-      Credentials credentials = WalletUtils.loadCredentials(gs.getUserPassword(), gs.getPathToWallet());
-      String address = credentials.getAddress();
+      String address = walletHelper.getAddress(gs.getUserPassword(), gs.getPathToWallet());
 
       Calendar cal = Calendar.getInstance();
       cal.set(year, month, day, hour, minute);
@@ -130,8 +140,6 @@ public class CrearNuevoEvento extends AppCompatActivity implements View.OnClickL
       dataMap.put("type", idTipoEvento);
 
       JSONObject params = new JSONObject(dataMap);
-      System.out.println("EL JSON QUE ENVIO ES: ");
-      System.out.println(params);
 
       // Se hace la llamada POST para que nos preparen la transaccion que luego firmaremos
       JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -139,7 +147,7 @@ public class CrearNuevoEvento extends AppCompatActivity implements View.OnClickL
           new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-              signTransaction(response);
+              saveEvent(response);
             }
           }, new Response.ErrorListener() {
         @Override
@@ -158,83 +166,19 @@ public class CrearNuevoEvento extends AppCompatActivity implements View.OnClickL
   // El usuario firma la transacción con su wallet
   // y se envia a la API para que la mande a la blockchain
   // SDK: Saltarse a la API y enviar directamente la transaccion firmada
-  public void signTransaction(JSONObject tx){
+  public void saveEvent(JSONObject tx){
     try {
-      web3j = Web3j.build(new HttpService(gs.getQuorum_RPC()));
-      Credentials credentials = WalletUtils.loadCredentials(gs.getUserPassword(), gs.getPathToWallet());
-
-      sendTransactionThread(credentials, tx);
-
-      // TODO: Eliminar esto, esta en el thread que hay en sendTransactionThread();
-      // TODO: Pero incluso se puede eliminar este método y llamar solo a sendTransactionThread() desde
-      // TODO: La llamada anterior
-      // RawTransaction rawTransaction = RawTransaction.createTransaction(
-      //     (BigInteger) Numeric.toBigInt("0x01"),
-      //     (BigInteger) Numeric.toBigInt((String) tx.get("gasPrice")),
-      //     (BigInteger) Numeric.toBigInt((String) tx.get("gas")),
-      //     (String) tx.get("to"),
-      //     (String) tx.get("data")
-      // );
-
-      // byte [] signedTx = TransactionEncoder.signMessage(rawTransaction, credentials);
-      // String hexSignedMessage = Numeric.toHexString(signedTx);
-
-      // HashMap<String, String> dataMap = new HashMap<>();
-      // dataMap.put("tx", hexSignedMessage);
-
-      // JSONObject params = new JSONObject(dataMap);
-
-      // JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-      //     (gs.getMicro_URL() + "/transaction"), params,
-      //     new Response.Listener<JSONObject>() {
-      //       @Override
-      //       public void onResponse(JSONObject response){
-      //         System.out.println(response);
-      //       }
-      //     }, new Response.ErrorListener() {
-      //   @Override
-      //   public void onErrorResponse(VolleyError error) {
-      //     error.printStackTrace();
-      //   }
-      // });
-
-      // // Encolamos la llamada
-      // requestQueue.add(jsonObjectRequest);
+      Credentials credentials = walletHelper.getCredentials(gs.getUserPassword(), gs.getPathToWallet());
+      transactionHelper.signAndSendTransaction(
+          credentials,
+          tx.get("gasPrice").toString(),
+          tx.get("gas").toString(),
+          tx.get("to").toString(),
+          tx.get("data").toString()
+      );
     }catch(Exception e){
       e.printStackTrace();
     }
-  }
-
-  protected void sendTransactionThread(Credentials credentials, JSONObject tx){
-    new Thread(new Runnable() {
-      @Override
-      public void run() {
-        try{
-
-          EthGetTransactionCount ethGetTransactionCount = web3j.ethGetTransactionCount(credentials.getAddress(), DefaultBlockParameterName.LATEST).send();
-          BigInteger nonce = ethGetTransactionCount.getTransactionCount();
-
-          RawTransaction rawTransaction = RawTransaction.createTransaction(
-              nonce,
-              (BigInteger) Numeric.toBigInt((String) tx.get("gasPrice")),
-              (BigInteger) Numeric.toBigInt((String) tx.get("gas")),
-              (String) tx.get("to"),
-              (String) tx.get("data")
-          );
-
-          byte [] signedTx = TransactionEncoder.signMessage(rawTransaction, credentials);
-          String hexSignedMessage = Numeric.toHexString(signedTx);
-
-          EthSendTransaction ethSendTransaction = web3j.ethSendRawTransaction(hexSignedMessage).send();
-          String transactionHash = ethSendTransaction.getTransactionHash();
-          System.out.println("LA TRANSACCIONES QUE SE HA ENVIADO TIENE ESTE HASH:");
-          System.out.println(transactionHash);
-
-        } catch (Exception e){
-          e.printStackTrace();
-        }
-      }
-    }).start();
   }
 
   // Contruye el dropdown

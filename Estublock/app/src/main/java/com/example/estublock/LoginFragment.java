@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.easyblockchain.WalletHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +34,7 @@ public class LoginFragment extends Fragment {
   RequestQueue requestQueue;
   String walletPath;
   GlobalState gs;
+  WalletHelper walletHelper;
 
   // ITEMS DEL LAYOUT
   EditText et_password;
@@ -48,6 +49,7 @@ public class LoginFragment extends Fragment {
 
     // Recupero el objeto GlobalState
     gs = (GlobalState) this.getActivity().getApplication();
+    walletHelper = new WalletHelper();
     // Recupero el directorio con los keystore
     walletPath = getActivity().getApplicationInfo().dataDir;
     walletPath += "/files";
@@ -90,14 +92,15 @@ public class LoginFragment extends Fragment {
               // Guardamos los datos que nos interesan del usuario
               gs.setUserEmail(et_email.getText().toString());
               gs.setUserPassword(et_password.getText().toString());
-              gs.setPathToWallet(getTheWalletFile());
+              // gs.setPathToWallet(getTheWalletFile());
+              gs.setPathToWallet(new File(walletHelper.getFromPreferences(et_email.getText().toString(), gs.getMyPref(), getActivity())));
               startActivity(intent);
             }
           }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
           if(error.networkResponse == null){
-            Log.e("LoFra.Volley: ", String.valueOf(error));
+            error.printStackTrace();
           }
           else if(error.networkResponse.statusCode == 404){
             // 404 es que el usuario no se encuentra
@@ -113,11 +116,12 @@ public class LoginFragment extends Fragment {
             gs.setUserEmail(et_email.getText().toString());
             gs.setUserName(name);
             gs.setUserPassword(et_password.getText().toString());
-            gs.setPathToWallet(getTheWalletFile());
+            // gs.setPathToWallet(getTheWalletFile());
+            gs.setPathToWallet(new File(walletHelper.getFromPreferences(et_email.getText().toString(), gs.getMyPref(), getActivity())));
             startActivity(intent);
           }
           else{
-            Log.e("LoFra.Volley", String.valueOf(error));
+            error.printStackTrace();
           }
         }
       });
@@ -125,7 +129,7 @@ public class LoginFragment extends Fragment {
       // Encolamos la llamada para que se haga de forma async
       requestQueue.add(jsonObjectRequest);
     } catch(Exception e){
-      Log.e("LoFra.Catch", e.getMessage());
+      e.printStackTrace();
     }
   }
 
@@ -144,20 +148,20 @@ public class LoginFragment extends Fragment {
                 name[0] = obj.getString("Nombre");
                 gs.setUserName(name[0]);
               } catch (JSONException e) {
-                Log.e("LoFra.Catch", e.getMessage());
+                e.printStackTrace();
               }
             }
           }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-          Log.e("LoFra.Volley", String.valueOf(error));
+          error.printStackTrace();
         }
       });
 
       // Encolamos la llamada para que sea aync
       requestQueue.add(jsonArrayRequest);
     } catch(Exception e){
-      Log.e("LoFra.Catch", e.getMessage());
+      e.printStackTrace();
     }
 
     return name[0];

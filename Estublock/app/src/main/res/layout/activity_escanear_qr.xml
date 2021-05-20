@@ -20,6 +20,6 @@
         android:background="@drawable/btn_custom"
         android:fontFamily="@font/roboto_regular"
         android:textColor="@android:color/white"
-        android:text="@string/escanear_qr" />
+        android:text="@string/escanear_qr_atras" />
 
 </RelativeLayout>

@@ -4,10 +4,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -15,20 +16,18 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.easyblockchain.WalletHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.web3j.crypto.CipherException;
-import org.web3j.crypto.Credentials;
-import org.web3j.crypto.WalletUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.example.estublock.AsistenciasTemas.ID_TEMA_ELEGIDO_ASISTENCIAS;
-import static com.example.estublock.SeleccionTema.ID_TEMA_ELEGIDO;
 
 public class AsistenciasEventos extends AppCompatActivity implements View.OnClickListener {
 
@@ -62,8 +61,8 @@ public class AsistenciasEventos extends AppCompatActivity implements View.OnClic
             public void onResponse(JSONArray response) {
               try {
                 for(int i = 0; i < response.length(); i++){
-                  Credentials credentials = WalletUtils.loadCredentials(gs.getUserPassword(), gs.getPathToWallet());
-                  String address = credentials.getAddress();
+                  WalletHelper walletHelper = new WalletHelper();
+                  String address = walletHelper.getAddress(gs.getUserPassword(), gs.getPathToWallet());
 
                   response.getJSONObject(i).put("UserWalletAddress", address);
                   eventsFullInfo.put((Integer) response.getJSONObject(i).get("id"), (JSONObject) response.getJSONObject(i));

@@ -163,13 +163,6 @@ public class UserSuscripciones extends AppCompatActivity implements CompoundButt
                 .build();
 
             okhttp3.Response response = client.newCall(request).execute();
-            if(!response.isSuccessful()){
-              System.out.println("HA SALIDO MAL");
-              System.out.println(response);
-            } else {
-              System.out.println("HA SALIDO BIEN");
-              System.out.println(response.code());
-            }
           } catch(Exception e){
             e.printStackTrace();
           }

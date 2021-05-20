@@ -1,17 +1,13 @@
 package com.example.estublock;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -21,17 +17,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.easyblockchain.WalletHelper;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.json.JSONObject;
-import org.web3j.crypto.Credentials;
-import org.web3j.crypto.WalletUtils;
-import org.web3j.protocol.Web3j;
-import org.web3j.protocol.http.HttpService;
 
 import java.io.File;
-import java.security.Provider;
-import java.security.Security;
 import java.util.HashMap;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
@@ -41,7 +31,7 @@ public class RegisterFragment extends Fragment {
   // VARIABLES GLOBALES
   RequestQueue requestQueue;
   GlobalState gs;
-  Web3j web3j;
+  WalletHelper walletHelper;
 
   String walletPath;
   File walletDir;
@@ -65,7 +55,7 @@ public class RegisterFragment extends Fragment {
 
     gs = (GlobalState) this.getActivity().getApplication();
 
-    workaroundECDA();
+    walletHelper = new WalletHelper();
     walletPath = getContext().getFilesDir().getAbsolutePath();
 
     requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
@@ -99,7 +89,9 @@ public class RegisterFragment extends Fragment {
         dataMap.put("apellido1", "Movil");
         dataMap.put("apellido2", "Movil");
         dataMap.put("nombre", et_name.getText().toString());
-        dataMap.put("wallet", createWallet(et_password.getText().toString()));
+        // dataMap.put("wallet", createWallet(et_password.getText().toString()));
+        String keystore = walletHelper.createNewWallet(et_password.getText().toString(), walletDir);
+        dataMap.put("wallet", walletHelper.getAddress(et_password.getText().toString(), (walletDir.toString() + "/" + keystore)));
 
         JSONObject params = new JSONObject(dataMap);
 
@@ -112,13 +104,9 @@ public class RegisterFragment extends Fragment {
                 gs.setUserEmail(et_email.getText().toString());
                 gs.setUserName(et_name.getText().toString());
                 gs.setUserPassword(et_password.getText().toString());
-                gs.setPathToWallet(walletDir);
+                gs.setPathToWallet(new File(walletDir.toString() + "/" + keystore));
 
-                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(gs.getMyPref(), Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(et_email.getText().toString(), walletDir.toString());
-                editor.apply();
-                Toast.makeText(getContext(),"Thanks",Toast.LENGTH_LONG).show();
+                walletHelper.saveInPreferences(et_email.getText().toString(), (walletDir.toString() + "/" + keystore), gs.getMyPref(), getActivity());
 
                 Intent intent = new Intent(getActivity(), MenuPageActivity.class);
                 startActivity(intent);
@@ -178,51 +166,6 @@ public class RegisterFragment extends Fragment {
   private boolean isEmpty(EditText txt){
     CharSequence str = txt.getText().toString();
     return TextUtils.isEmpty(str);
-  }
-
-  private String createWallet(String password){
-    web3j = Web3j.build(new HttpService(gs.getQuorum_RPC()));
-    try{
-      // Cremos el wallet en la carpeta files que hemos definido en la variable walletDir
-
-      System.out.println("EL WALLET DIR QUE ME LLEGA AQUI ES: ");
-      System.out.println(walletDir);
-
-      String fileName = WalletUtils.generateLightNewWalletFile(password, walletDir);
-
-      System.out.println("EL NOMBRE DEL KEYSOTRE DE ESTE USUAIRO ES: ");
-      System.out.println(fileName);
-
-      walletDir = new File(walletPath + "/" + fileName);
-
-      System.out.println("EL WALLET DIR DEPUES DE CREAR EL ARCHIVO ES: ");
-      System.out.println(walletDir);
-
-    } catch (Exception e){
-      Log.e("ReFra.Catch", e.getMessage());
-    }
-    // Recuperamos el address del wallet para la BDD
-    return getAddress(password);
-  }
-
-  // https://github.com/web3j/web3j/issues/915
-  private void workaroundECDA(){
-    final Provider provider = Security.getProvider(BouncyCastleProvider.PROVIDER_NAME);
-    if(provider != null || !provider.getClass().equals(BouncyCastleProvider.class)){
-      Security.removeProvider(BouncyCastleProvider.PROVIDER_NAME);
-      Security.insertProviderAt(new BouncyCastleProvider(), 1);
-    }
-  }
-
-  public String getAddress(String password){
-    try {
-      Credentials credentials = WalletUtils.loadCredentials(password, walletDir);
-      return credentials.getAddress();
-    }
-    catch (Exception e){
-      Log.e("LoFra.Catch", e.getMessage());
-      return "";
-    }
   }
 
   // Hasheamos el password con la libreria BCrypt

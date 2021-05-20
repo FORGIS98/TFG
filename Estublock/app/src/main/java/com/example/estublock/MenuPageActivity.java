@@ -78,7 +78,7 @@ public class MenuPageActivity extends AppCompatActivity {
     btn_escanearQR.setOnClickListener(new View.OnClickListener(){
       @Override
       public void onClick(View v){
-        Intent asistencias = new Intent(v.getContext(), EscanearQR.class);
+        Intent asistencias = new Intent(v.getContext(), EscanearQRTutorial.class);
         startActivity(asistencias);
       }
     });

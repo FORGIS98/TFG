@@ -67,9 +67,6 @@ public class GenerarQR extends AppCompatActivity {
     int w = point.x;
     int h = point.y;
 
-    System.out.println("EL PUNTO W ES: " + w);
-    System.out.println("EL PUNTO H ES: " + h);
-
     int smallerDimension = Math.min(w, h);
 
     qrgEncoder = new QRGEncoder(evento.toString(), null, QRGContents.Type.TEXT, smallerDimension);

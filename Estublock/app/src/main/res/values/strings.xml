@@ -45,6 +45,6 @@
     <string name="qr">Codigo QR</string>
 
     <!-- Escanear QR -->
-    <string name="escanear_qr">Escanear QR</string>
+    <string name="escanear_qr_atras">Dejar de Escanear</string>
 
 </resources>

@@ -23,6 +23,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.easyblockchain.TransactionsHelper;
+import com.example.easyblockchain.WalletHelper;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -55,9 +57,10 @@ public class EscanearQRTutorial extends AppCompatActivity {
   RequestQueue requestQueue;
   GlobalState gs;
   Web3j web3j;
+  WalletHelper walletHelper;
+  TransactionsHelper transactionsHelper;
 
   SurfaceView surfaceView;
-  TextView txtBarcodeValue;
   Button button;
 
   private BarcodeDetector barcodeDetector;
@@ -76,21 +79,21 @@ public class EscanearQRTutorial extends AppCompatActivity {
     gs = (GlobalState) getApplication();
     requestQueue = Volley.newRequestQueue(this);
 
+    walletHelper = new WalletHelper();
+    transactionsHelper = new TransactionsHelper(gs.getQuorum_RPC());
+
     initViews();
   }
 
   private void initViews(){
-    txtBarcodeValue = findViewById(R.id.txtBarcodeValue);
     surfaceView = findViewById(R.id.surfaceView);
     button = findViewById(R.id.btnAction);
 
     button.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        if(intentData.length() > 0){
-          System.out.println("EL JASON QUE HEMOS LIDO ES: ");
-          System.out.println(intentData);
-        }
+        Intent intent = new Intent(view.getContext(), MenuPageActivity.class);
+        startActivity(intent);
       }
     });
   }
@@ -143,17 +146,16 @@ public class EscanearQRTutorial extends AppCompatActivity {
       public void receiveDetections(@NonNull @NotNull Detector.Detections<Barcode> detections) {
         final SparseArray<Barcode> barcodes = detections.getDetectedItems();
         if(barcodes.size() != 0){
-          txtBarcodeValue.post(new Runnable() {
+          new Thread(new Runnable() {
             @Override
             public void run() {
-              button.setText("LISTO");
               intentData = barcodes.valueAt(0).displayValue;
               if(!intentData.equals(oldIntentData)){
                 oldIntentData = intentData;
                 askForTransaction(intentData);
               }
             }
-          });
+          }).start();
         }
       }
     }); // END - new Detector.Processor
@@ -163,8 +165,6 @@ public class EscanearQRTutorial extends AppCompatActivity {
   protected void askForTransaction(String intentData){
     try {
 
-      System.out.println("EL JSON QUE ESTOY CREANDO ES EL SIGUIENTE: ");
-      System.out.println(intentData);
       JSONObject data = new JSONObject(intentData);
 
       Credentials credentials = WalletUtils.loadCredentials(gs.getUserPassword(), gs.getPathToWallet());
@@ -176,8 +176,6 @@ public class EscanearQRTutorial extends AppCompatActivity {
       dataMap.put("account", data.getString("UserWalletAddress"));
 
       JSONObject params = new JSONObject(dataMap);
-      System.out.println("EL JSON QUE ENVIO ES: ");
-      System.out.println(params);
 
       // Se hace la llamada POST para que nos preparen la transaccion que luego firmaremos
       JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -202,46 +200,23 @@ public class EscanearQRTutorial extends AppCompatActivity {
   }
 
 
-  protected void sendTransactionThread(JSONObject tx){
-    new Thread(new Runnable() {
-      @Override
-      public void run() {
-        try {
-          web3j = Web3j.build(new HttpService(gs.getQuorum_RPC()));
-          Credentials credentials = WalletUtils.loadCredentials(gs.getUserPassword(), gs.getPathToWallet());
-
-
-          EthGetTransactionCount ethGetTransactionCount = web3j.ethGetTransactionCount(credentials.getAddress(), DefaultBlockParameterName.LATEST).send();
-          BigInteger nonce = ethGetTransactionCount.getTransactionCount();
-
-          RawTransaction rawTransaction = RawTransaction.createTransaction(
-              nonce,
-              (BigInteger) Numeric.toBigInt((String) tx.get("gasPrice")),
-              (BigInteger) Numeric.toBigInt((String) tx.get("gas")),
-              (String) tx.get("to"),
-              (String) tx.get("data")
-          );
-
-          byte [] signedTx = TransactionEncoder.signMessage(rawTransaction, credentials);
-          String hexSignedMessage = Numeric.toHexString(signedTx);
-
-          EthSendTransaction ethSendTransaction = web3j.ethSendRawTransaction(hexSignedMessage).send();
-          String transactionHash = ethSendTransaction.getTransactionHash();
-          System.out.println("LA TRANSACCIONES QUE SE HA ENVIADO TIENE ESTE HASH:");
-          System.out.println(transactionHash);
-
-
-
-        } catch (IOException e) {
-          e.printStackTrace();
-        } catch (CipherException e) {
-          e.printStackTrace();
-        } catch (JSONException e) {
-          e.printStackTrace();
-        }
-
-      }
-    }).start();
+  protected void sendTransactionThread(JSONObject tx) {
+    try {
+      Credentials credentials = walletHelper.getCredentials(gs.getUserPassword(), gs.getPathToWallet());
+      transactionsHelper.signAndSendTransaction(
+          credentials,
+          (String) tx.get("gasPrice"),
+          (String) tx.get("gas"),
+          (String) tx.get("to"),
+          (String) tx.get("data")
+      );
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (CipherException e) {
+      e.printStackTrace();
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override
