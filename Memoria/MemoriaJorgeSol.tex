@@ -185,6 +185,21 @@
 % -------------------------
 % -------------------------
 
+% Paquetes añadidos por mi :D
+\usepackage{xcolor} % Colores
+\definecolor{green}{RGB}{34, 139, 34}
+\definecolor{red}{RGB}{255, 40, 40}
+\definecolor{blue}{RGB}{64, 64, 255}
+\definecolor{orange}{RGB}{255, 128, 0}
+
+\usepackage{ulem} % Subrayar palabras
+\renewcommand{\ULdepth}{1.8pt}
+\contourlength{0.8pt}
+
+\newcommand{\myuline}[1]{%
+  \uline{\phantom{#1}}%
+  \llap{\contour{white}{#1}}%
+}
 
 
 % DATOS del documento
