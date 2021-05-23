@@ -250,13 +250,13 @@ Aunque la herramienta de AndroidStudio es muy útil, la mayoría de las pantalla
 
 Todo el código de la aplicación esta disonible en mi repositorio de github\cite{forgis98}. Vamos a tratar de resumir el trabajo realizado, pues gran parte de este TFG esta reflejado en la aplicación móvil que se ha desarrollado. \\
 
-\myuline{Archivos del Proyecto} \\
+\uline{Archivos del Proyecto} \\
 
-El proyecto puede dividirse en 2, el SDK del que hablaremos más adelante. En él esta el código que se comunica con la red blockchain. Y por otro lado estan las actividades y fragmentos que se comunican con sus respectivas pantallas, a excepción de un archivo llamando \meph{GlobalState.java}. Este archivo es muy importante, pues sirve para mantener el estado en tiempo de ejecución del proyecto. Guarda información como el nombre de la persona una vez ha hecho login, guarda él directorio de la cartera virtual del usuario, contiene la URL a las APIs de microservicios, red blockchain y demás datos necesarios. \\
+El proyecto puede dividirse en 2, el SDK del que hablaremos más adelante. En él esta el código que se comunica con la red blockchain. Y por otro lado estan las actividades y fragmentos que se comunican con sus respectivas pantallas, a excepción de un archivo llamando \emph{GlobalState.java}. Este archivo es muy importante, pues sirve para mantener el estado en tiempo de ejecución del proyecto. Guarda información como el nombre de la persona una vez ha hecho login, guarda él directorio de la cartera virtual del usuario, contiene la URL a las APIs de microservicios, red blockchain y demás datos necesarios. \\
 
 A parte de esto, hay una carpeta más, llamada \emph{preferences o shared preferences}. Android proporciona muchas formas de almacenar los datos de una aplicación, y esta es una de ellas. Las preferencias permiten guardar datos en forma de un par \{claves $->$ valor\}. Utilizo este archivo para guardar el correo del usuario asociado con la dirección en la que esta su cartera virtual. Esto permite al usuario tener varias cuentas en el móvil sin que haya conflicto entre las carteras virtuales. 
 
-\myuline{Librerias utilizadas} \\
+\uline{Librerias utilizadas} \\
 
 He utilizado 8 librerías extras (a parte de las que incluye por defecto android al iniciar el proyecto). \emph{web3j} se mencionará en el apartado del \hyperref[sec:SDK]{SDK} y \emph{play-services-vision} es necesaria para \emph{ZXing} pero no la he usado directamente. Queda entonces: \\
 \begin{enumerate}
@@ -328,7 +328,8 @@ bitmap = qrgEncoder.getBitmap();
 qr.setImageBitmap(bitmap);
 \end{lstlisting}
 
-\item \textbf{ZXing: } Esta librería permite generar códigos QR, pero más importante y la razón por la que la he usado, permite escanear códigos QR. Para generar QR utilicé la librería anterior puesto que es más fácil de utilizar que ZXing para Android. El código en este caso es bastante más largo por lo que no lo incluyo. Se encuentra de todos modos en el repositorio de github en el archivo \hyperref{https://github.com/FORGIS98/TFG/blob/main/Estublock/app/src/main/java/com/example/estublock/EscanearQRTutorial.java}{EscanearQR.java}.
+\item \textbf{ZXing: } Esta librería permite generar códigos QR, pero más importante y la razón por la que la he usado, permite escanear códigos QR. Para generar QR utilicé la librería anterior puesto que es más fácil de utilizar que ZXing para Android. El código en este caso es bastante más largo por lo que no lo incluyo. Se encuentra de todos modos en el repositorio de github en el archivo \href{https://github.com/FORGIS98/TFG/blob/main/Estublock/app/src/main/java/com/example/estublock/EscanearQRTutorial.java}{EscanearQR.java}.
+
 \end{enumerate}
 
 
@@ -337,16 +338,112 @@ qr.setImageBitmap(bitmap);
 
 La aplicación funciona, y podría usarse tal cual esta. Sin embargo es largo el camino que le queda para poder decir que esta terminada y que se pueda lanzar la primera versión de la aplicación. Ahora mismo es lo que se conoce como ``una versión alpha''. Esta listo para ser probado pero no para que se utilice de forma masiva. ¿Que avances y siguientes pasos necesita la aplicación para poder lanzar la primera versión \emph{V.1.0.0}?
 
+\begin{enumerate}
+\item \textbf{Refactorización: } Actualmente el código es ligeramente caótico, lo ideal es entonces ordenarlo en carpetas con nombres significativos y eliminando toda repetición de código. Esto es fundamental, pues para un futuro programador es más fácil coger un proyecto ordenado y estructurado siguiendo un ``modus operandi'' a coger un proyecto caótico. Además, ordenar el código reduce errores al minimizar las líneas de código (por quitar código repetido) y permite tener mayor control de las funciones que causan problemas. 
+
+\item \textbf{Tests: } Como toda pieza de software, se necesitan tests para probar el correcto funcionamiento de la aplicación. Con una buena bateria de tests, el programador puede probar el código que escribe, reduciendo los errores y reduciendo el tiempo que se tarda en corregir errores. Esto se debe a que los errores se detectan con más antelación y de forma más concreta. Dando lugar a un código mas estable, escalable y mantenible. 
+
+\item \textbf{Documentación: } Actualmente las funciones tienen pequeños comentarios, sería ideal añadir comentarios completos siguiendo el estilo de comentarios de javadocs para poder generar posteriormente con javadocs una documentación más detallada. Muchas partes del codigo se explican por si mismas, pero la documentación es fundamental para que un proyecto sea mantenido en el tiempo.
+
+\item \textbf{Experiencia de Usuario: } 
+  \begin{itemize}
+  \item Mejorar el diseño de la aplicación móvil, así el usuario tiene una experiencia más agradable al utilizar una aplicación visualmente mas atrallente. Por todos es sabido, que una aplicación fea atrae menos que una aplicación bonita y cuidada. 
+  \item Permitir al usuario editar el tema de colores de la aplicación. Esto permite al usuario darle un toque personal a la aplicación.
+  \end{itemize}
+
+\item \textbf{Funcionalidades: } Añadir más funcionalidades. Primero habría que ver cuales, diseñar un poco las pantallas y luego desarrollarlas. Ideas disponibles actualmente son: 
+  \begin{itemize}
+  \item Permitir modificar datos peronsales.
+  \item Listar los eventos a los que ha asistido un usuario.
+  \item Listar los usuarios que han asistido a un evento (para los profesores).
+  \end{itemize}
+\end{enumerate}
 
 % ##################################################
 % ##################################################
 \section{SDK} \label{sec:SDK}
-% --------------------------------------------------
-\subsection{Comunicación con la Red Blockchain}
+
+Un \emph{Kit de Desarrollo Software} o SDK (Software Development Kit) es generalmente un conjunto de herramientas de desarrollo de software que permiten a otros desarrolladores crear aplicaciones de forma más cómoda. Un buen ejemplo de SDK que se ha utilizado en este proyecto es la familia de SDKs de Android. Junto con AndroidStudio, se instalan múltiples SDKs que permiten al programador escribir código, recuperar componentes de las pantallas, hacer llamadas a paquetes, importar paquetes, detectar errores\dots Todo de forma automática haciendo que la programación sea mucho más fácil. \\
+
+El SDK es entonces un conjunto de métodos los cuales pueden hacer llamadas a una API, llamadas al propio sistema operativo, llamadas a otras librería o SDKs\dots En el caso del SDK desarrollado para este TFG, su principal función es la de hacer llamadas a una red blockchain y la de hacer llamadas al sistema de archivos del dispositivo para guardar la cartera virtual del usuario. 
+
 % --------------------------------------------------
 \subsection{Diseño del SDK}
+
+El SDK dispone de 3 archivos, cada uno con una función concreta. Estos 3 archivos están separados del proyecto Estublock. Para crear la estructura se ha creado un nuevo módulo o librería en AndroidStudio, esto crea una paqueña estructura de carpetas desde la cual crearemos el SDK y posteriormente se pueda publicar en un repositorio público para que otros desarrolladores puedan utilizar la herramienta. Más sobre esto en el capítulo de \hyperref[sec:Maven]{Como Incorporarlo en Otras Aplicaciones}. 
+
 % --------------------------------------------------
-\subsection{Como Incorporarlo en Otras Aplicaciones}
+\subsection{Comunicación con la Red Blockchain}
+En el archivo \emph{TransactionsHelper.java} se encuentra importada la librería de \emph{web3j} y se encuentra también el código que firma y envia las transacciones. Web3j es una biblioteca de Java y Android que permite trabajar con smart contracts e integrarse con clientes o nodos en la red de \emph{Ethereum}. Esto permite trabajar con la red de Ethereum sin necesidad de implementar el código de integración para la plataforma. Implementa la API de cliente JSON-RPC de Ethereum sobre HTTP, soporta carteras virtuales, firmado de transacciones\dots \\
+
+El uso de \emph{TransactionsHelper} es sencillo, primero se crea el objeto pasándole como parámetro la URL del nodo de la red blockchain al que vamos a conectarnos.
+\begin{lstlisting}[language=Java,float=ht,caption={[Java] Constructor de TransactionsHelper},label=lst:constructor]
+// Constructor
+public TransactionsHelper(@NonNull String blockchainURL){
+  web3j = Web3j.build(new HttpService(blockchainURL));
+}
+// Llamada 
+TransactionsHelper txHelp = new TransactionsHelper(URL);
+\end{lstlisting}
+
+Una vez creado el objeto se puede llamar al resto de funciones, entre las que están \verb|signTransaction(...)| que recibe seis argumentos entre otros las credenciales de la cartera virtual, el destino de la transacción (el smart contract) y un \emph{listener} para recuperar la respuesta de la transacción. Recordemos, no se pueden hacer operaciones pesadas en el hilo prinicpal de Android por lo que hay que hacerl o en un hilo a parte. Otra función importante es \verb|sendSignedTransaction(...)| la cual recibe dos parámetros, la transacción firmada y un \emph{listener}. Ambas funciones estan ``sobrecargadas'' (sobrecarga es la capacidad de un lenguaje de programación, que permite nombrar con el mismo identificador diferentes variables u operaciones), la razón de esta sobrecraga es permitir pasar los parámetro de múltples maneras. Por ejemplo, los datos de la transacción se pueden pasar como JSON, como String, como HashMap\dots y gracias a la sobrecarga podemos ponerle el mismo nombre a la función. A grandes rasgos un pequeño ejemplo de código puede verse a continuación: 
+
+\begin{lstlisting}[language=Java,float=ht,caption={[Java] Firmar y Enviar transacciones.},label=lst:transactionHelper]
+// Se crea y firma la transacción
+EthGetTransactionCount ethGetTransactionCount = null;
+ethGetTransactionCount = web3j.ethGetTransactionCount(credentials.getAddress(), DefaultBlockParameterName.LATEST).send();
+BigInteger nonce = ethGetTransactionCount.getTransactionCount();
+RawTransaction rawTransaction = RawTransaction.createTransaction(parametrosJSON);
+byte [] signedTx = TransactionEncoder.signMessage(rawTransaction, credentials)
+signedMessage = Numeric.toHexString(signedTx);
+
+// Se envia la transacción
+EthSendTransaction ethSendTransaction = web3j.ethSendRawTransaction(signedMessage).send();
+\end{lstlisting}
+
+
+% --------------------------------------------------
+\subsection{Comunicación con el Dispositivo}
+
+Para facilitar la generación de credenciales, cartera virtual, guardar en la carpeta ``Shared Preferences'' de Android todos los datos necesarios para la comunicación con la red blockchain\dots Tenemos el archivo \emph{WalletHelper.java}. En él además de la librería web3j, tenemos algunas funcionalidades de Seguridad de Java para modificar el proveedor de seguridad, y permitir que salten errores por algorítmos o parámetros erroneos. \\
+
+En este archivo tenemos entonces un contructor, el cual modifica el proveedor de seguridad a causa de un error con el algorítmo ``Elliptic Curve Digital Signature Algorithm''(ECDSA)\cite{ecdsa} para el proveedor BC\cite{bc}. Más información sobre el error se puede econtrar en el repositorio de web3j en la \href{https://github.com/web3j/web3j/issues/915}{issue\_915}. Básicamente lo que hace el código es modificar el proveedor.
+
+\begin{lstlisting}[language=Java,float=ht,caption={[Java] Modificación de proveedor de seguridad},label=lst:transactionHelper]
+final Provider provider = Security.getProvider(BouncyCastleProvider.PROVIDER_NAME);
+if(provider != null || !provider.getClass().equals(BouncyCastleProvider.class)){
+  Security.removeProvider(BouncyCastleProvider.PROVIDER_NAME);
+  Security.insertProviderAt(new BouncyCastleProvider(), 1);
+}
+\end{lstlisting}
+
+Luego, el programador dispone de varias funciones para crear una nueva cartera virtual con \verb|createNewWallet(...)| que acepta dos parámetros, siendo estos una contraseña y luego el lugar en el que se quiere guardar la cartera creada. Al igual que antes, esta función esta sobrecargada permitiendo pasar la locaclización como objeto String o como objeto File. Y permite también recuperar el \emph{address} del usuario o todas las credenciales. 
+
+\begin{lstlisting}[language=Java,float=ht,caption={[Java] Creacion de wallet y recuperación del address},label=lst:transactionHelper]
+WalletUtils.generateLightNewWalletFile(password, new File(keyStoreDirectory));
+
+Credentials credentials = WalletUtils.loadCredentials(password, keyStoreDirectory);
+String address = credentials.getAddress();
+\end{lstlisting}
+
+Como hemos mencionado anteriormente en este archivo se incluye también el guardado de los datos en él dispositivo móvil, aunque la función de web3j \verb|WalletUtils.generateLightNewWalletFile()| guarda los datos en el móvil. Para permitir que un usuario tenga varias carteras, se utiliza el \emph{SharedPreferences} para enlazar al usuario con su wallet. Para ello tenemos la función \verb|saveInPreferences(...)| la cual recibe cuatro parámetros entre ellos el lugar donde guardarlo, y los datos a guardar. Y luego tenemos otro método \verb|getFromPreferences(...)| para recuperar los dátos. 
+
+\begin{lstlisting}[language=Java,float=ht,caption={[Java] Guardado y recuperación de dátos en SharedPreferences},label=lst:transactionHelper]
+// Guardamos los datos
+SharedPreferences sharedPreferences = activity.getSharedPreferences(prefsName, Context.MODE_PRIVATE);
+SharedPreferences.Editor editor = sharedPreferences.edit();
+editor.putString(id, walletDirectory);
+editor.apply();
+
+// Devolvemos el dato con identificador id
+return  sharedPreferences.getString(id, null);
+\end{lstlisting}
+
+% --------------------------------------------------
+\subsection{``Callback Listener''}
+
+% --------------------------------------------------
+\subsection{Como Incorporarlo en Otras Aplicaciones} \label{sec:Maven}
 
 
 
