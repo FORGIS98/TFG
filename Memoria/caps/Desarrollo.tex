@@ -223,9 +223,9 @@ Las aplicaciones Android pueden ser programadas principalmente en dos lenguajes 
   \label{fig:java_vs_kotlin}
 \end{figure}
 
-Por lo tanto, aunque Kotlin promete mucho, he desarrollado la aplicación Estublock en Java. Por suerte, se puede migrar con múcha facilidad a Kotlin puesto que AndroidStudio (el Entodno de Desarrollo Integrado para programar aplicaciones Android) permite migrar automáticamente de Java a Kotlin. Para facilitar este proceso se deben poner ``marcas'' que especifiquen las caracteristicas de algunas variables o funciones para facilitar a AndroidStudio el reconocimiento de las variables. Un ejemplo puede encontrarse a continuación donde se puede ver que se especifica que las variables no pueden ser nulas con \emph{@NonNull}.
+Por lo tanto, aunque Kotlin promete mucho, he desarrollado la aplicación Estublock en Java. Por suerte, se puede migrar con múcha facilidad a Kotlin puesto que AndroidStudio (el Entodno de Desarrollo Integrado para programar aplicaciones Android) permite migrar automáticamente de Java a Kotlin. Para facilitar este proceso se deben poner ``anotaciones de java'' que especifiquen las caracteristicas de algunas variables o funciones para facilitar a AndroidStudio el reconocimiento de las variables. Un ejemplo puede encontrarse a continuación donde se puede ver que se especifica que las variables no pueden ser nulas con \emph{@NonNull}.
 
-\begin{lstlisting}[language=Java,float=ht,caption={[Java] Ejemplo de ``etiquetado'' de variables para facilitar el salto a Kotlin},label=lst:java_etiquetas]
+\begin{lstlisting}[language=Java,float=ht,caption={[Java] Ejemplo de ``anotación de java'' de variables para facilitar el salto a Kotlin},label=lst:java_etiquetas]
 public void sendSignedTransaction(@NonNull String signedMessage){
   // Código
 }
@@ -442,14 +442,158 @@ return  sharedPreferences.getString(id, null);
 % --------------------------------------------------
 \subsection{``Callback Listener''}
 
+Como las llamadas a la red blockchain son pesadas, han sido implementadas con threads: ``\verb|new Threads( new Runnable(){...} )|''. Como el código no espera a la respuesta del thread, he implementado dos funciones que hacen de ``escucha'' para cuando termina la ejecución. Estas funciones están especificadas en \emph{EasyBlockchainListener.java}, este archivo es una \emph{interdaz de java} para poder ser sobreescritas por le programador para que hagan lo que este desee. Utilizando la anotación de java \verb|@Override| con la que se sobreescribe un método para que el programador cambie el código y pueda hacer con la respuesta lo que considere necesario. Tenemos dos callbacks, uno para cuando se firma la transacción, y otro para cuando se envia a la red blockchain. Para utilizarlos no hay más que pasar como último parámetro de las funciones anteriormente mencionadas una función que será la que sobreescriba a los métodos.  
+
+\begin{lstlisting}[language=Java,float=ht,caption={[Java] Ejemplo de sobreescritura de un listener.},label=lst:transactionHelper]
+public void doSomething(...){
+  signTransaction(credentials, gasPrice, gas, to, data, new EasyBlockchainListener() {
+    // Sobreescribimos el método que esta en la interfaz EasyBlockchainListener
+    @Override
+    public void onSignTransactionEvent(@NonNull @NotNull String signedTx) {
+      sendSignedTransaction(signedTx);
+    }
+  });
+}
+\end{lstlisting}
+
 % --------------------------------------------------
 \subsection{Como Incorporarlo en Otras Aplicaciones} \label{sec:Maven}
 
+Para que otro programador pueda utilizar el SDK que se ha desarrollado el primer paso es publicar el SDK en algún repositorio como en los repositorios de \emph{Maven Centra}\cite{maven}. Maven dispone de una inmensa cantidad de repositorios que usuarios pueden utilizar añadiendo la dependencia a sus proyectos, y gradle (el sistema de automatización de construcción de código que utiliza Android) se encarga de bajar la información automáticamente y así el usuario puede utilizar las funcionalidades que el usuario desea. \\
+
+Para publicar la librería se han de seguir a muy grandes rasgos estos pasos:
+\begin{itemize}
+\item Crear un ``ticket'' con \emph{Sonatype}\cite{sonatype}.
+\item Crear el proyecto en Sonatype.
+\item Verificación de propiedad mediante DNS.
+\item Instalación del plugin para gradle \href{https://github.com/vanniktech/gradle-maven-publish-plugin}{gradle-maven-publish-plugin}
+\item Generar llaves GPG
+\item Configurar firmas
+\item Subir los artifacts a Sonatype
+\item Publicar la librería
+\end{itemize}
+
+Más detalles se pueden encontrar en el post de ``Waseef Akhtar''\cite{waseef}. \\
+
+Una vez la librería es pública, cualquier programador puede añadirla a su proyecto añadiendo a sus dependencias la línea \verb|implementation 'com.<entidad>.estublock:EasyBlockchain:1.0.0'|, el nombre de la entidad aún está por definir. Una vez añadida la línea y despues de que gradle termine de sincronizar el repositorio, el programador puede utilizar todas las funciones que hayan en la versión 1.0.0 del SDK.
 
 
 % ##################################################
 % ##################################################
 \section{Documentación}
 
+La documentación del SDK ha sido generada utilizando \emph{javadocs}, esto permite generar automáticamente una documentación a partir de varios tags de java. Una vez procesados, se genera una sencilla página web en la que se puede consultar la documentación. La documentación actualmente disponible es la siguiente: 
 
+\subsection{TransactionsHelper.java}
+\begin{lstlisting}[language=Java,caption={[Java] Documentación de TransactionsHelper},label=lst:transactionHelper]
+/**
+ * Constructor de la clase.
+ * @param blockchainURL La URL y puerto al nodo de la red blockchain con la que se
+ * quiere comunicar. 
+ */
+public TransactionsHelper(@NonNull String blockchainURL);
 
+/**
+ * Método que firma una transacción.
+ * @param credentials Las credenciales de un usuario, viene a ser su keystore
+ * @param gasPrice Cantidad que quieres pagar por unidad de gas como tarifa al minero
+ * @param gasLimit Limite máximo que estas dispuesto a pagar por la transacción
+ * @param to Address del SMART CONTRACT de destino
+ * @param data Información que se va a mandar al smart contract
+ * @param listener Callback de la llamada a sobreescribir
+ */
+public void signTransaction(@NonNull Credentials credentials, @NonNull String gasPrice, @NonNull String gasLimit, @NonNull String to, @NonNull String data, @NonNull EasyBlockchainListener listener);
+
+/**
+ * Método que envía una transacción ya firmada con listener.
+ * @param signedMessage Transacción firmada lista para ser enviada
+ * @param listener Callback de la llamada a sobreescribir
+ */
+public void sendSignedTransaction(@NonNull String signedMessage, @NonNull EasyBlockchainListener listener);
+
+/**
+ * Método que envía una transacción ya firmada sin listener.
+ * @param signedMessage Transacción firmada lista para ser enviada
+ */
+public void sendSignedTransaction(@NonNull String signedMessage);
+
+/**
+ * Método que firma y envía una transacción.
+ * @param credentials Las credenciales de un usuario, viene a ser su keystore
+ * @param gasPrice Cantidad que quieres pagar por unidad de gas como tarifa al minero
+ * @param gasLimit Limite máximo que estas dispuesto a pagar por la transacción
+ * @param to Address del SMART CONTRACT de destino
+ * @param data Información que se va a mandar al smart contract
+ * @param listener Callback de la llamada a sobreescribir
+ */  
+ public void signAndSendTransaction(@NonNull Credentials credentials, @NonNull String gasPrice, @NonNull String gasLimit, @NonNull String to, @NonNull String data);
+\end{lstlisting}
+
+\subsection{WalletHelper.java}
+\begin{lstlisting}[language=Java,caption={[Java] Documentación de WalletHelper},label=lst:transactionHelper]
+/**
+ * Constructor de la clase, llama a la función workaroundECDA()
+ */
+public WalletHelper();
+
+/**
+ * Método que arregla el problema con el proveedor de seguridad
+ * Para saber más ir a este link: {@link https://github.com/web3j/web3j/issues/915}
+ */
+private void workaroundECDA();
+
+/**
+ * Método que crea una nueva cartera virtual
+ * @param password Contraseña de la cartera virtual
+ * @param walletDirectory Dirección de la nueva cartera virtual
+ */
+public String createNewWallet(@NonNull String password, @NonNull File walletDirectory);
+
+/**
+ * Método que crea una nueva cartera virtual
+ * @param password Contraseña de la cartera virtual
+ * @param walletDirectory Dirección de la nueva cartera virtual
+ */  @NonNull
+public String createNewWallet(@NonNull String password, @NonNull String walletDirectory);
+
+/**
+ * Método que devuelve el address de una cartera
+ * @param password Contraseña de la cartera virtual
+ * @param keyStoreDirectory Dirección de la cartera virtual
+ */  
+public String getAddress(@NonNull String password, @NonNull File keyStoreDirectory);
+
+/**
+ * Devuelve el address de una cartera
+ * @param password Contraseña de la cartera virtual
+ * @param keyStoreDirectory Dirección de la cartera virtual
+ * @return address de la cartera
+ */ 
+public String getAddress(@NonNull String password, @NonNull String keyStoreDirectory);
+
+/**
+ * Devuelve las credenciales
+ * @param password Contraseña de la cartera virtual
+ * @param keyStoreDirectory Dirección de la cartera virtual
+ * @return credenciales de la cartera virtual
+ */ 
+public Credentials getCredentials(@NonNull String password, @NonNull File keyStoreDirectory);
+
+/**
+ * Guarda en el sharedPreferences de android un identificador y la dirección del wallet
+ * @param id id para la dirección del wallet
+ * @param walletDirectory Dirección de la cartera virtual
+ * @param prefsName nombre de las shared preferences que se quiere usar
+ * @param activity Actividad de android para poder cargar las shared preferences
+ */ 
+public void saveInPreferences(@NonNull String id, @NonNull String walletDirectory, @NonNull String prefsName, @NonNull Activity activity);
+
+/**
+ * Devuelve el valor asociado al id
+ * @param id id del que se quiere su valor
+ * @param prefsName nombre de las shared preferences que se quiere usar
+ * @param activity Actividad de android para poder cargar las shared preferences
+ * @return Devuelve la dirección donde esta guardar la cartera virtual de la persona
+ */ 
+public String getFromPreferences(@NonNull String id, @NonNull String prefsName, @NonNull Activity activity);
+\end{lstlisting}
