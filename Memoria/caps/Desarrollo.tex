@@ -183,13 +183,13 @@ Aunque la herramienta de AndroidStudio es muy útil, la mayoría de las pantalla
 
 Todo el código de la aplicación esta disponible en mi repositorio de github\cite{forgis98}. Vamos a tratar de resumir el trabajo realizado, pues gran parte de este TFG esta reflejado en la aplicación móvil que se ha desarrollado. \\
 
-\uline{Archivos del Proyecto} \\
+\underline{Archivos del Proyecto} \\
 
 El proyecto puede dividirse en 2, el SDK del que hablaremos más adelante. En él esta el código que se comunica con la red blockchain. Y por otro lado están las actividades y fragmentos que se comunican con sus respectivas pantallas, a excepción de un archivo llamando \emph{GlobalState.java}. Este archivo es muy importante, pues sirve para mantener el estado en tiempo de ejecución del proyecto. Guarda información como el nombre de la persona una vez ha hecho login, guarda él directorio de la cartera virtual del usuario, contiene la URL a las APIs de microservicios, red blockchain y demás datos necesarios. \\
 
-A parte de esto, hay una carpeta más, llamada \emph{preferences o shared preferences}. Android proporciona muchas formas de almacenar los datos de una aplicación, y esta es una de ellas. Las preferencias permiten guardar datos en forma de un par \{claves $->$ valor\}. Utilizo este archivo para guardar el correo del usuario asociado con la dirección en la que esta su cartera virtual. Esto permite al usuario tener varias cuentas en el móvil sin que haya conflicto entre las carteras virtuales. 
+A parte de esto, hay una carpeta más, llamada \emph{preferences o shared preferences}. Android proporciona muchas formas de almacenar los datos de una aplicación, y esta es una de ellas. Las preferencias permiten guardar datos en forma de un par \{claves $->$ valor\}. Utilizo este archivo para guardar el correo del usuario asociado con la dirección en la que esta su cartera virtual. Esto permite al usuario tener varias cuentas en el móvil sin que haya conflicto entre las carteras virtuales. \\
 
-\uline{Librerías utilizadas} \\
+\underline{Librerías utilizadas} \\
 
 He utilizado 8 librerías extras (a parte de las que incluye por defecto android al iniciar el proyecto). \emph{web3j} se mencionará en el apartado del \hyperref[sec:SDK]{SDK} y \emph{play-services-vision} es necesaria para \emph{ZXing} pero no la he usado directamente. Queda entonces: \\
 \begin{enumerate}
