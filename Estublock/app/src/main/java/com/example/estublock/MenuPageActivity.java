@@ -41,7 +41,7 @@ public class MenuPageActivity extends AppCompatActivity {
     gs = (GlobalState) getApplication();
 
     TextView userName = findViewById(R.id.nombre_logueado);
-    userName.setText(gs.getUserName());
+    userName.setText("");
 
     // Boton que te lleva a suscribirte a temas como redes, arqui...
     Button btn_suscripciones = findViewById(R.id.mis_asignaturas);
