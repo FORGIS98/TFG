@@ -409,8 +409,10 @@ Voatz es una plataforma electoral móvil que permite a los ciudadanos votar sin 
   \label{fig:Voatz}
 \end{figure}
 
-% -------------------------------------------------- %
-% -------------------------------------------------- %
+
+
+% ###########################################
+% ###########################################
 \section{Android}
 
 Android\cite{android} es un sistema operativo móvil basado en el \emph{Linux Kernel}. Fue diseñado para dispositivos móvil inteligentes, con pantallas táctiles, disponible para tablets, relojes inteligentes, incluso hay versiones de Android para el software de automóviles\cite{androidAuto}. Android es el sistema operativo móvil más utilizado del mundo, con una cuota de mercado superior al 90\% en 2018. Su código fuente es abierto y libre para que cualquiera pueda consultarlo o contribuir a él. Actualmente se encuentra en la versión \textbf{11} internamente conocido como ``Red Velvet Cake'' pero son pocos los móviles con opción a ella, a la hora de desarrollar una aplicación para dispositivos Android, lo ideal es elegir la versión \textbf{6} también conocido como ``Oreo'' la cual puede ejecutar una gran mayoría. 
@@ -480,4 +482,93 @@ Para que Android pueda iniciar un componente, debe reconocer la existencia de es
 Las aplicaciones Android se componen de mucho más que solo código. Disponen de imágenes, vídeos, fuentes, audios y otros elementos como las interfaces de usuario en XML. Los recursos facilitan la actualización de las características de la aplicación para permitir el cambio de idioma, de fuente, de tamaño según el dispositivo\dots \\
 
 Por cada recurso, el SDK define un ID con número entero único para poder hacerle referencia. Estos IDs se utilizan en el código, por ejemplo, para añadir una imagen puedes hacer referencia al ID de la imagen asignado por el SDK. Una de las ventajas de utilizar los recursos, es facilitar la traducción de la aplicación a otros idiomas, también puedes mostrar parte de la interfaz de usuario si el usuario tiene una suscripción concreta u otra. En el caso de mi aplicación móvil, utilizo esto para mostrar una aplicación diferente  a los alumnos y profesores.
+
+
+
+% --------------------------------------------------
+\section{Desarrollo de Microservicio Externo}
+
+Para poder desarrollar la aplicación móvil y el SDK de este TFG, se ha desarrollado previamente una API de microservicios la que centralizar las llamadas a una base de datos y a una red blockchain, básicamente es para agilizar las llamadas y tratamiento de datos por parte del dispositivo móvil, así como minimizar la cantidad de código, tamaño de la aplicación móvil, dependencias del proyecto\dots La API de microservicios con la que se comunica la aplicación móvil ha desarrollado utilizando \textbf{NodeJS} y ha sido documentada utilizando \textbf{Swagger} como se puede ver en la siguiente imagen. \\
+
+\begin{figure}[hbt]
+	\centering
+	\begin{subfigure}[b]{0.6\linewidth}
+		\centering
+        \includegraphics[width=0.6\linewidth]{figs/Desarrollo/Swagger}
+        \caption[Swagger]{Fragmento de documentación en Swagger del Proyecto}
+	\end{subfigure} 
+	\begin{subfigure}[b]{0.6\linewidth}
+		\centering
+        \includegraphics[width=0.6\linewidth]{figs/Desarrollo/SwaggerUsuario}
+        \caption[Swagger Usuario]{Fragmento de documentación de crear usuario}
+	\end{subfigure} 
+	\caption[Swagger]{Documentación con Swagger}
+	\label{fig:programas}
+\end{figure}
+
+% --------------------------------------------------
+\subsubsection{NodeJS}
+Node.js\cite{nodejs} es un entorno de ejecución de \textbf{JavaScript} construido con el motor de \emph{JavaScript V8 de Chrome}. Esta ideado como un entorno orientado a eventos asíncronos con el que se pueden diseñar aplicaciones escalables en la red. Permite tratar múltiples conexiones simultaneas sin que el programador tenga que preocuparse por la concurrencia. Hoy en día, los modelos de concurrencia usan hilos del sistema operativo y requieren de bloquear procesos para operaciones de lectura y escritura. Los usuarios de NodeJS están libres de preocuparse por el bloqueo del proceso, ya que no existe. De ahí que sea muy propicio desarrollar sistemas escalables con NodeJS, de todos modos aunque NodeJS trabaja sin hilos, se pueden aprovechar múltiples núcleos en su entorno, generando varios procesos. \\
+
+He decidido utilizar NodeJS para desarrollar la API de microservicios pues me da la seguridad de que responderá correctamente a miles de llamadas simultaneas (siempre y cuando el servidor en el que se este ejecutando pueda con el poder de computo que ello requiere). Así pues, puedo estar tranquilo y saber que el sistema no se caerá y podrá dar servicio un largo tiempo. Además, NodeJS junto con su gestor de paquetes \emph{npm} me permiten mantener el sistema actualizado con facilidad sin preocuparme de problemas de dependencias y paquetes desactualizados o que tienen problemas de seguridad. \\
+
+Algunos ejemplos de grandes proyectos que utilizan NodeJS son:
+\begin{itemize}
+\item Netflix
+\item Trello
+\item PayPal
+\item LinkedIn
+\item Uber
+\end{itemize}
+
+% --------------------------------------------------
+\subsubsection{Swagger}
+A la hora de programar una API, no es solo importante que el código sea correcto y funcione correcta y eficientemente. Sino que también es muy importante la documentación de la API, esto permite a otros programadores poder utilizarla sin preocuparse del código, y sin necesidad de conocer el proyecto. Para ello, he utilizado \textbf{Swagger} \cite{swagger}. Swagger es un conjunto de herramientas profesionales y de código abierto las cuales ayudan a diseñar y documentar APIs de forma escalable. Swagger permite hacer varias cosas:
+\begin{itemize}
+\item Diseñar
+\item Desarrollar
+\item Documentar
+\item Testear
+\item Virtualizar
+\item Monitorizar
+\end{itemize}
+
+Para este proyecto, me aproveche principalmente de las herramientas de diseño, desarrollo y documentación. Centrándome sobre todo en la comodidad de documentación que tiene al utilizar archivos \emph{YAML} (yaml es un formato de serialización de datos legibles por humanos) para generar una documentación ligera, fácil de entender y muy detallada. 
+
+% --------------------------------------------------
+\subsubsection{Funcionalidades de la API de Microservicios}
+Las funcionalidades de la API se pueden dividir en los siguientes 3 casos de uso generales:
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\linewidth]{figs/Desarrollo/UML}
+  \caption[Arquitectura]{Los tres casos de uso general de la aplicación}
+  \label{fig:casosUso}
+\end{figure}
+
+Siendo más concretos pasemos a listar todas las funcionalidades de las que dispone la API, lógicamente esta no es la documentación completa la cual trae consigo los objetos JSON que aceptan la URIs y los errores u objetos JSON que devuelve cada una de las URIs. En el presente la documentación se mantiene en un repositorio de \emph{gitlab} privado. \\
+
+\begin{itemize}
+\item \textcolor{green}{{\footnotesize POST} /user:} Permite registrar a un usuario en la base de datos.
+\item \textcolor{blue}{{\footnotesize GET} /user/{address}/attendance:} Permite obtener los eventos a los que ha asistido un usuario.
+\item \textcolor{blue}{{\footnotesize GET} /user/{email}/subscription:} Permite obtener los temas a los que está suscrito un usuario.
+\item \textcolor{green}{{\footnotesize POST} /login:} Permite iniciar sesión (se comprueba que el usuario exista y se comprueba la contraseña hasheada).
+\item \textcolor{green}{{\footnotesize POST} /logout:} Permite detectar que un usuario ha cerrado sesión.
+\item \textcolor{green}{{\footnotesize POST} /subscription:} Permite a un usuario suscribirse a un tema.
+\item \textcolor{red}{{\footnotesize DELETE} /subscription:} Permite a un usuario desabonar su suscripción de un tema.
+\item \textcolor{blue}{{\footnotesize GET} /topic:} Permite obtener la lista de temas disponibles.
+\item \textcolor{blue}{{\footnotesize GET} /topic/{id}/event:} Permite obtener un listado de los eventos de un tema concreto.
+\item \textcolor{blue}{{\footnotesize GET} /topic/{id}/subscription:} Permite obtener un listado con las suscripciones de un tema.
+\item \textcolor{green}{{\footnotesize POST} /event:} Permite obtener los datos de la transacción de crear un evento, esta es firmada por el usuario a través de la aplicación Móvil y después enviada a la red blockchain. 
+\item \textcolor{blue}{{\footnotesize GET} /event/{id}:} Permite obtener los datos de un evento.
+\item \textcolor{orange}{{\footnotesize PUT} /event/{id}:} Permite obtener los datos de la transacción para modificar un evento, también se firma y envía desde el móvil a la red blockchain. 
+\item \textcolor{blue}{{\footnotesize GET} /event/{id}/delete/{organizer}:} Permite obtener los parámetros de la transacción para cerrar un evento, se firma y envía desde el móvil.
+\item \textcolor{blue}{{\footnotesize GET} /eventCatalog:} Permite obtiene un listado con los tipos de eventos. 
+\item \textcolor{green}{{\footnotesize POST} /event/{id}/validator:} Permite añadir a un nuevo validador a un evento.
+\item \textcolor{blue}{{\footnotesize GET} /event/{id}/validator/{organizer}:} Permite obtener un listado con los validadores de un evento. 
+\item \textcolor{orange}{{\footnotesize POST} /event/{id}/attendance:} Permite obtener los parámetros de la transacción para registrar la asistencia a un evento, igual que antes, se firma y envía desde el móvil. 
+\item \textcolor{blue}{{\footnotesize GET} /event/{id}/attendance:} Permite obtener la lista de asistencias a un evento. 
+\end{itemize}
+
+Gracias a usar swagger, la API sigue la documentación de forma estricta, es decir, no acepta llamadas en las que no se envien los parámetro especificados en la documentación. Si para crear un usuario se requiere de un campo ``email'', si este campo no existe al hacer la llamada a la API, swagger se encarga de rechazar la llamada con un error de formato. Así logramos evitar que el backend tenga errores por variables indefinidas, nulas, o se guarden datos vacíos\dots
 
