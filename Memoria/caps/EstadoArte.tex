@@ -16,29 +16,27 @@ Blockchain es un tipo de base de datos, una base de datos es una colección de i
 
 Entonces, ¿donde difiere una blockchain con una base de datos tradicional? \\
 
-Una de las principales diferencias esta en el modo en el que se guarda la información, blockchain junta la información en grupos conocidos como \textbf{bloques}. Estos bloques tienen capacidad para una cantidad de información, y una vez llenos se enlazan con el bloque anterior con la ayuda de un \textbf{hash}. Un \textbf{hash}\cite{whatIsHash} es un algoritmo que mezcla la información que se le introduce para generar una salida única e irreversible de siempre la misma longitud. \\
+Una de las principales diferencias esta en el modo en el que se guarda la información, blockchain junta la información en grupos conocidos como \textbf{bloques}. Estos bloques tienen capacidad para una cantidad de información, y una vez llenos se enlazan con el bloque anterior con la ayuda de un \textbf{hash}. Un \textbf{hash}\cite{whatIsHash} es un algoritmo que mezcla la información que se le introduce para generar una salida única e irreversible de siempre la misma longitud, como se puede ver en \ref{fig:hash} la contraseña del usuario \emph{Asmin\_Ben} se hashea quedando una longitud fija en la base de datos. \\
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.6\linewidth]{figs/EstadoArte/Blockchain/hash}
-  \caption[Hash]{Ejemplo genérico del funcionamiento de un algoritmo hash}
+  \includegraphics[width=0.8\linewidth]{figs/EstadoArte/Blockchain/hash}
+  \caption[Ejemplo del hashing de una contraseña]{Ejemplo del hashing de una contraseña}
   \label{fig:hash}
 \end{figure}
 
-\clearpage
-
 Existen múltiples algoritmos hash, y van evolucionando con el tiempo siendo cada vez más seguros y con menos colisiones. Una colisión, se da cuando dos entradas diferentes producen el mismo resultado (rompiendo con una de las reglas principales de los algoritmos hash que es que cada entrada produzca una única salida). \\
 
-Para continuar con la explicación, utilizaremos como ejemplo la red de \textbf{Bitcoin}\cite{whatIsBitcoin} y su algoritmo de consenso \textbf{Proof of Work}\cite{whatIsProofOfWork}. La base es la misma para la inmensa mayoría de redes, sin embargo según el algoritmo de consenso el método difiere ligeramente. Los algoritmos se verán mas adelante. 
+Para continuar con la explicación, utilizaremos como ejemplo la red de \textbf{Bitcoin}\cite{whatIsBitcoin} y su algoritmo de consenso \textbf{Proof of Work}\cite{whatIsProofOfWork}. La base es la misma para la inmensa mayoría de redes, sin embargo según el algoritmo de consenso el método difiere ligeramente. Los algoritmos se verán mas adelante. Ahora entraremos en más detalles con las transacciónes, pero a grandes rasgos se puede ver la vida de una transacción de bitcoin en la figura \ref{fig:bitcoin}
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.8\linewidth]{figs/EstadoArte/Blockchain/bitcoinMining}
-  \caption[Bitcoin Mining]{Transaction Process}
+  \caption[Vida de una transacción en Bitcoin]{Vida de una transacción en Bitcoin}
   \label{fig:bitcoin}
 \end{figure}
 
-Cada bloque de la red blockchain, una vez tiene suficiente información para formarse, pasa por una función \textbf{hash256}. Cuando decimos suficiente información, nos referimos a las ``transacciones'', no son más que datos, ya sean monetarios, nombres, lugares, compras, firmas... o cualquier tipo de información digital. Todos los nodos de la red comparten estas transacciones, están todos sincronizados. Entendemos como nodo un ordenador de la red blockchain. Como ya sabemos, para formar un bloque, se tiene que calcular un hash, para evitar colisiones entre múltiples nodos de la blockchain, y así evitar que varios bloques se quieran añadir simultáneamente, el hash resultante ha de tener una cantidad determinada de \verb|0|'s al principio del mismo, esto es conocido como ``dificultad del hash''. Por ejemplo, si la dificultad del hash es de \verb|32bits| la función hash256 resultante puede ser algo así: \verb|000000003d3a75526946a3bcf00daec9fc9c9c4d51ddc7cc5df888f74dd434d1|. Para llegar a este hash, los nodos de la blockchain tienen que utilizar el hash del bloque anterior junto con la información de las transacciones, y junto con un número conocido como \textbf{nonce}\cite{whatIsNonce}. Un \textbf{nonce} es un número que solo puede ser usado una vez. Los nodos solo pueden modificar este número, no pueden tocar ni el hash del bloque anterior ni las transacciones. Los nodos proceden entonces a modificar de manera aleatoria este nonce hasta dar con el hash con los \verb|0|'s que se piden. Este procedimiento es completamente aleatorio, por lo que a más poder de computo, mas rápido puedes probar números y mas posibilidades tienes de dar con el hash que se pide. A este proceso se le llama ``minado''\cite{minarBitcoin}
+Cada bloque de la red blockchain, una vez tiene suficiente información para formarse, pasa por una función \textbf{hash256}. Cuando decimos suficiente información, nos referimos a las ``transacciones'', no son más que datos, ya sean monetarios, nombres, lugares, compras, firmas... o cualquier tipo de información digital. Todos los nodos de la red comparten estas transacciones, están todos sincronizados. Entendemos como nodo un ordenador de la red blockchain. Como ya sabemos, para formar un bloque, se tiene que calcular un hash, para evitar colisiones entre múltiples nodos de la blockchain, y así evitar que varios bloques se quieran añadir simultáneamente, el hash resultante ha de tener una cantidad determinada de \verb|0|'s al principio del mismo, esto es conocido como ``dificultad del hash''\ref{fig:hashDiff}. Por ejemplo, si la dificultad del hash es de \verb|32bits| la función hash256 resultante puede ser algo así: \verb|000000003d3a75526946a3bcf00daec9fc9c9c4d51ddc7cc5df888f74dd434d1|. Para llegar a este hash, los nodos de la blockchain tienen que utilizar el hash del bloque anterior junto con la información de las transacciones, y junto con un número conocido como \textbf{nonce}\cite{whatIsNonce}. Un \textbf{nonce} es un número que solo puede ser usado una vez. Los nodos solo pueden modificar este número, no pueden tocar ni el hash del bloque anterior ni las transacciones. Los nodos proceden entonces a modificar de manera aleatoria este nonce hasta dar con el hash con los \verb|0|'s que se piden. Este procedimiento es completamente aleatorio, por lo que a más poder de computo, mas rápido puedes probar números y mas posibilidades tienes de dar con el hash que se pide. A este proceso se le llama ``minado''\cite{minarBitcoin}
 
 \begin{figure}[h!]
   \centering
@@ -90,11 +88,11 @@ Estas redes blockchain son controladas por un proveedor de servicios como puede 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.8\linewidth]{figs/EstadoArte/Blockchain/algoritmosConsenso.jpeg}
-  \caption[Algoritmos de Consenso]{Diferentes tipos de algoritmos}
+  \caption[Algoritmos de Consenso]{Diferentes tipos de algoritmos de consenso}
   \label{fig:consenso}
 \end{figure}
 
-Existen múltiples algoritmos de consenso, y estos evolucionan con el paso del tiempo. Los algoritmos de consenso son procesos o protocolos de toma de decisiones, dependiendo del algoritmo hay uno o varios nodos de la red con el poder de tomar la decisión sobre que bloque es el siguiente en añadirse a la red y si ha sido o no alterado. Los objetivos que busca blockchain con los algoritmos de consenso son:
+Existen múltiples algoritmos de consenso\ref{fig:consenso}, y estos evolucionan con el paso del tiempo. Los algoritmos de consenso son procesos o protocolos de toma de decisiones, dependiendo del algoritmo hay uno o varios nodos de la red con el poder de tomar la decisión sobre que bloque es el siguiente en añadirse a la red y si ha sido o no alterado. Los objetivos que busca blockchain con los algoritmos de consenso son:
 
 \begin{itemize}
 \item Llegar a un acuerdo
@@ -161,42 +159,50 @@ Al estar programados en la red blockchain, no pueden ser modificados sin que tod
 \label{sec:smartContract}
 \index{SmartContract}
 
-\begin{lstlisting}[language=Java,float=ht,caption={[Smart Contract]Ejemplo de código fuente de un smart contract escrito en Solidity},label=lst:java]
-pragma solidity 0.6.11;
+% \begin{lstlisting}[language=Java,float=ht,caption={[Smart Contract]Ejemplo de código fuente de un smart contract escrito en Solidity},label=lst:java]
+% pragma solidity 0.6.11;
+% 
+% contract VendingMachine {
+%   // Declare state variables of the contract
+%   address public owner;
+%   mapping (address => uint) public cupcakeBalances;
+% 
+%   // When 'VendingMachine' contract is deployed:
+%   // 1. set the deploying address as the owner of the contract
+%   // 2. set the deployed smart contract's cupcake balance to 100
+%   constructor() public {
+%     owner = msg.sender;
+%     cupcakeBalances[address(this)] = 100;
+%   }
+% 
+%   // Allow the owner to increase the smart contract's cupcake balance
+%   function refill(uint amount) public {
+%     require(msg.sender == owner, "Only the owner can refill.");
+%     cupcakeBalances[address(this)] += amount;
+%   }
+% 
+%   // Allow anyone to purchase cupcakes
+%   function purchase(uint amount) public payable {
+%     require(msg.value >= amount * 1 ether, "You must pay at least 1 ETH per cupcake");
+%     require(cupcakeBalances[address(this)] >= amount, "Not enough cupcakes in stock to complete this purchase");
+%     cupcakeBalances[address(this)] -= amount;
+%     cupcakeBalances[msg.sender] += amount;
+%   }
+% }
+% \end{lstlisting}
 
-contract VendingMachine {
-  // Declare state variables of the contract
-  address public owner;
-  mapping (address => uint) public cupcakeBalances;
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figs/EstadoArte/Blockchain/SmartContractEjemplo}
+  \caption[Máquina de ventas en solidity]{Máquina de ventas en solidity}
+  \label{fig:smartContract}
+\end{figure}
 
-  // When 'VendingMachine' contract is deployed:
-  // 1. set the deploying address as the owner of the contract
-  // 2. set the deployed smart contract's cupcake balance to 100
-  constructor() public {
-    owner = msg.sender;
-    cupcakeBalances[address(this)] = 100;
-  }
-
-  // Allow the owner to increase the smart contract's cupcake balance
-  function refill(uint amount) public {
-    require(msg.sender == owner, "Only the owner can refill.");
-    cupcakeBalances[address(this)] += amount;
-  }
-
-  // Allow anyone to purchase cupcakes
-  function purchase(uint amount) public payable {
-    require(msg.value >= amount * 1 ether, "You must pay at least 1 ETH per cupcake");
-    require(cupcakeBalances[address(this)] >= amount, "Not enough cupcakes in stock to complete this purchase");
-    cupcakeBalances[address(this)] -= amount;
-    cupcakeBalances[msg.sender] += amount;
-  }
-}
-\end{lstlisting}
 
 Los smart contracts pueden ser escritos en múltiples lenguajes de programación dependiendo de la red blockchain que se vaya a utilizar. Algunos ejemplos son:
 \begin{itemize}
 \item EOS Blockchain -> \verb|C++|
-\item Ethereum -> \verb|Solidity|
+\item Ethereum -> \verb|Solidity|\ref{fig:smartContract}
 \item NEO Blockchain -> \verb|JavaScript, Java|
 \item Hyperldger -> \verb|Golang|
 \item Cardano -> \verb|Haskell|
@@ -223,12 +229,12 @@ Y mucho más \cite{appCripto}.
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.6\linewidth]{figs/EstadoArte/Ethereum/ethereumLOGO}
+  \includegraphics[width=0.2\linewidth]{figs/EstadoArte/Ethereum/ethereumLOGO}
   \caption[Ethereum]{Logo de ethereum}
   \label{fig:ethereum}
 \end{figure}
 
-\textit{Ethereum es una plataforma global de código abierto para aplicaciones descentralizadas, permite escribir código que controla el valor digital, funciona tal como se programó y al que puede accederse desde cualquier parte del mundo. Ethereum es un acceso abierto al dinero digital y a los servicios de información para todos, sin importar su origen o ubicación. Es una tecnología creada por la comunidad tras la criptomoneda ether (ETH) y miles de aplicaciones que puedes usar hoy.}
+\textit{Ethereum\ref{fig:ethereum} es una plataforma global de código abierto para aplicaciones descentralizadas, permite escribir código que controla el valor digital, funciona tal como se programó y al que puede accederse desde cualquier parte del mundo. Ethereum es un acceso abierto al dinero digital y a los servicios de información para todos, sin importar su origen o ubicación. Es una tecnología creada por la comunidad tras la criptomoneda ether (ETH) y miles de aplicaciones que puedes usar hoy.}
 
 % -------------------------------------------------- %
 \subsection{Ether (ETH)}
@@ -253,67 +259,70 @@ A grandes rasgos nos quedan estos tres términos importantes:
 % -------------------------------------------------- %
 \subsection{Ethereum Smart Contract}
 
-Los smart contracts de ethereum están escritos en \textbf{Solidity}\cite{SolidityDocs} o \textbf{Vyper}\cite{VyperDocs}. Cualquier persona es libre de programar un smart contract y desplegarlo en la red de ethereum, los smart contracts son una transacción más y tienen su propio address. Permitiendo que cualquier persona haga llamadas al smart contract. Desplegar un smart contract cuesta \emph{gas} al igual que cualquier transacción, sin embargo es bastante más caro. 
+Los smart contracts de ethereum están escritos en \textbf{Solidity}\cite{SolidityDocs}\ref{fig:soliditySmartContractEntero} o \textbf{Vyper}\cite{VyperDocs}, sus logos pueden verse en \ref{fig:programas}. Cualquier persona es libre de programar un smart contract y desplegarlo en la red de ethereum, los smart contracts son una transacción más y tienen su propio address. Permitiendo que cualquier persona haga llamadas al smart contract. Desplegar un smart contract cuesta \emph{gas} al igual que cualquier transacción, sin embargo es bastante más caro. 
 
 \begin{figure}[hbt]
 	\centering
 	\begin{subfigure}[b]{0.4\linewidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{figs/EstadoArte/Ethereum/solidityLOGO}
+		\includegraphics[width=0.5\linewidth]{figs/EstadoArte/Ethereum/solidityLOGO}
 		\caption{Logo de Solidity}\label{fig:solProgram}
 	\end{subfigure} 
 	\begin{subfigure}[b]{0.4\linewidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{figs/EstadoArte/Ethereum/vyperLOGO}
+		\includegraphics[width=0.6\linewidth]{figs/EstadoArte/Ethereum/vyperLOGO}
 		\caption{Logo de Vyper}\label{fig:vyperProgram}
 	\end{subfigure} 
 	\caption[Lenguajes de Smart Contract]{Lenguajes de smart contract para ethereum.}
 	\label{fig:programas}
 \end{figure}
 
-\clearpage
+% \begin{lstlisting}[language=Java,float=ht,caption={[Solidity Contract]Ejemplo de código fuente de un smart contract escrito en Solidity},label=lst:java]
+% // SPDX-License-Identifier: GPL-3.0
+% pragma solidity >= 0.7.0;
+% 
+% contract Coin {
+%   // The keyword "public" makes variables
+%   // accessible from other contracts
+%   address public minter;
+%   mapping (address => uint) public balances;
+% 
+%   // Events allow clients to react to specific
+%   // contract changes you declare
+%   event Sent(address from, address to, uint amount);
+% 
+%   // Constructor code is only run when the contract
+%   // is created
+%   constructor() {
+%     minter = msg.sender;
+%   }
+% 
+%   // Sends an amount of newly created coins to an address
+%   // Can only be called by the contract creator
+%   function mint(address receiver, uint amount) public {
+%     require(msg.sender == minter);
+%     require(amount < 1e60);
+%     balances[receiver] += amount;
+%   }
+% 
+%   // Sends an amount of existing coins
+%   // from any caller to an address
+%   function send(address receiver, uint amount) public {
+%       require(amount <= balances[msg.sender], "Insufficient balance.");
+%       balances[msg.sender] -= amount;
+%       balances[receiver] += amount;
+%       emit Sent(msg.sender, receiver, amount);
+%   }
+% }
+% \end{lstlisting}
 
-\label{sec:solidity}
-\index{Solidity}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.7\linewidth]{figs/EstadoArte/Ethereum/SmartContract}
+  \caption[Código ejemplo de un smart contract]{Código ejemplo de un smart contract}
+  \label{fig:soliditySmartContractEntero}
+\end{figure}
 
-\begin{lstlisting}[language=Java,float=ht,caption={[Solidity Contract]Ejemplo de código fuente de un smart contract escrito en Solidity},label=lst:java]
-// SPDX-License-Identifier: GPL-3.0
-pragma solidity >= 0.7.0;
-
-contract Coin {
-  // The keyword "public" makes variables
-  // accessible from other contracts
-  address public minter;
-  mapping (address => uint) public balances;
-
-  // Events allow clients to react to specific
-  // contract changes you declare
-  event Sent(address from, address to, uint amount);
-
-  // Constructor code is only run when the contract
-  // is created
-  constructor() {
-    minter = msg.sender;
-  }
-
-  // Sends an amount of newly created coins to an address
-  // Can only be called by the contract creator
-  function mint(address receiver, uint amount) public {
-    require(msg.sender == minter);
-    require(amount < 1e60);
-    balances[receiver] += amount;
-  }
-
-  // Sends an amount of existing coins
-  // from any caller to an address
-  function send(address receiver, uint amount) public {
-      require(amount <= balances[msg.sender], "Insufficient balance.");
-      balances[msg.sender] -= amount;
-      balances[receiver] += amount;
-      emit Sent(msg.sender, receiver, amount);
-  }
-}
-\end{lstlisting}
 
 % -------------------------------------------------- %
 \subsection{Funcionamiento básico de Ethereum}
@@ -323,11 +332,11 @@ Para entender el funcionamiento básico de Ethereum, vamos a exponerlo por nivel
 % -------------------------------------------------- %
 \subsection{Nivel 1: Máquina Virtual de Ethereum} 
 
-La \textbf{EVM} es el entorno de ejecución de los smart contract. Esta, gestiona todo el procesamiento de transacciones en la red, creando un nivel de abstracción entre el código que se ejecuta y la máquina que lo hace. La EVM es \emph{Turing-Completa} con 140 instrucciones únicas que la permiten ejecutar casi cualquier cosa. 
+La \textbf{EVM}\ref{fig:evm} es el entorno de ejecución de los smart contract. Esta, gestiona todo el procesamiento de transacciones en la red, creando un nivel de abstracción entre el código que se ejecuta y la máquina que lo hace. La EVM es \emph{Turing-Completa} con 140 instrucciones únicas que la permiten ejecutar casi cualquier cosa. 
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.6\linewidth]{figs/EstadoArte/Ethereum/evm}
+  \includegraphics[width=0.8\linewidth]{figs/EstadoArte/Ethereum/evm}
   \caption[Diagrama EVM]{Diagrama de la máquina virtual de ethereum}
   \label{fig:evm}
 \end{figure}
@@ -340,11 +349,11 @@ Programas que se ejecutan en la red de ethereum.
 % -------------------------------------------------- %
 \subsection{Nivel 3: Nodos de Ethereum}
 
-Para que una app pueda interactuar con la red, necesita conectarse a un nodo de ethereum. Los nodos son ordenadores que ejecutan el \emph{software} cliente de ethereum, manteniendo el registro de bloques y validando las transacciones. Almacenan colectivamente el estado de la blockchain y llegan a un consenso sobre las transacciones para hacer crecer el número de bloques. Al conectar la app con un nodo, la app puede leer datos de la red, enviar nuevas transacciones\dots
+Para que una app pueda interactuar con la red, necesita conectarse a un nodo de ethereum\ref{fig:etherNodo}. Los nodos son ordenadores que ejecutan el \emph{software} cliente de ethereum, manteniendo el registro de bloques y validando las transacciones. Almacenan colectivamente el estado de la blockchain y llegan a un consenso sobre las transacciones para hacer crecer el número de bloques. Al conectar la app con un nodo, la app puede leer datos de la red, enviar nuevas transacciones\dots
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.6\linewidth]{figs/EstadoArte/Ethereum/ethereumNodo}
+  \includegraphics[width=0.8\linewidth]{figs/EstadoArte/Ethereum/ethereumNodo}
   \caption[Nodos vista genérica]{Nodo y vista genérica de aplicaciones.}
   \label{fig:etherNodo}
 \end{figure}
@@ -368,7 +377,7 @@ Ahora que entendemos que es Blockchain, visto múltiples ejemplos de redes, vist
 % -------------------------------------------------- %
 \subsection{GUTS Tickets}
 
-Esta aplicación móvil usa blockchain para emitir entradas honestas que ponen fin a los vergonzosos precios del mercado de la ``reventa'' y al fraude en las entradas. \emph{GUTS} es el primer sistema de ventas de entradas que hace uso del \textbf{Protocolo de Entrada Garantizada} {\small (\textit{Guaranteed Entrance Protocol (GET)})}\cite{GET}. Este protocolo permite crear entradas inteligentes y seguras permitiendo el seguimiento de las mismas así como el control de su precio original y secundario (reventa). 
+Esta aplicación móvil usa blockchain para emitir entradas honestas que ponen fin a los vergonzosos precios del mercado de la ``reventa'' y al fraude en las entradas. \emph{GUTS}\ref{fig:Logos} es el primer sistema de ventas de entradas que hace uso del \textbf{Protocolo de Entrada Garantizada} {\small (\textit{Guaranteed Entrance Protocol (GET)})}\cite{GET}\ref{fig:Logos}. Este protocolo permite crear entradas inteligentes y seguras permitiendo el seguimiento de las mismas así como el control de su precio original y secundario (reventa). 
 
 \begin{figure}[hbt]
 	\centering
@@ -379,7 +388,7 @@ Esta aplicación móvil usa blockchain para emitir entradas honestas que ponen f
 	\end{subfigure} 
 	\begin{subfigure}[b]{0.4\linewidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{figs/EstadoArte/Apps/gutsLOGO.png}
+		\includegraphics[width=0.6\linewidth]{figs/EstadoArte/Apps/gutsLOGO.png}
 		\caption{Logo de la aplicación Guts}\label{fig:gutsLOGO}
 	\end{subfigure} 
 	\caption[Logos de Guts y GET]{Logos}
@@ -397,10 +406,9 @@ Esta aplicación esta construyendo una plataforma de identidad digital segura y 
 
 Para ello utiliza la red blockchain de \textbf{ArcBlock}\cite{webArc,alianzaArc}. ArcBlock es una plataforma para desarrollar aplicaciones en blockchains o \textbf{DApps}\cite{dapps}. 
 
-\clearpage
 \subsection{Voatz}
 
-Voatz es una plataforma electoral móvil que permite a los ciudadanos votar sin tener que acudir a su colegio electoral o presentar una papeleta por correo. Voatz aprovecha las características de seguridad integradas en las últimas versiones de la tecnología de los teléfonos como es la biometría. Y también aprovecha la seguridad, transparencia e inmutabilidad de la red blockchain para garantizar la seguridad de cada voto. Desde el 2016 han emitido más de 110000 votos en mas de 67 elecciones. 
+Voatz\ref{fig:Voatz} es una plataforma electoral móvil que permite a los ciudadanos votar sin tener que acudir a su colegio electoral o presentar una papeleta por correo. Voatz aprovecha las características de seguridad integradas en las últimas versiones de la tecnología de los teléfonos como es la biometría. Y también aprovecha la seguridad, transparencia e inmutabilidad de la red blockchain para garantizar la seguridad de cada voto. Desde el 2016 han emitido más de 110000 votos en mas de 67 elecciones. 
 
 \begin{figure}[h!]
   \centering
@@ -488,23 +496,22 @@ Por cada recurso, el SDK define un ID con número entero único para poder hacer
 % --------------------------------------------------
 \section{Desarrollo de Microservicio Externo}
 
-Para poder desarrollar la aplicación móvil y el SDK de este TFG, se ha desarrollado previamente una API de microservicios la que centralizar las llamadas a una base de datos y a una red blockchain, básicamente es para agilizar las llamadas y tratamiento de datos por parte del dispositivo móvil, así como minimizar la cantidad de código, tamaño de la aplicación móvil, dependencias del proyecto\dots La API de microservicios con la que se comunica la aplicación móvil ha desarrollado utilizando \textbf{NodeJS} y ha sido documentada utilizando \textbf{Swagger} como se puede ver en la siguiente imagen. \\
+Para poder desarrollar la aplicación móvil y el SDK de este TFG, se ha desarrollado previamente una API de microservicios la que centralizar las llamadas a una base de datos y a una red blockchain, básicamente es para agilizar las llamadas y tratamiento de datos por parte del dispositivo móvil, así como minimizar la cantidad de código, tamaño de la aplicación móvil, dependencias del proyecto\dots La API de microservicios con la que se comunica la aplicación móvil ha desarrollado utilizando \textbf{NodeJS} y ha sido documentada utilizando \textbf{Swagger} \ref{fig:swaggerQuerys}, \ref{swaggerUsuario}. \\
 
-\begin{figure}[hbt]
-	\centering
-	\begin{subfigure}[b]{0.6\linewidth}
-		\centering
-        \includegraphics[width=0.6\linewidth]{figs/Desarrollo/Swagger}
-        \caption[Swagger]{Fragmento de documentación en Swagger del Proyecto}
-	\end{subfigure} 
-	\begin{subfigure}[b]{0.6\linewidth}
-		\centering
-        \includegraphics[width=0.6\linewidth]{figs/Desarrollo/SwaggerUsuario}
-        \caption[Swagger Usuario]{Fragmento de documentación de crear usuario}
-	\end{subfigure} 
-	\caption[Swagger]{Documentación con Swagger}
-	\label{fig:programas}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=1\linewidth]{figs/Desarrollo/Swagger}
+  \caption[Swagger]{Fragmento de documentación en Swagger del Proyecto}
+  \label{fig:swaggerQuerys}
 \end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=1\linewidth]{figs/Desarrollo/SwaggerUsuario}
+  \caption[Swagger Usuario]{Fragmento de documentación de crear usuario}
+  \label{fig:swaggerUsuario}
+\end{figure}
+
 
 % --------------------------------------------------
 \subsubsection{NodeJS}
@@ -537,38 +544,61 @@ Para este proyecto, me aproveche principalmente de las herramientas de diseño, 
 
 % --------------------------------------------------
 \subsubsection{Funcionalidades de la API de Microservicios}
-Las funcionalidades de la API se pueden dividir en los siguientes 3 casos de uso generales:
+Las comunicaciones de la API se pueden dividir en los siguientes 3 casos de uso generales \ref{fig:casosUso}:
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.6\linewidth]{figs/Desarrollo/UML}
-  \caption[Arquitectura]{Los tres casos de uso general de la aplicación}
+  \caption[Comunicaciones de la API]{Comunicaciones de la API}
   \label{fig:casosUso}
 \end{figure}
 
 Siendo más concretos pasemos a listar todas las funcionalidades de las que dispone la API, lógicamente esta no es la documentación completa la cual trae consigo los objetos JSON que aceptan la URIs y los errores u objetos JSON que devuelve cada una de las URIs. En el presente la documentación se mantiene en un repositorio de \emph{gitlab} privado. \\
 
-\begin{itemize}
-\item \textcolor{green}{{\footnotesize POST} /user:} Permite registrar a un usuario en la base de datos.
-\item \textcolor{blue}{{\footnotesize GET} /user/{address}/attendance:} Permite obtener los eventos a los que ha asistido un usuario.
-\item \textcolor{blue}{{\footnotesize GET} /user/{email}/subscription:} Permite obtener los temas a los que está suscrito un usuario.
-\item \textcolor{green}{{\footnotesize POST} /login:} Permite iniciar sesión (se comprueba que el usuario exista y se comprueba la contraseña hasheada).
-\item \textcolor{green}{{\footnotesize POST} /logout:} Permite detectar que un usuario ha cerrado sesión.
-\item \textcolor{green}{{\footnotesize POST} /subscription:} Permite a un usuario suscribirse a un tema.
-\item \textcolor{red}{{\footnotesize DELETE} /subscription:} Permite a un usuario desabonar su suscripción de un tema.
-\item \textcolor{blue}{{\footnotesize GET} /topic:} Permite obtener la lista de temas disponibles.
-\item \textcolor{blue}{{\footnotesize GET} /topic/{id}/event:} Permite obtener un listado de los eventos de un tema concreto.
-\item \textcolor{blue}{{\footnotesize GET} /topic/{id}/subscription:} Permite obtener un listado con las suscripciones de un tema.
-\item \textcolor{green}{{\footnotesize POST} /event:} Permite obtener los datos de la transacción de crear un evento, esta es firmada por el usuario a través de la aplicación Móvil y después enviada a la red blockchain. 
-\item \textcolor{blue}{{\footnotesize GET} /event/{id}:} Permite obtener los datos de un evento.
-\item \textcolor{orange}{{\footnotesize PUT} /event/{id}:} Permite obtener los datos de la transacción para modificar un evento, también se firma y envía desde el móvil a la red blockchain. 
-\item \textcolor{blue}{{\footnotesize GET} /event/{id}/delete/{organizer}:} Permite obtener los parámetros de la transacción para cerrar un evento, se firma y envía desde el móvil.
-\item \textcolor{blue}{{\footnotesize GET} /eventCatalog:} Permite obtiene un listado con los tipos de eventos. 
-\item \textcolor{green}{{\footnotesize POST} /event/{id}/validator:} Permite añadir a un nuevo validador a un evento.
-\item \textcolor{blue}{{\footnotesize GET} /event/{id}/validator/{organizer}:} Permite obtener un listado con los validadores de un evento. 
-\item \textcolor{orange}{{\footnotesize POST} /event/{id}/attendance:} Permite obtener los parámetros de la transacción para registrar la asistencia a un evento, igual que antes, se firma y envía desde el móvil. 
-\item \textcolor{blue}{{\footnotesize GET} /event/{id}/attendance:} Permite obtener la lista de asistencias a un evento. 
-\end{itemize}
+
+\begin{center}
+  \begin{tabular}{|c|l|m{23em}|}
+    \hline
+    \textcolor{green}{{\footnotesize POST}} & /user: & Permite registrar a un usuario en la base de datos. \\
+    \hline
+    \textcolor{blue}{{\footnotesize GET}} & /user/{address}/attendance: & Permite obtener los eventos a los que ha asistido un usuario. \\
+    \hline
+    \textcolor{blue}{{\footnotesize GET}} & /user/{email}/subscription: & Permite obtener los temas a los que está suscrito un usuario. \\
+    \hline
+    \textcolor{green}{{\footnotesize POST}} & /login: & Permite iniciar sesión (se comprueba que el usuario exista y se comprueba la contraseña hasheada). \\
+    \hline
+    \textcolor{green}{{\footnotesize POST}} & /logout: & Permite detectar que un usuario ha cerrado sesión. \\
+    \hline
+    \textcolor{green}{{\footnotesize POST}} & /subscription: & Permite a un usuario suscribirse a un tema. \\
+    \hline
+    \textcolor{red}{{\footnotesize DELETE}} & /subscription: & Permite a un usuario desabonar su suscripción de un tema. \\
+    \hline
+    \textcolor{blue}{{\footnotesize GET}} & /topic: & Permite obtener la lista de temas disponibles. \\
+    \hline
+    \textcolor{blue}{{\footnotesize GET}} & /topic/{id}/event: & Permite obtener un listado de los eventos de un tema concreto. \\
+    \hline
+    \textcolor{blue}{{\footnotesize GET}} & /topic/{id}/subscription: & Permite obtener un listado con las suscripciones de un tema. \\
+    \hline
+    \textcolor{green}{{\footnotesize POST}} & /event: & Permite obtener los datos de la transacción de crear un evento, esta es firmada por el usuario a través de la aplicación Móvil y después enviada a la red blockchain.  \\
+    \hline
+    \textcolor{blue}{{\footnotesize GET}} & /event/{id}: & Permite obtener los datos de un evento. \\
+    \hline
+    \textcolor{orange}{{\footnotesize PUT}} & /event/{id}: & Permite obtener los datos de la transacción para modificar un evento, también se firma y envía desde el móvil a la red blockchain.  \\
+    \hline
+    \textcolor{blue}{{\footnotesize GET}} & /event/{id}/delete/{organizer}: & Permite obtener los parámetros de la transacción para cerrar un evento, se firma y envía desde el móvil. \\
+    \hline
+    \textcolor{blue}{{\footnotesize GET}} & /eventCatalog: & Permite obtiene un listado con los tipos de eventos.  \\
+    \hline
+    \textcolor{green}{{\footnotesize POST}} & /event/{id}/validator: & Permite añadir a un nuevo validador a un evento. \\
+    \hline
+    \textcolor{blue}{{\footnotesize GET}} & /event/{id}/validator/{organizer}: & Permite obtener un listado con los validadores de un evento.  \\
+    \hline
+    \textcolor{orange}{{\footnotesize POST}} & /event/{id}/attendance: & Permite obtener los parámetros de la transacción para registrar la asistencia a un evento, igual que antes, se firma y envía desde el móvil.  \\
+    \hline
+    \textcolor{blue}{{\footnotesize GET}} & /event/{id}/attendance: & Permite obtener la lista de asistencias a un evento.  \\
+    \hline
+  \end{tabular}
+\end{center}
 
 Gracias a usar swagger, la API sigue la documentación de forma estricta, es decir, no acepta llamadas en las que no se envien los parámetro especificados en la documentación. Si para crear un usuario se requiere de un campo ``email'', si este campo no existe al hacer la llamada a la API, swagger se encarga de rechazar la llamada con un error de formato. Así logramos evitar que el backend tenga errores por variables indefinidas, nulas, o se guarden datos vacíos\dots
 

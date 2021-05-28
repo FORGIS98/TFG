@@ -7,11 +7,6 @@ En este capítulo se hablará del desarrollo de la aplicación (diseño, funcion
 
 El desarrollo de la aplicación móvil, se ha enfocado únicamente a dispositivos Android. Lógicamente, en un futuro, se tendrá que adaptar una aplicación para otros sistemas operativos como iOS. O por el contrario reescribir él código con lenguajes ``cross platform'' para permitir el correcto funcionamiento nativo tanto en Android como en iOS, una buena opción es utilizar \textbf{flutter}\cite{flutter}.
 
-
-
-
-
-
 % ##################################################
 % ##################################################
 \section{Arquitectura de la Aplicación}
@@ -22,19 +17,12 @@ El dispositivo móvil se comunica entonces con la api de microservicios con la a
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.35\linewidth]{figs/Desarrollo/Arquitectura}
+  \includegraphics[width=0.4\linewidth]{figs/Desarrollo/Arquitectura}
   \caption[Arquitectura]{Arquitectura Completa del proyecto}
   \label{fig:estublockArch}
 \end{figure}
 
-
-
-
-
-
-
 % --------------------------------------------------
-\clearpage
 \section{Interaz de Usuario}
 
 La interfaz de usuario es donde los usuarios interaccionan con la aplicación. Son las ventanas, botones, pantallas con las que el usuario interacciona. Deben tener un diseño intuitivo, fácil, que brinde una experiencia positiva. A más fácil de entender, mejor. Existen tres grandes tipos de interfaces de usuario, la interfaz de lenguaje natural, es la ideal y el sueño de todo usuario, pues permite comunicar humano y máquina con lenguaje natural. Un ejemplo de dispositivo que utiliza esta interfaz es \emph{Alexa}, que cuenta con un software basado en modelos acústicos y del lenguaje. El segundo tipo de interfaz es la interfaz de preguntas y respuestas. En esta interfaz se muestra una pregunta al usuario y según su respuesta se actúa de una u otra manera. Un ejemplo de estas interfaces son los software de instalación, como puede ser el instalador de un sistema operativo. Y por último, la interfaz que más nos interesa para este proyecto, la \textbf{interfaz gráfica de usuario}, en inglés ``Graphical User Interface'' o \textbf{GUI}. Esta utiliza gráficos, imágenes, videos, iconos, menús\dots para permitir al usuario interaccionar con la aplicación. 
@@ -45,7 +33,7 @@ En Android la interfaz de usuario se construye mediante una jerarquía de objeto
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.6\linewidth]{figs/Desarrollo/Jerarquia}
+  \includegraphics[width=0.75\linewidth]{figs/Desarrollo/Jerarquia}
   \caption[Android Layout]{Jerarquia de una interfaz de Android}
   \label{fig:interfaz_android}
 \end{figure}
@@ -68,7 +56,7 @@ En la pantalla de registro, se pide al usuario que introduzca sus datos personal
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.9\linewidth]{figs/Desarrollo/Codigo/regex}
-  \caption[Android Layout]{Jerarquia de una interfaz de Android}
+  \caption[Código regex de verificación de correo]{Código regex de verificación de correo}
   \label{fig:regex}
 \end{figure}
 
@@ -78,12 +66,12 @@ También, se hace verificación de que la contraseña ha sido escrita correctame
 	\centering
 	\begin{subfigure}[b]{0.4\linewidth}
 		\centering
-        \includegraphics[width=0.5\linewidth]{figs/Desarrollo/Interfaz/marvel_registro}
+        \includegraphics[width=0.7\linewidth]{figs/Desarrollo/Interfaz/marvel_registro}
         \caption[Marvel Registro]{Pantalla de registro de marvelapp}
 	\end{subfigure} 
 	\begin{subfigure}[b]{0.4\linewidth}
 		\centering
-        \includegraphics[width=0.5\linewidth]{figs/Desarrollo/Interfaz/estublock_registro}
+        \includegraphics[width=0.7\linewidth]{figs/Desarrollo/Interfaz/estublock_registro}
         \caption[Estublock Registro]{Pantalla de registro de Estublock}
 	\end{subfigure} 
 	\caption[Pantalla de Registro]{Pantalla de Registro}
@@ -100,12 +88,12 @@ Para poder recuperar la contraseña de un usuario, lo normal en un servicio es e
 	\centering
 	\begin{subfigure}[b]{0.4\linewidth}
 		\centering
-        \includegraphics[width=0.5\linewidth]{figs/Desarrollo/Interfaz/marvel_login}
+        \includegraphics[width=0.7\linewidth]{figs/Desarrollo/Interfaz/marvel_login}
         \caption[Marvel Login]{Pantalla de login de marvelapp}
 	\end{subfigure} 
 	\begin{subfigure}[b]{0.4\linewidth}
 		\centering
-        \includegraphics[width=0.5\linewidth]{figs/Desarrollo/Interfaz/estublock_login}
+        \includegraphics[width=0.7\linewidth]{figs/Desarrollo/Interfaz/estublock_login}
         \caption[Estublock Login]{Pantalla de login de Estublock}
 	\end{subfigure} 
 	\caption[Pantalla de Login]{Pantalla de Login}
@@ -120,12 +108,12 @@ El menú principal es el corazón de la aplicación. Pues desde ahí se abre cam
 	\centering
 	\begin{subfigure}[b]{0.4\linewidth}
 		\centering
-        \includegraphics[width=0.5\linewidth]{figs/Desarrollo/Interfaz/marvel_menu}
+        \includegraphics[width=0.7\linewidth]{figs/Desarrollo/Interfaz/marvel_menu}
         \caption[Marvel Menú]{Pantalla de menú de marvelapp}
 	\end{subfigure} 
 	\begin{subfigure}[b]{0.4\linewidth}
 		\centering
-        \includegraphics[width=0.5\linewidth]{figs/Desarrollo/Interfaz/estublock_menu}
+        \includegraphics[width=0.7\linewidth]{figs/Desarrollo/Interfaz/estublock_menu}
         \caption[Estublock Menú]{Pantalla de menú de Estublock}
 	\end{subfigure} 
 	\caption[Pantalla de Menú]{Pantalla de Menú}
@@ -140,12 +128,12 @@ En la pantalla de suscripciones el usuario puede ver la lista de asignaturas a l
 	\centering
 	\begin{subfigure}[b]{0.4\linewidth}
 		\centering
-        \includegraphics[width=0.5\linewidth]{figs/Desarrollo/Interfaz/marvel_lista_asignaturas}
+        \includegraphics[width=0.7\linewidth]{figs/Desarrollo/Interfaz/marvel_lista_asignaturas}
         \caption[Marvel Asignaturas]{Pantalla de asignaturas de marvelapp}
 	\end{subfigure} 
 	\begin{subfigure}[b]{0.4\linewidth}
 		\centering
-        \includegraphics[width=0.5\linewidth]{figs/Desarrollo/Interfaz/estublock_asignaturas_suscritas}
+        \includegraphics[width=0.7\linewidth]{figs/Desarrollo/Interfaz/estublock_asignaturas_suscritas}
         \caption[Estublock Asignaturas]{Pantalla de asignaturas de Estublock}
 	\end{subfigure} 
 	\caption[Pantalla de Asignaturas]{Pantalla de Asignaturas}
@@ -158,12 +146,12 @@ Si el usuario decide añadir nuevas asignaturas a su lista, tendrá que darle al
 	\centering
 	\begin{subfigure}[b]{0.4\linewidth}
 		\centering
-        \includegraphics[width=0.5\linewidth]{figs/Desarrollo/Interfaz/marvel_asignaturas}
+        \includegraphics[width=0.7\linewidth]{figs/Desarrollo/Interfaz/marvel_asignaturas}
         \caption[Marvel Suscribirse]{Pantalla de suscripción de marvelapp}
 	\end{subfigure} 
 	\begin{subfigure}[b]{0.4\linewidth}
 		\centering
-        \includegraphics[width=0.5\linewidth]{figs/Desarrollo/Interfaz/estublock_asignaturas}
+        \includegraphics[width=0.7\linewidth]{figs/Desarrollo/Interfaz/estublock_asignaturas}
         \caption[Estublock Suscribirse]{Pantalla de suscripción de Estublock}
 	\end{subfigure} 
 	\caption[Pantalla de Suscribirse]{Pantalla de Suscribirse}
@@ -178,12 +166,12 @@ Para llegar a esta pantalla, el usuario tiene que ir desde el menú, a \verb|Cre
 	\centering
 	\begin{subfigure}[b]{0.4\linewidth}
 		\centering
-        \includegraphics[width=0.5\linewidth]{figs/Desarrollo/Interfaz/marvel_crear_evento}
+        \includegraphics[width=0.7\linewidth]{figs/Desarrollo/Interfaz/marvel_crear_evento}
         \caption[Marvel Crear Evento]{Pantalla de creación de evento de marvelapp}
 	\end{subfigure} 
 	\begin{subfigure}[b]{0.4\linewidth}
 		\centering
-        \includegraphics[width=0.5\linewidth]{figs/Desarrollo/Interfaz/estublock_crear_evento_completo.png}
+        \includegraphics[width=0.7\linewidth]{figs/Desarrollo/Interfaz/estublock_crear_evento_completo.png}
         \caption[Estublock Crear Evento]{Pantalla de creación de evento de Estublock}
 	\end{subfigure} 
 	\caption[Pantalla de Crear Evento]{Pantalla de Crear Evento}
@@ -194,12 +182,12 @@ Para llegar a esta pantalla, el usuario tiene que ir desde el menú, a \verb|Cre
 	\centering
 	\begin{subfigure}[b]{0.4\linewidth}
 		\centering
-        \includegraphics[width=0.5\linewidth]{figs/Desarrollo/Interfaz/marvel_crear_evento_hora}
+        \includegraphics[width=0.7\linewidth]{figs/Desarrollo/Interfaz/marvel_crear_evento_hora}
         \caption[Marvel Hora]{Pantalla de hora de marvelapp}
 	\end{subfigure} 
 	\begin{subfigure}[b]{0.4\linewidth}
 		\centering
-        \includegraphics[width=0.5\linewidth]{figs/Desarrollo/Interfaz/estublock_crear_evento_hora}
+        \includegraphics[width=0.7\linewidth]{figs/Desarrollo/Interfaz/estublock_crear_evento_hora}
         \caption[Estublock Hora]{Pantalla de hora de Estublock}
 	\end{subfigure} 
 	\caption[Pantalla de Hora]{Pantalla de Hora}
@@ -214,12 +202,12 @@ Para llegar a esta pantalla, el usuario ha elegido previamente el botón \verb|A
 	\centering
 	\begin{subfigure}[b]{0.4\linewidth}
 		\centering
-        \includegraphics[width=0.5\linewidth]{figs/Desarrollo/Interfaz/marvel_QR}
+        \includegraphics[width=0.7\linewidth]{figs/Desarrollo/Interfaz/marvel_QR}
         \caption[Marvel QR]{Pantalla de QR de marvelapp}
 	\end{subfigure} 
 	\begin{subfigure}[b]{0.4\linewidth}
 		\centering
-        \includegraphics[width=0.5\linewidth]{figs/Desarrollo/Interfaz/estublock_QR}
+        \includegraphics[width=0.7\linewidth]{figs/Desarrollo/Interfaz/estublock_QR}
         \caption[Estublock QR]{Pantalla de QR de Estublock}
 	\end{subfigure} 
 	\caption[Pantalla de QR]{Pantalla de QR}
@@ -244,7 +232,7 @@ Como ya hemos mencionado, las interfaces de usuario en Android se programan util
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.95\linewidth]{figs/Desarrollo/Codigo/xml_jerarquia}
+  \includegraphics[width=0.5\linewidth]{figs/Desarrollo/Codigo/xml_jerarquia}
   \caption[XML Jerarquia]{Fragmento de la jerarquía XML de la pantalla crear evento}
   \label{fig:xml_crear_evento}
 \end{figure}
@@ -253,9 +241,9 @@ Programar pantallas para Android sin ningún tipo de feedback, es decir, sin sab
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.95\linewidth]{figs/Desarrollo/XML/androidStudio}
+  \includegraphics[width=1\linewidth]{figs/Desarrollo/XML/androidStudio}
   \caption[XML Herramienta Android Studio]{Herramienta de Android Studio para la edición de layouts (pantallas)}
-  \label{fig:xml_crear_evento}
+  \label{fig:herramienta_android}
 \end{figure}
 
 XML no solo sirve para diseñar las pantallas, hasta ahora todo lo que hemos comentado se refería al esqueleto de una pantalla. Es decir, un botón arriba, un texto pegado abajo a la derecha\dots Pero con XML también se puede modificar la apariencia, color, forma, fuente de todos los elementos. Dentro de las carpetas de un proyecto Android, tenemos algunas carpetas en las que se guarda código XML que se utiliza posteriormente para darle un mejor diseño a un elemento. Por ejemplo, se puede crear un botón y asignarle un fondo con el atributo \verb|android:background| a este atributo se le añade como parámetro la ruta al archivo que contiene la información en XML sobre como queremos que se vea este botón. Por otro lado, hemos mencionado también las fuentes, los archivos que modifican las fuentes son de tipo \emph{TrueType Font} y definen la fuente de las letras. Por ejemplo, si creamos un campo de texto \verb|TextView| podemos ponerle una fuente especifica con el atributo \verb|android:fontFamily|. Básicamente, somos libres de modificar con total control cada aspecto que se quiera de las pantallas. \\
@@ -272,18 +260,26 @@ Las aplicaciones Android pueden ser programadas principalmente en dos lenguajes 
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.6\linewidth]{figs/Desarrollo/Popularidad}
+  \includegraphics[width=0.9\linewidth]{figs/Desarrollo/Popularidad}
   \caption[Java vs Kotlin]{Comparación de Google Trends entre Java y kotlin}
   \label{fig:java_vs_kotlin}
 \end{figure}
 
-Por lo tanto, aunque Kotlin promete mucho, la aplicación Estublock se ha desarrollado en el lenguaje Java para tener una mayor cantidad de documentación y de comunidad disponible. Con comunidad, nos referimos a las personas en el planeta que saben de programación Android con Java y que a lo largo de los años han respondido y contribuido en Internet, dando soluciones a problemas, documentación y contando sus trucos profesionales. De todos modos, se puede migrar con mucha facilidad a Kotlin puesto que AndroidStudio permite migrar automáticamente de Java a Kotlin. Lo único que se necesita para facilitar este proceso es añadir ``anotaciones de java'' que especifiquen las características de algunas variables o funciones para facilitar a AndroidStudio el reconocimiento de las variables. Un ejemplo puede encontrarse a continuación donde se puede ver que se especifica que la variable no puede ser nula con \emph{@NonNull}.
+Por lo tanto, aunque Kotlin promete mucho, la aplicación Estublock se ha desarrollado en el lenguaje Java para tener una mayor cantidad de documentación y de comunidad disponible. Con comunidad, nos referimos a las personas en el planeta que saben de programación Android con Java y que a lo largo de los años han respondido y contribuido en Internet, dando soluciones a problemas, documentación y contando sus trucos profesionales. De todos modos, se puede migrar con mucha facilidad a Kotlin puesto que AndroidStudio permite migrar automáticamente de Java a Kotlin. Lo único que se necesita para facilitar este proceso es añadir ``anotaciones de java'' que especifiquen las características de algunas variables o funciones para facilitar a AndroidStudio el reconocimiento de las variables. Un ejemplo puede encontrarse a continuación \ref{fig:nonNull} donde se puede ver que se especifica que la variable no puede ser nula con \emph{@NonNull}.
 
-\begin{lstlisting}[language=Java,float=ht,caption={[Java] Ejemplo de ``anotación de java'' de variables para facilitar el salto a Kotlin},label=lst:java_etiquetas]
-public void sendSignedTransaction(@NonNull String signedMessage){
-  // Código
-}
-\end{lstlisting}
+% \begin{lstlisting}[language=Java,float=ht,caption={[Java] Ejemplo de ``anotación de java'' de variables para facilitar el salto a Kotlin},label=lst:java_etiquetas]
+% public void sendSignedTransaction(@NonNull String signedMessage){
+%   // Código
+% }
+% \end{lstlisting}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\linewidth]{figs/Desarrollo/nonNull}
+  \caption[Facilitar el salto a Kotlin]{Ejemplo de anotación de java de variables para facilitar el salto a Kotlin}
+  \label{fig:nonNull}
+\end{figure}
+
 
 % --------------------------------------------------
 \subsection{Código Java}
@@ -305,7 +301,7 @@ La estructura de carpetas del SDK, es muy parecida a la de ``Estublock'' con la 
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.6\linewidth]{figs/Desarrollo/JerarquiaCarpetas}
+  \includegraphics[width=0.9\linewidth]{figs/Desarrollo/JerarquiaCarpetas}
   \caption[Jerarquia Estublock]{Jerarquia de carpetas del proyecto Estublock}
   \label{fig:jerarquia_estublock}
 \end{figure}
@@ -585,6 +581,12 @@ Como las llamadas a la red blockchain son pesadas, han sido implementadas con th
   \label{fig:callback}
 \end{figure}
 
+\subsection{Pruebas del SDK}
+
+Para verificar el correcto funcionamiento del SDK desarrollado, se han realizado varias pruebas. Por un lado tenemos pruebas realizadas directamente con la aplicación en funcionamiento. Es decir, se ejecuta la aplicación, se crea un usuario y se mira si se ha creado correctamente el keystore y si las \emph{Shared Preferences} de Android tienen guardada la relación entre usuario y keystore. También se prueba que al crear un nuevo evento la transacción se firme y se vea reflejada en la red blockchain. Por último, se comprueba que se escanee correctamente el código QR y se vea reflejada la asistencia en la red blockchain, y se verifica también que se genere correctamente el QR con los datos del usuario, en concreto, el address. Estas pruebas, además de verificar que el SDK funciona, también comprueban el correctamente funcionamiento de las librerías al estar haciendo llamadas a las APIs, generando QRs y llamando a la cámara de fótos. \\
+
+Por otro lado, más precisamente para probar llamadas a una red blockchain con más rápidez, se ha utilizado \textbf{ganache}\cite{ganache}. Ganache permite levantar una red blockchain de pruebas creando además 10 cuentas aleatorias para poder ``experimentar'' con ellas. La prueba ha consistido en desplegar un smart contract en la red, y firmar transacciones y enviarlas a la red blockchain de ganache. La ventaja de utilizar ganache es poder utilizar \textbf{Geth} desde la consola de linux para ver información sobre lo que esta sucediendo en la red blcockchain de forma local sin riesgos de comprometer la red blockchain original que se utiliza en ``Estublock''. \textbf{Geth}\cite{geth} es una implementación en el lenguaje \emph{Golang} del protocolo de Ethereum. Lógicamente, el objetivo de estas pruebas al igual que las anteriores era buscar errores, fallos, bugs\dots
+
 % --------------------------------------------------
 \subsection{Como Incorporarlo en Otras Aplicaciones} \label{sec:Maven}
 
@@ -615,6 +617,9 @@ Cuando en la aplicación se registra un nuevo usuario, se le crea un wallet y se
 
 Para añadir una capa de seguridad al keystore, y la clave privada quede cifrada, se añade una contraseña de cifrado que el usuario debe introducir para desbloquear el wallet. En la aplicación se ha decidido que la contraseña que se va a utilizar para desbloquear el wallet sea la misma que la que se utiliza para hacer login. Por lo tanto, una vez hecho el login, el usuario no debe introducir la contraseña nuevamente para hacer las transacciones. La clave \textbf{privada} se utiliza para firmar las transacciones que se envían a la red blockchain, y la clave \textbf{pública} se utiliza para que cualquier persona pueda verificar la firma. \\
 
+% ----------------------------------
+\subsection{Gestión del Wallet}
+
 Existen distintos tipos de wallet\ref{fig:tipos_wallet}. Cada uno con sus ventajas y desventajas. Los ``web wallet'', son los más fáciles de utilizar, pero traen consigo un incoveniente. El usuario no tiene el control de sus credenciales. Las credenciales del usuario las mantiene una empresa externa. Por eso no se ha pensado en este tipo de wallets para la aplicación. Por otro lado tenemos las ``Cold Wallets'', las cuales son muy seguras, y el usuario tiene total acceso y control de las credenciales almacenadas en un dispositivo externo sin conexión a internet. La falta de conexión a internet y la incomodidad al usar una cold wallets, fueron la razón por las que se descartó este tipo de wallets para el proyecto. Luego están las dos mejores, \textbf{Hardware y Software Wallets}. Ambas aportan gran seguridad y control de las credenciales, por su usabilidad, las hardware wallets son más incómodas pues se suelen utilizar dispositivos externos para guardar las credenciales, como un disco duro cifrado. Por lo que, la mejor decisión era utilizar las \textbf{Software Wallets} para el proyecto. \\
 
 \begin{figure}[h!]
@@ -627,7 +632,11 @@ Existen distintos tipos de wallet\ref{fig:tipos_wallet}. Cada uno con sus ventaj
 
 Las software wallets son fáciles de crear, el usuario tiene buen control de las credenciales pues están guardadas en su dispositivo móvil y tiene buena seguridad. Sin embargo hay que destacar las desventajas. Aunque no ocurre de forma habitual, el usuario puede perder el móvil, se lo pueden robar, romper o puede cambiarlo por uno mejor. Todas estas situaciones llevan al mismo lugar, el usuario no tiene acceso al wallet que tenía en el móvil original, y necesita acceso nuevamente al wallet. Otra situación en la que llegamos al mismo problema es \textbf{olvidar} la contraseña que utilizamos para desbloquear el Wallet. \\
 
+\subsection{Perdida y Recuperación del Wallet}
 
+Un usuario puede perder acceso a su wallet a causa de múltiples razones como hemos mencionado antes. Aunque es muy difícil recuperar el acceso al wallet de un usuario, es posible. Existen compañías como el equipo de \emph{walletrecovery}\cite{walletRec} los cuales se encargan de intentar recuperar en la medida de lo posible el acceso a tu wallet. Ya sea por causas hardware o que se ha olvidado la contraseña, probarán métodos de fuerza bruta, programas de recuperación de archivos dañados\dots. No es la única empresa que se encarga de esto, en \emph{WRS}\cite{WRS} también se encargan de recuperar wallets. Por último también existen programas de código abierto los cuales el usuario puede utilizar para recuperar las credenciales en la medida de los posible, programas como \textbf{btcrecover}\cite{btcrecover}. La herramienta permite generar un diccionario de fuerza bruta a partir de información dada por el usuario, así como probar varias combinaciones de palabras dada una ``seed phrase''. \\
+
+En el caso de ``Estublock'' no hay implementado en el presente un sistema de recuperación del wallet. Sin embargo, se pueden implementar tres métodos para evitar que el usuario pierda acceso a dicho wallet. Por un lado tenemos las \textbf{seed phrases}, estas son un conjunto de palabras aleatorias que el usuario debe guardar a buen recaudo y ``bajo llave'' pues pueden servirle en caso de emergencia para recuperar el acceso al wallet. Si el usuario olvida la contraseña, las \emph{seed phrases} servirán para recuperar dicho acceso. Por otro lado, existe la opción de compartir parte de la clave privada con varios usuarios de mucha confianza. En el caso de olvidar la contraseña de su wallet, el usuario tiene acceso a su clave privada reuninedo dicha clave con ayuda de esas personas de mucha confianza. Una vez reconstruida la clave privada, puede utilizar una nueva contraseña para cifrarla y seguir utilizando sin problemas el sistema. Por último, es ideal que el usuario haga una copia de seguridad del wallet para evitar que perder el móvil, o fallos en el móvil (archivos corruptos, móvil roto\dots) o un robo puedan hacerle perder el acceso al wallet. 
 
 % ##################################################
 % ##################################################
