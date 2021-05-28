@@ -52,6 +52,7 @@ public class WalletHelper {
    * Método que crea una nueva cartera virtual
    * @param password Contraseña de la cartera virtual
    * @param walletDirectory Dirección de la nueva cartera virtual
+   * @return Devuelve el nombre del keystore
    */
   @NonNull
   public String createNewWallet(@NonNull String password, @NonNull File walletDirectory)
@@ -63,6 +64,7 @@ public class WalletHelper {
    * Método que crea una nueva cartera virtual
    * @param password Contraseña de la cartera virtual
    * @param walletDirectory Dirección de la nueva cartera virtual
+   * @return Devuelve el nombre del keystore
    */  @NonNull
   public String createNewWallet(@NonNull String password, @NonNull String walletDirectory)
       throws CipherException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException, IOException {

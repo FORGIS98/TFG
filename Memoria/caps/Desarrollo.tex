@@ -439,7 +439,7 @@ Sin embargo esto trae una desventaja, siempre que se pase de una a otra pantalla
 
 Un \emph{Kit de Desarrollo Software} o SDK (Software Development Kit) es generalmente un conjunto de herramientas de desarrollo de software que permiten a otros desarrolladores crear aplicaciones de forma más cómoda. Un buen ejemplo de SDK que se ha utilizado en este proyecto es la familia de SDKs de Android. Junto con AndroidStudio, se instalan múltiples SDKs que permiten al programador escribir código, recuperar componentes de las pantallas, hacer llamadas a paquetes, importar paquetes, detectar errores\dots Todo de forma automática haciendo que la programación sea mucho más fácil. \\
 
-El SDK es entonces un conjunto de métodos los cuales pueden hacer llamadas a una API, llamadas al propio sistema operativo, llamadas a otras librería o SDKs\dots En el caso del SDK desarrollado para este TFG, su principal función es la de hacer llamadas a una red blockchain y la de hacer llamadas al sistema de archivos del dispositivo para guardar la cartera virtual del usuario. 
+El SDK es entonces un conjunto de métodos los cuales pueden hacer llamadas a una API, llamadas al propio sistema operativo, llamadas a otras librería o SDKs\dots En el caso del SDK desarrollado para este TFG, su principal función es la de hacer llamadas a una red blockchain y la de hacer llamadas al sistema de archivos del dispositivo para guardar el wallet del usuario. 
 
 % --------------------------------------------------
 \subsection{Diseño del SDK}
@@ -451,7 +451,7 @@ Por otro lado, con respecto al diseño de los métodos, se ha optado por tratar 
 % --------------------------------------------------
 \subsection{Comunicación con la Red Blockchain}
 
-En el archivo \emph{TransactionsHelper.java} se encuentra importada la librería de \emph{web3j} y se encuentra también el código que firma y envía las transacciones. Web3j es una biblioteca de Java y Android que permite trabajar con smart contracts e integrarse con clientes o nodos en la red de \emph{Ethereum}. Esto permite trabajar con la red de Ethereum sin necesidad de implementar el código de integración para la plataforma. Implementa la API de cliente JSON-RPC de Ethereum sobre HTTP, soporta carteras virtuales, firmado de transacciones\dots \\
+En el archivo \emph{TransactionsHelper.java} se encuentra importada la librería de \emph{web3j} y se encuentra también el código que firma y envía las transacciones. Web3j es una biblioteca de Java y Android que permite trabajar con smart contracts e integrarse con clientes o nodos en la red de \emph{Ethereum}. Esto permite trabajar con la red de Ethereum sin necesidad de implementar el código de integración para la plataforma. Implementa la API de cliente JSON-RPC de Ethereum sobre HTTP, soporta wallets, firmado de transacciones\dots JSON-RPC es un protocolo de llamada a procedimientos remotos que utiliza JSON para codificar los mensajes, es similar a XML-RPC. \\
 
 El uso de \emph{TransactionsHelper} es sencillo, primero se crea el objeto pasándole como parámetro la URL del nodo de la red blockchain al que vamos a conectarnos \ref{fig:transH}
 % \begin{lstlisting}[language=Java,float=ht,caption={[Java] Constructor de TransactionsHelper},label=lst:constructor]
@@ -470,7 +470,7 @@ El uso de \emph{TransactionsHelper} es sencillo, primero se crea el objeto pasá
   \label{fig:transH}
 \end{figure}
 
-Una vez creado el objeto se puede llamar al resto de funciones, entre las que están \verb|signTransaction(...)| que recibe seis argumentos entre otros las credenciales de la cartera virtual, el destino de la transacción (el smart contract) y un \emph{listener} para recuperar la respuesta de la transacción. Recordemos, no se pueden hacer operaciones pesadas en el hilo principal de Android por lo que hay que hacerlo o en un hilo a parte. Otra función importante es \verb|sendSignedTransaction(...)| la cual recibe dos parámetros, la transacción firmada y un \emph{listener}. Ambas funciones están ``sobrecargadas'' (sobrecarga es la capacidad de un lenguaje de programación, que permite nombrar con el mismo identificador diferentes variables u operaciones), la razón de esta sobrecarga es permitir pasar los parámetro de múltples maneras. Por ejemplo, los datos de la transacción se pueden pasar como JSON, como String, como HashMap\dots y gracias a la sobrecarga podemos ponerle el mismo nombre a la función. A grandes rasgos un pequeño ejemplo de código puede verse en \ref{fig:firmEnv}
+Una vez creado el objeto se puede llamar al resto de funciones, entre las que están \verb|signTransaction(...)| que recibe seis argumentos entre otros las credenciales del wallet, el destino de la transacción (el smart contract) y un \emph{listener} para recuperar la respuesta de la transacción. Recordemos, no se pueden hacer operaciones pesadas en el hilo principal de Android por lo que hay que hacerlo en un hilo a parte (es decir en un \emph{Thread}). Otra función importante es \verb|sendSignedTransaction(...)| la cual recibe dos parámetros, la transacción firmada y un \emph{listener}. Ambas funciones están ``sobrecargadas'' (sobrecarga es la capacidad de un lenguaje de programación, que permite nombrar con el mismo identificador diferentes variables u operaciones), la razón de esta sobrecarga es permitir pasar los parámetro de múltiples maneras. Por ejemplo, los datos de la transacción se pueden pasar como JSON, como String, como HashMap\dots y gracias a la sobrecarga podemos ponerle el mismo nombre a la función. A grandes rasgos un pequeño ejemplo de código puede verse en \ref{fig:firmEnv} y un ejemplo completo de función puede verse en el Anexo \ref{fig:firma_envia_completo}
 
 % \begin{lstlisting}[language=Java,float=ht,caption={[Java] Firmar y Enviar transacciones.},label=lst:transactionHelper]
 % // Se crea y firma la transacción
@@ -495,63 +495,100 @@ Una vez creado el objeto se puede llamar al resto de funciones, entre las que es
 
 
 % --------------------------------------------------
-\subsection{Comunicación con el Dispositivo}
+\subsection{Comunicación con el Dispositivo Móvil}
 
-Para facilitar la generación de credenciales, cartera virtual, guardar en la carpeta ``Shared Preferences'' de Android todos los datos necesarios para la comunicación con la red blockchain\dots Tenemos el archivo \emph{WalletHelper.java}. En él además de la librería web3j, tenemos algunas funcionalidades de Seguridad de Java para modificar el proveedor de seguridad, y permitir que salten errores por algoritmos o parámetros erróneos. \\
+Para facilitar la generación de credenciales, wallets, guardar en la carpeta ``Shared Preferences'' de Android todos los datos necesarios para la comunicación con la red blockchain\dots Tenemos el archivo \emph{WalletHelper.java}. En él además de la librería web3j, tenemos algunas funcionalidades de Seguridad de Java para modificar el proveedor de seguridad, y permitir que salten errores por algoritmos o parámetros erróneos. \\
 
-En este archivo tenemos entonces un constructor, el cual modifica el proveedor de seguridad a causa de un error con el algoritmo ``Elliptic Curve Digital Signature Algorithm''(ECDSA)\cite{ecdsa} para el proveedor BC\cite{bc}. Más información sobre el error se puede encontrar en el repositorio de web3j en la \href{https://github.com/web3j/web3j/issues/915}{issue\_915}. Básicamente lo que hace el código es modificar el proveedor.
+En este archivo tenemos entonces un constructor, el cual modifica el proveedor de seguridad a causa de un error con el algoritmo ``Elliptic Curve Digital Signature Algorithm''(ECDSA)\cite{ecdsa} para el proveedor BC\cite{bc}. Más información sobre el error se puede encontrar en el repositorio de web3j en la \href{https://github.com/web3j/web3j/issues/915}{issue\_915}. Básicamente lo que hace el código es modificar el proveedor \ref{fig:ecdsa} \\
 
-\begin{lstlisting}[language=Java,float=ht,caption={[Java] Modificación de proveedor de seguridad},label=lst:transactionHelper]
-final Provider provider = Security.getProvider(BouncyCastleProvider.PROVIDER_NAME);
-if(provider != null || !provider.getClass().equals(BouncyCastleProvider.class)){
-  Security.removeProvider(BouncyCastleProvider.PROVIDER_NAME);
-  Security.insertProviderAt(new BouncyCastleProvider(), 1);
-}
-\end{lstlisting}
+% \begin{lstlisting}[language=Java,float=ht,caption={[Java] Modificación de proveedor de seguridad},label=lst:transactionHelper]
+% final Provider provider = Security.getProvider(BouncyCastleProvider.PROVIDER_NAME);
+% if(provider != null || !provider.getClass().equals(BouncyCastleProvider.class)){
+%   Security.removeProvider(BouncyCastleProvider.PROVIDER_NAME);
+%   Security.insertProviderAt(new BouncyCastleProvider(), 1);
+% }
+% \end{lstlisting}
 
-Luego, el programador dispone de varias funciones para crear una nueva cartera virtual con \verb|createNewWallet(...)| que acepta dos parámetros, siendo estos una contraseña y luego el lugar en el que se quiere guardar la cartera creada. Al igual que antes, esta función esta sobrecargada permitiendo pasar la localización como objeto String o como objeto File. Y permite también recuperar el \emph{address} del usuario o todas las credenciales. 
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figs/Desarrollo/SDK/ecdsa}
+  \caption[Modificación de proveedor de seguridad]{Modificación de proveedor de seguridad}
+  \label{fig:ecdsa}
+\end{figure}
 
-\begin{lstlisting}[language=Java,float=ht,caption={[Java] Creacion de wallet y recuperación del address},label=lst:transactionHelper]
-WalletUtils.generateLightNewWalletFile(password, new File(keyStoreDirectory));
+Luego, el programador dispone de varias funciones para crear un nuevo wallet con \verb|createNewWallet(...)|\ref{fig:crearWallet} que acepta dos parámetros, siendo estos una contraseña y luego el lugar en el que se quiere guardar el wallet creado. Al igual que antes, esta función esta sobrecargada permitiendo pasar la localización como objeto String o como objeto File. Y permite también recuperar el \emph{address} del usuario o todas las credenciales\ref{fig:recuperarCredenciales}.
 
-Credentials credentials = WalletUtils.loadCredentials(password, keyStoreDirectory);
-String address = credentials.getAddress();
-\end{lstlisting}
+% \begin{lstlisting}[language=Java,float=ht,caption={[Java] Creacion de wallet y recuperación del address},label=lst:transactionHelper]
+% WalletUtils.generateLightNewWalletFile(password, new File(keyStoreDirectory));
+% 
+% Credentials credentials = WalletUtils.loadCredentials(password, keyStoreDirectory);
+% String address = credentials.getAddress();
+% \end{lstlisting}
 
-Como hemos mencionado anteriormente en este archivo se incluye también el guardado de los datos en él dispositivo móvil, aunque la función de web3j \verb|WalletUtils.generateLightNewWalletFile()| guarda los datos en el móvil. Para permitir que un usuario tenga varias carteras, se utiliza el \emph{SharedPreferences} para enlazar al usuario con su wallet. Para ello tenemos la función \verb|saveInPreferences(...)| la cual recibe cuatro parámetros entre ellos el lugar donde guardarlo, y los datos a guardar. Y luego tenemos otro método \verb|getFromPreferences(...)| para recuperar los datos. 
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figs/Desarrollo/SDK/crearWallet}
+  \caption[Creación de un nuevo wallet]{Creación de un nuevo wallet}
+  \label{fig:crearWallet}
+\end{figure}
 
-\begin{lstlisting}[language=Java,float=ht,caption={[Java] Guardado y recuperación de dátos en SharedPreferences},label=lst:transactionHelper]
-// Guardamos los datos
-SharedPreferences sharedPreferences = activity.getSharedPreferences(prefsName, Context.MODE_PRIVATE);
-SharedPreferences.Editor editor = sharedPreferences.edit();
-editor.putString(id, walletDirectory);
-editor.apply();
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figs/Desarrollo/SDK/recuperarCredenciales}
+  \caption[Recuperación de las credenciales]{Recuperación de las credenciales}
+  \label{fig:recuperarCredenciales}
+\end{figure}
 
-// Devolvemos el dato con identificador id
-return  sharedPreferences.getString(id, null);
-\end{lstlisting}
+Como hemos mencionado anteriormente en este archivo se incluye también el guardado de los datos en él dispositivo móvil, aunque la función de web3j \verb|WalletUtils.generateLightNewWalletFile()| guarda los datos en el móvil. Para permitir que un usuario tenga varios wallets, se utiliza el \emph{SharedPreferences} para enlazar al usuario con su wallet. Para ello tenemos la función \verb|saveInPreferences(...)| la cual recibe cuatro parámetros entre ellos el lugar donde guardarlo, y los datos a guardar. Y luego tenemos otro método \verb|getFromPreferences(...)| para recuperar los datos\ref{fig:sharedPref}. \\
+
+% \begin{lstlisting}[language=Java,float=ht,caption={[Java] Guardado y recuperación de dátos en SharedPreferences},label=lst:transactionHelper]
+% // Guardamos los datos
+% SharedPreferences sharedPreferences = activity.getSharedPreferences(prefsName, Context.MODE_PRIVATE);
+% SharedPreferences.Editor editor = sharedPreferences.edit();
+% editor.putString(id, walletDirectory);
+% editor.apply();
+% 
+% // Devolvemos el dato con identificador id
+% return  sharedPreferences.getString(id, null);
+% \end{lstlisting}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figs/Desarrollo/SDK/sharedPref}
+  \caption[Guardado y recuperación de datos]{Guardado y recuperación de datos}
+  \label{fig:sharedPref}
+\end{figure}
+
+Se ha decidido utilizar \emph{SharedPreferences} para elegir que wallet desbloquear cuando un usuario hace login, ya que se ha visto la posibilidad de que un mismo usuario necesite más de un wallet. El caso de uso es el siguiente, el presidente de una asociación es alumno y a su vez presidente. Dicho de otro modo, por como esta diseñado ``Estublock'' el usuario tendrá dos wallets, uno para él como estudiante y otro para él como presidente de una asociación. Para ello utilizará por un wallet su correo como alumno y para el otro su correo de asociación, de ahí la necesidad de relacionar el correo con el directorio y nombre del keystore que se genera (más sobre keystore en \hyperref[sec:wallet]{wallet}).
 
 % --------------------------------------------------
 \subsection{``Callback Listener''}
 
-Como las llamadas a la red blockchain son pesadas, han sido implementadas con threads: ``\verb|new Threads( new Runnable(){...} )|''. Como el código no espera a la respuesta del thread, he implementado dos funciones que hacen de ``escucha'' para cuando termina la ejecución. Estas funciones están especificadas en \emph{EasyBlockchainListener.java}, este archivo es una \emph{interdaz de java} para poder ser sobrescritas por le programador para que hagan lo que este desee. Utilizando la anotación de java \verb|@Override| con la que se sobrescribe un método para que el programador cambie el código y pueda hacer con la respuesta lo que considere necesario. Tenemos dos callbacks, uno para cuando se firma la transacción, y otro para cuando se envía a la red blockchain. Para utilizarlos no hay más que pasar como último parámetro de las funciones anteriormente mencionadas una función que será la que sobrescriba a los métodos.  
+Como las llamadas a la red blockchain son pesadas, han sido implementadas con threads: ``\verb|new Threads( new Runnable(){...} )|''. Como el código no espera a la respuesta del thread, se han implementado dos funciones que hacen de ``escucha'' para cuando termina la ejecución. Estas funciones están especificadas en \emph{EasyBlockchainListener.java}, este archivo es una \emph{interdaz de java} para poder ser sobrescritas por le programador para que las funciones hagan lo que el programador desee. Utilizando la anotación de java \verb|@Override| con la que se sobrescribe un método para que el programador cambie el código y pueda hacer con la respuesta lo que considere necesario. Tenemos dos callbacks, uno para cuando se firma la transacción, y otro para cuando se envía a la red blockchain. Para utilizarlos no hay más que pasar como último parámetro de las funciones anteriormente mencionadas una función que será la que sobrescriba a los métodos como se puede ver en \ref{callback}.
 
-\begin{lstlisting}[language=Java,float=ht,caption={[Java] Ejemplo de sobrescritura de un listener.},label=lst:transactionHelper]
-public void doSomething(...){
-  signTransaction(credentials, gasPrice, gas, to, data, new EasyBlockchainListener() {
-    // Sobrescribimos el método que esta en la interfaz EasyBlockchainListener
-    @Override
-    public void onSignTransactionEvent(@NonNull @NotNull String signedTx) {
-      sendSignedTransaction(signedTx);
-    }
-  });
-}
-\end{lstlisting}
+% \begin{lstlisting}[language=Java,float=ht,caption={[Java] Ejemplo de sobrescritura de un listener.},label=lst:transactionHelper]
+% public void doSomething(...){
+%   signTransaction(credentials, gasPrice, gas, to, data, new EasyBlockchainListener() {
+%     // Sobrescribimos el método que esta en la interfaz EasyBlockchainListener
+%     @Override
+%     public void onSignTransactionEvent(@NonNull @NotNull String signedTx) {
+%       sendSignedTransaction(signedTx);
+%     }
+%   });
+% }
+% \end{lstlisting}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figs/Desarrollo/SDK/callback}
+  \caption[Función de ejemplo de un callback]{Función de ejemplo de un callback}
+  \label{fig:callback}
+\end{figure}
 
 % --------------------------------------------------
 \subsection{Como Incorporarlo en Otras Aplicaciones} \label{sec:Maven}
 
-Para que otro programador pueda utilizar el SDK que se ha desarrollado el primer paso es publicar el SDK en algún repositorio como en los repositorios de \emph{Maven Centra}\cite{maven}. Maven dispone de una inmensa cantidad de repositorios que usuarios pueden utilizar añadiendo la dependencia a sus proyectos, y gradle (el sistema de automatización de construcción de código que utiliza Android) se encarga de bajar la información automáticamente y así el usuario puede utilizar las funcionalidades que el usuario desea. \\
+Para que otro programador pueda utilizar el SDK que se ha desarrollado el primer paso es publicar el SDK en algún repositorio como en los repositorios de \emph{Maven Centra}\cite{maven}. Maven dispone de una inmensa cantidad de repositorios que usuarios pueden utilizar añadiendo la dependencia a sus proyectos, y gradle (el sistema de automatización de construcción de código que utiliza Android) se encarga de bajar la información automáticamente y así el usuario puede utilizar las funcionalidades que el usuario desea. Esta comodidad y facilidad en la gestión del SDK es la razón por la que se ha decidido utilizar \emph{Maven}. Una alternativa era utilizar \emph{jcenter()} sin embargo, no se ha hecho puesto que la empresa que mantiene el repositorio JCenter (empresa llamada \emph{JFrog}\cite{jfrog}) lo convirtió en un repositorio de solo lectura el \textbf{31 de Marzo de 2021}. \\
 
 Para publicar la librería se han de seguir a muy grandes rasgos estos pasos:
 \begin{itemize}
@@ -570,9 +607,25 @@ Más detalles se pueden encontrar en el post de ``Waseef Akhtar''\cite{waseef}. 
 Una vez la librería es pública, cualquier programador puede añadirla a su proyecto añadiendo a sus dependencias la línea \verb|implementation 'com.<entidad>.estublock:EasyBlockchain:1.0.0'|, el nombre de la entidad aún está por definir. Una vez añadida la línea y después de que gradle termine de sincronizar el repositorio, el programador puede utilizar todas las funciones que hayan en la versión 1.0.0 del SDK.
 
 
-
 \section{Wallet} \label{sec:wallet}
 
+El wallet es una aplicación que permite interactuar con la cuenta de Ethereum. Puede verse como una aplicación bancaria, que te permite ver tu saldo, enviar transacciones y conectar con aplicaciones. En el caso de ``Estublock'' no existe el concepto de saldo, pero sí se hacen transacciones y llamadas a una aplicación (el smart contract que tenemos ejecutando en la red blockchain a la que hacemos llamadas). El wallet guarda las credenciales del usuario, también conocidas como \textbf{keystore}. \\
+
+Cuando en la aplicación se registra un nuevo usuario, se le crea un wallet y se guarda este wallet con las credenciales en el dispositivo móvil. En el keystore se guarda la clave privada del usuario. Una clave privada en Ethereum no es más que 64 caracteres hexadecimales elegidos al azar. Aunque cualquiera pudiera elegir la clave privada manualmente, no es recomendable por seguridad. La clave pública se deriva de la clave privada utilizando el algoritmo de curva elíptica ECDSA \emph{Elliptic Curve Digital Signature Algorithm}. Una vez se tiene la clave pública y privada, se recupera el address del usuario, con este address se identifica al usuario en la red blockchain. En Ethereum se coge la clave pública y se ejecuta la función hash ``\emph{SHA 3}'' sobre ella, y como resultado se obtienen 64 caracteres de los cuales los últimos 40 son el address del usuario. Lógicamente todo este proceso lo hace la aplicación ``Estublock'' con ayuda del SDK y de la librería \emph{web3j}. \\
+
+Para añadir una capa de seguridad al keystore, y la clave privada quede cifrada, se añade una contraseña de cifrado que el usuario debe introducir para desbloquear el wallet. En la aplicación se ha decidido que la contraseña que se va a utilizar para desbloquear el wallet sea la misma que la que se utiliza para hacer login. Por lo tanto, una vez hecho el login, el usuario no debe introducir la contraseña nuevamente para hacer las transacciones. La clave \textbf{privada} se utiliza para firmar las transacciones que se envían a la red blockchain, y la clave \textbf{pública} se utiliza para que cualquier persona pueda verificar la firma. \\
+
+Existen distintos tipos de wallet\ref{fig:tipos_wallet}. Cada uno con sus ventajas y desventajas. Los ``web wallet'', son los más fáciles de utilizar, pero traen consigo un incoveniente. El usuario no tiene el control de sus credenciales. Las credenciales del usuario las mantiene una empresa externa. Por eso no se ha pensado en este tipo de wallets para la aplicación. Por otro lado tenemos las ``Cold Wallets'', las cuales son muy seguras, y el usuario tiene total acceso y control de las credenciales almacenadas en un dispositivo externo sin conexión a internet. La falta de conexión a internet y la incomodidad al usar una cold wallets, fueron la razón por las que se descartó este tipo de wallets para el proyecto. Luego están las dos mejores, \textbf{Hardware y Software Wallets}. Ambas aportan gran seguridad y control de las credenciales, por su usabilidad, las hardware wallets son más incómodas pues se suelen utilizar dispositivos externos para guardar las credenciales, como un disco duro cifrado. Por lo que, la mejor decisión era utilizar las \textbf{Software Wallets} para el proyecto. \\
+
+\begin{figure}[h!]
+  \centering
+  % https://www.bitpanda.com/academy/en/lessons/what-is-a-wallet-and-how-do-i-get-one/
+  \includegraphics[width=0.8\linewidth]{figs/Desarrollo/Wallet/que_es_wallet}
+  \caption[Visión general de los wallets]{Visión general de los wallets}
+  \label{fig:tipos_wallet}
+\end{figure}
+
+Las software wallets son fáciles de crear, el usuario tiene buen control de las credenciales pues están guardadas en su dispositivo móvil y tiene buena seguridad. Sin embargo hay que destacar las desventajas. Aunque no ocurre de forma habitual, el usuario puede perder el móvil, se lo pueden robar, romper o puede cambiarlo por uno mejor. Todas estas situaciones llevan al mismo lugar, el usuario no tiene acceso al wallet que tenía en el móvil original, y necesita acceso nuevamente al wallet. Otra situación en la que llegamos al mismo problema es \textbf{olvidar} la contraseña que utilizamos para desbloquear el Wallet. \\
 
 
 
@@ -580,118 +633,9 @@ Una vez la librería es pública, cualquier programador puede añadirla a su pro
 % ##################################################
 \section{Documentación}
 
-La documentación del SDK ha sido generada utilizando \emph{javadocs}, esto permite generar automáticamente una documentación a partir de varios tags de java. Una vez procesados, se genera una sencilla página web en la que se puede consultar la documentación. La documentación actualmente disponible es la siguiente: 
+La documentación es tan importante como la implementación, hay debate sobre si la documentación es una obligación o una recomendación muy positiva. La experiencia desarrollando, nos ha demostrado que una buena documentación es clave para que un programa pueda seguir siendo desarrollado, entendido, mantenido, y sirva a otros desarrolladores. Una buena documentación garantiza un producto final de mayor calidad. Aunque no hay un método estricto en cuanto ha ``cuándo hay que poner comentarios'', se ha decidido poner comentarios al inicio de la clase, de los métodos y de las variables de clase. Así como en fragmentos de código no evidentes y en los que se hace algo raro. \\
 
-\subsection{TransactionsHelper.java}
-\begin{lstlisting}[language=Java,caption={[Java] Documentación de TransactionsHelper},label=lst:transactionHelper]
-/**
- * Constructor de la clase.
- * @param blockchainURL La URL y puerto al nodo de la red blockchain con la que se
- * quiere comunicar. 
- */
-public TransactionsHelper(@NonNull String blockchainURL);
+Aunque la documentación dentro del código es un método correcto de documentar, un programador no tiende a mirar el código fuente, sino una documentación externa. Existen múltiples métodos para documentar y generar documentación, \textbf{Read the Docs}\cite{readthedocs} por ejemplo simplifica el proceso de documentación automatizando la construcción, versionado y ``hosting'' de la documentación de tus programas. Es gratis, siempre actualizado y permite descargar la documentación en varios formatos, así como mostrar documentación de varias versiones del proyecto. Por otro lado tenemos \textbf{JavaDocs}\cite{javadocs} es el formato por defecto para todo proyecto Java, permite generar una página web con la documentación que hay en los comentarios que hay en el programa. También es gratis pero no tiene opción de ``hosting'', es el programador el que debe dar el servicio online o que cada programador se genere la documentación en local. Por otro lado, para el futuro de la apliación, en el caso de que se migre el código a \emph{Kotlin} tenemos \textbf{Dokka}\cite{dokka}, permite generar documentación de la misma forma que \emph{javadocs} pero para Kotlin. Por último otra opción es \textbf{Doxygen}\cite{doxygen} es una herramienta de generación de documentación al igual que las anteriormente mencionadas, para lenguajes como \emph{C, C++, Java, PHP, Python}\dots\\
 
-/**
- * Método que firma una transacción.
- * @param credentials Las credenciales de un usuario, viene a ser su keystore
- * @param gasPrice Cantidad que quieres pagar por unidad de gas como tarifa al minero
- * @param gasLimit Limite máximo que estas dispuesto a pagar por la transacción
- * @param to Address del SMART CONTRACT de destino
- * @param data Información que se va a mandar al smart contract
- * @param listener Callback de la llamada a sobrescribir
- */
-public void signTransaction(@NonNull Credentials credentials, @NonNull String gasPrice, @NonNull String gasLimit, @NonNull String to, @NonNull String data, @NonNull EasyBlockchainListener listener);
+Para documentar el SDK se ha decidido utilizar \textbf{javadocs} pues es muy fácil de utilizar, es fácil documentar el código con la sintaxis de javadocs, y cualquier persona puede generar la documentación o mirar el código fuente para saber que hace cada función, que parámetros se esperan y que datos devuelve. La documentación del código se puede encontrar en el Anexo \ref{fig:docsTransHelper}
 
-/**
- * Método que envía una transacción ya firmada con listener.
- * @param signedMessage Transacción firmada lista para ser enviada
- * @param listener Callback de la llamada a sobrescribir
- */
-public void sendSignedTransaction(@NonNull String signedMessage, @NonNull EasyBlockchainListener listener);
-
-/**
- * Método que envía una transacción ya firmada sin listener.
- * @param signedMessage Transacción firmada lista para ser enviada
- */
-public void sendSignedTransaction(@NonNull String signedMessage);
-
-/**
- * Método que firma y envía una transacción.
- * @param credentials Las credenciales de un usuario, viene a ser su keystore
- * @param gasPrice Cantidad que quieres pagar por unidad de gas como tarifa al minero
- * @param gasLimit Limite máximo que estas dispuesto a pagar por la transacción
- * @param to Address del SMART CONTRACT de destino
- * @param data Información que se va a mandar al smart contract
- * @param listener Callback de la llamada a sobrescribir
- */  
- public void signAndSendTransaction(@NonNull Credentials credentials, @NonNull String gasPrice, @NonNull String gasLimit, @NonNull String to, @NonNull String data);
-\end{lstlisting}
-
-\subsection{WalletHelper.java}
-\begin{lstlisting}[language=Java,caption={[Java] Documentación de WalletHelper},label=lst:transactionHelper]
-/**
- * Constructor de la clase, llama a la función workaroundECDA()
- */
-public WalletHelper();
-
-/**
- * Método que arregla el problema con el proveedor de seguridad
- * Para saber más ir a este link: {@link https://github.com/web3j/web3j/issues/915}
- */
-private void workaroundECDA();
-
-/**
- * Método que crea una nueva cartera virtual
- * @param password Contraseña de la cartera virtual
- * @param walletDirectory Dirección de la nueva cartera virtual
- */
-public String createNewWallet(@NonNull String password, @NonNull File walletDirectory);
-
-/**
- * Método que crea una nueva cartera virtual
- * @param password Contraseña de la cartera virtual
- * @param walletDirectory Dirección de la nueva cartera virtual
- */  @NonNull
-public String createNewWallet(@NonNull String password, @NonNull String walletDirectory);
-
-/**
- * Método que devuelve el address de una cartera
- * @param password Contraseña de la cartera virtual
- * @param keyStoreDirectory Dirección de la cartera virtual
- */  
-public String getAddress(@NonNull String password, @NonNull File keyStoreDirectory);
-
-/**
- * Devuelve el address de una cartera
- * @param password Contraseña de la cartera virtual
- * @param keyStoreDirectory Dirección de la cartera virtual
- * @return address de la cartera
- */ 
-public String getAddress(@NonNull String password, @NonNull String keyStoreDirectory);
-
-/**
- * Devuelve las credenciales
- * @param password Contraseña de la cartera virtual
- * @param keyStoreDirectory Dirección de la cartera virtual
- * @return credenciales de la cartera virtual
- */ 
-public Credentials getCredentials(@NonNull String password, @NonNull File keyStoreDirectory);
-
-/**
- * Guarda en el sharedPreferences de android un identificador y la dirección del wallet
- * @param id id para la dirección del wallet
- * @param walletDirectory Dirección de la cartera virtual
- * @param prefsName nombre de las shared preferences que se quiere usar
- * @param activity Actividad de android para poder cargar las shared preferences
- */ 
-public void saveInPreferences(@NonNull String id, @NonNull String walletDirectory, @NonNull String prefsName, @NonNull Activity activity);
-
-/**
- * Devuelve el valor asociado al id
- * @param id id del que se quiere su valor
- * @param prefsName nombre de las shared preferences que se quiere usar
- * @param activity Actividad de android para poder cargar las shared preferences
- * @return Devuelve la dirección donde esta guardar la cartera virtual de la persona
- */ 
-public String getFromPreferences(@NonNull String id, @NonNull String prefsName, @NonNull Activity activity);
-\end{lstlisting}
