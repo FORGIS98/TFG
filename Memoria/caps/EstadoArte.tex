@@ -3,7 +3,7 @@
 
 \setlength{\parindent}{0pt}
 
-En este capítulo se explicará que es blockchain, como funciona, que tipos hay, así como ver su uso en el presente y que aplicaciones se están desarrollando alrededor de la misma para sacarle su máximo potencial, este apartado es de crucial importancia pues servirá para ver el estado del arte de las aplicaciones (en concreto aplicaciones móvil) del presente.
+En este capítulo se explicará que es blockchain, como funciona, que tipos hay, así como ver su uso en el presente y que aplicaciones se están desarrollando alrededor de la misma para sacarle su máximo potencial, este apartado es de crucial importancia pues servirá para ver el estado del arte de las aplicaciones (en concreto aplicaciones móvil) del presente. Además, se explicará el trabajo realizado para preparar la aplicación móvil, en concreto la APIRestful que se ha desarrollado para comunicar el móvil con la base de datos y parte de la red blockchain. También, se estudian conceptos básicos de Android que se han aprendido para preparar el proyecto. 
 
 % -------------------------------------------------- %
 % -------------------------------------------------- %
@@ -16,7 +16,7 @@ Blockchain es un tipo de base de datos, una base de datos es una colección de i
 
 Entonces, ¿donde difiere una blockchain con una base de datos tradicional? \\
 
-Una de las principales diferencias esta en el modo en el que se guarda la información, blockchain junta la información en grupos conocidos como \textbf{bloques}. Estos bloques tienen capacidad para una cantidad de información, y una vez llenos se enlazan con el bloque anterior con la ayuda de un \textbf{hash}. Un \textbf{hash}\cite{whatIsHash} es un algoritmo que mezcla la información que se le introduce para generar una salida única e irreversible de siempre la misma longitud, como se puede ver en \ref{fig:hash} la contraseña del usuario \emph{Asmin\_Ben} se hashea quedando una longitud fija en la base de datos. \\
+Una de las principales diferencias esta en el modo en el que se guarda la información, blockchain junta la información en grupos conocidos como \textbf{bloques}. Estos bloques tienen capacidad para una cantidad de información, y una vez llenos se enlazan con el bloque anterior con la ayuda de un \textbf{hash}. Un \textbf{hash}\cite{whatIsHash} es un algoritmo que mezcla la información que se le introduce para generar una salida única e irreversible de siempre la misma longitud, como se puede ver en \ref{fig:hash} la contraseña del usuario \emph{Admin\_Ben} se hashea quedando una longitud fija en la base de datos. \\
 
 \begin{figure}[h!]
   \centering
@@ -27,7 +27,7 @@ Una de las principales diferencias esta en el modo en el que se guarda la inform
 
 Existen múltiples algoritmos hash, y van evolucionando con el tiempo siendo cada vez más seguros y con menos colisiones. Una colisión, se da cuando dos entradas diferentes producen el mismo resultado (rompiendo con una de las reglas principales de los algoritmos hash que es que cada entrada produzca una única salida). \\
 
-Para continuar con la explicación, utilizaremos como ejemplo la red de \textbf{Bitcoin}\cite{whatIsBitcoin} y su algoritmo de consenso \textbf{Proof of Work}\cite{whatIsProofOfWork}. La base es la misma para la inmensa mayoría de redes, sin embargo según el algoritmo de consenso el método difiere ligeramente. Los algoritmos se verán mas adelante. Ahora entraremos en más detalles con las transacciónes, pero a grandes rasgos se puede ver la vida de una transacción de bitcoin en la figura \ref{fig:bitcoin}
+Para continuar con la explicación, utilizaremos como ejemplo la red de \textbf{Bitcoin}\cite{whatIsBitcoin} y su algoritmo de consenso \textbf{Proof of Work}\cite{whatIsProofOfWork}. La base es la misma para la inmensa mayoría de redes, sin embargo según el algoritmo de consenso el método difiere ligeramente. Los algoritmos se verán mas adelante\ref{sec:Algor}. Ahora entraremos en más detalles con las transacciónes, pero a grandes rasgos se puede ver la vida de una transacción de bitcoin en la figura \ref{fig:bitcoin} \\
 
 \begin{figure}[h!]
   \centering
@@ -36,7 +36,7 @@ Para continuar con la explicación, utilizaremos como ejemplo la red de \textbf{
   \label{fig:bitcoin}
 \end{figure}
 
-Cada bloque de la red blockchain, una vez tiene suficiente información para formarse, pasa por una función \textbf{hash256}. Cuando decimos suficiente información, nos referimos a las ``transacciones'', no son más que datos, ya sean monetarios, nombres, lugares, compras, firmas... o cualquier tipo de información digital. Todos los nodos de la red comparten estas transacciones, están todos sincronizados. Entendemos como nodo un ordenador de la red blockchain. Como ya sabemos, para formar un bloque, se tiene que calcular un hash, para evitar colisiones entre múltiples nodos de la blockchain, y así evitar que varios bloques se quieran añadir simultáneamente, el hash resultante ha de tener una cantidad determinada de \verb|0|'s al principio del mismo, esto es conocido como ``dificultad del hash''\ref{fig:hashDiff}. Por ejemplo, si la dificultad del hash es de \verb|32bits| la función hash256 resultante puede ser algo así: \verb|000000003d3a75526946a3bcf00daec9fc9c9c4d51ddc7cc5df888f74dd434d1|. Para llegar a este hash, los nodos de la blockchain tienen que utilizar el hash del bloque anterior junto con la información de las transacciones, y junto con un número conocido como \textbf{nonce}\cite{whatIsNonce}. Un \textbf{nonce} es un número que solo puede ser usado una vez. Los nodos solo pueden modificar este número, no pueden tocar ni el hash del bloque anterior ni las transacciones. Los nodos proceden entonces a modificar de manera aleatoria este nonce hasta dar con el hash con los \verb|0|'s que se piden. Este procedimiento es completamente aleatorio, por lo que a más poder de computo, mas rápido puedes probar números y mas posibilidades tienes de dar con el hash que se pide. A este proceso se le llama ``minado''\cite{minarBitcoin}
+Cada bloque de la red blockchain, una vez tiene suficiente información para formarse, pasa por una función \textbf{hash256}. Cuando decimos suficiente información, nos referimos a las ``transacciones'', estas no son más que datos, ya sean monetarios, nombres, lugares, compras, firmas... o cualquier tipo de información digital. Todos los nodos de la red comparten estas transacciones, están todos sincronizados. Entendemos como nodo un ordenador de la red blockchain. Como ya sabemos, para formar un bloque, se tiene que calcular un hash, para evitar colisiones entre múltiples nodos de la blockchain, y así evitar que varios bloques se quieran añadir simultáneamente, el hash resultante ha de tener una cantidad determinada de \verb|0|'s al principio del mismo, esto es conocido como ``dificultad del hash''\ref{fig:hashDiff}. Por ejemplo, si la dificultad del hash es de \verb|32bits| la función hash256 resultante puede ser algo así: \textit{000000003d3a75526946a3bcf00daec9fc9c9c4d51ddc7cc5df888f74dd434d1}. Para llegar a este hash, los nodos de la blockchain tienen que utilizar el hash del bloque anterior junto con la información de las transacciones, y junto con un número conocido como \textbf{nonce}\cite{whatIsNonce}. Un \textbf{nonce} es un número que solo puede ser usado una vez. Los nodos solo pueden modificar este número, no pueden tocar ni el hash del bloque anterior ni las transacciones. Los nodos proceden entonces a modificar de manera aleatoria este nonce hasta dar con el hash con los \verb|0|'s que se piden. Este procedimiento es completamente aleatorio, por lo que a más poder de computo, mas rápido puedes probar números y mas posibilidades tienes de dar con el hash que se pide. A este proceso se le llama ``minado''\cite{minarBitcoin}
 
 \begin{figure}[h!]
   \centering
@@ -83,7 +83,7 @@ Como ejemplo tenemos la \emph{Enterprise Ethereum Alliance}, en la que participa
 Estas redes blockchain son controladas por un proveedor de servicios como puede ser \emph{Amazon}. Estos proveedores permiten utilizar redes blockchain en la nube, permitiendo a los desarrolladores aprovechar el potencial de las redes blockchain sin la necesidad de invertir en el computo que ello requiere.
 
 % -------------------------------------------------- %
-\subsection{Tipos de algoritmo de consenso}
+\subsection{Tipos de algoritmo de consenso} \label{sec:Algor}
 
 \begin{figure}[h!]
   \centering
@@ -496,7 +496,7 @@ Por cada recurso, el SDK define un ID con número entero único para poder hacer
 % --------------------------------------------------
 \section{Desarrollo de Microservicio Externo}
 
-Para poder desarrollar la aplicación móvil y el SDK de este TFG, se ha desarrollado previamente una API de microservicios la que centralizar las llamadas a una base de datos y a una red blockchain, básicamente es para agilizar las llamadas y tratamiento de datos por parte del dispositivo móvil, así como minimizar la cantidad de código, tamaño de la aplicación móvil, dependencias del proyecto\dots La API de microservicios con la que se comunica la aplicación móvil ha desarrollado utilizando \textbf{NodeJS} y ha sido documentada utilizando \textbf{Swagger} \ref{fig:swaggerQuerys}, \ref{fig:swaggerUsuario}. \\
+Para poder desarrollar la aplicación móvil y el SDK de este TFG, se ha desarrollado previamente una API de microservicios la que centralizar las llamadas a una base de datos y a una red blockchain, básicamente es para agilizar las llamadas y tratamiento de datos por parte del dispositivo móvil, así como minimizar la cantidad de código, tamaño de la aplicación móvil, dependencias del proyecto\dots La API de microservicios con la que se comunica la aplicación móvil se ha desarrollado utilizando \textbf{NodeJS} y ha sido documentada utilizando \textbf{Swagger} \ref{fig:swaggerQuerys}, \ref{fig:swaggerUsuario}. \\
 
 \begin{figure}[h!]
   \centering
@@ -517,7 +517,7 @@ Para poder desarrollar la aplicación móvil y el SDK de este TFG, se ha desarro
 \subsubsection{NodeJS}
 Node.js\cite{nodejs} es un entorno de ejecución de \textbf{JavaScript} construido con el motor de \emph{JavaScript V8 de Chrome}. Esta ideado como un entorno orientado a eventos asíncronos con el que se pueden diseñar aplicaciones escalables en la red. Permite tratar múltiples conexiones simultaneas sin que el programador tenga que preocuparse por la concurrencia. Hoy en día, los modelos de concurrencia usan hilos del sistema operativo y requieren de bloquear procesos para operaciones de lectura y escritura. Los usuarios de NodeJS están libres de preocuparse por el bloqueo del proceso, ya que no existe. De ahí que sea muy propicio desarrollar sistemas escalables con NodeJS, de todos modos aunque NodeJS trabaja sin hilos, se pueden aprovechar múltiples núcleos en su entorno, generando varios procesos. \\
 
-He decidido utilizar NodeJS para desarrollar la API de microservicios pues me da la seguridad de que responderá correctamente a miles de llamadas simultaneas (siempre y cuando el servidor en el que se este ejecutando pueda con el poder de computo que ello requiere). Así pues, puedo estar tranquilo y saber que el sistema no se caerá y podrá dar servicio un largo tiempo. Además, NodeJS junto con su gestor de paquetes \emph{npm} me permiten mantener el sistema actualizado con facilidad sin preocuparme de problemas de dependencias y paquetes desactualizados o que tienen problemas de seguridad. \\
+Se ha decidido utilizar NodeJS para desarrollar la API de microservicios pues nos da la seguridad de que responderá correctamente a miles de llamadas simultaneas (siempre y cuando el servidor en el que se este ejecutando pueda con el poder de computo que ello requiere). Por lo tanto, permite estar tranquilos y saber que el sistema no se caerá y podrá dar servicio un largo tiempo. Además, NodeJS junto con su gestor de paquetes \emph{npm} permiten mantener el sistema actualizado con facilidad sin preocupeaciones de problemas de dependencias y paquetes desactualizados o con problemas de seguridad. \\
 
 Algunos ejemplos de grandes proyectos que utilizan NodeJS son:
 \begin{itemize}
@@ -530,7 +530,7 @@ Algunos ejemplos de grandes proyectos que utilizan NodeJS son:
 
 % --------------------------------------------------
 \subsubsection{Swagger}
-A la hora de programar una API, no es solo importante que el código sea correcto y funcione correcta y eficientemente. Sino que también es muy importante la documentación de la API, esto permite a otros programadores poder utilizarla sin preocuparse del código, y sin necesidad de conocer el proyecto. Para ello, he utilizado \textbf{Swagger} \cite{swagger}. Swagger es un conjunto de herramientas profesionales y de código abierto las cuales ayudan a diseñar y documentar APIs de forma escalable. Swagger permite hacer varias cosas:
+A la hora de programar una API, no es solo importante que el código sea correcto y funcione correcta y eficientemente. Sino que también es muy importante la documentación de la API, esto permite a otros programadores poder utilizarla sin preocuparse del código, y sin necesidad de conocer el proyecto. Para ello, se ha utilizado \textbf{Swagger} \cite{swagger}. Swagger es un conjunto de herramientas profesionales y de código abierto las cuales ayudan a diseñar y documentar APIs de forma escalable. Swagger permite hacer varias cosas:
 \begin{itemize}
 \item Diseñar
 \item Desarrollar
@@ -540,7 +540,7 @@ A la hora de programar una API, no es solo importante que el código sea correct
 \item Monitorizar
 \end{itemize}
 
-Para este proyecto, me aproveche principalmente de las herramientas de diseño, desarrollo y documentación. Centrándome sobre todo en la comodidad de documentación que tiene al utilizar archivos \emph{YAML} (yaml es un formato de serialización de datos legibles por humanos) para generar una documentación ligera, fácil de entender y muy detallada. 
+Para este proyecto, se han aprovechado principalmente las herramientas de \emph{diseño, desarrollo y documentación}. Con la concentración sobre todo en la comodidad de documentación que tiene al utilizar archivos \emph{YAML} (yaml es un formato de serialización de datos legibles por humanos) para generar una documentación ligera, fácil de entender y muy detallada. 
 
 % --------------------------------------------------
 \subsubsection{Funcionalidades de la API de Microservicios}
@@ -554,7 +554,6 @@ Las comunicaciones de la API se pueden dividir en los siguientes 3 casos de uso 
 \end{figure}
 
 Siendo más concretos pasemos a listar todas las funcionalidades de las que dispone la API, lógicamente esta no es la documentación completa la cual trae consigo los objetos JSON que aceptan la URIs y los errores u objetos JSON que devuelve cada una de las URIs. En el presente la documentación se mantiene en un repositorio de \emph{gitlab} privado. \\
-
 
 \begin{center}
   \begin{tabular}{|c|l|m{23em}|}
@@ -600,5 +599,5 @@ Siendo más concretos pasemos a listar todas las funcionalidades de las que disp
   \end{tabular}
 \end{center}
 
-Gracias a usar swagger, la API sigue la documentación de forma estricta, es decir, no acepta llamadas en las que no se envien los parámetro especificados en la documentación. Si para crear un usuario se requiere de un campo ``email'', si este campo no existe al hacer la llamada a la API, swagger se encarga de rechazar la llamada con un error de formato. Así logramos evitar que el backend tenga errores por variables indefinidas, nulas, o se guarden datos vacíos\dots
+Gracias a usar swagger, la API sigue la documentación de forma estricta, es decir, no acepta llamadas en las que no se envien los parámetro especificados en la documentación. Si para crear un usuario se requiere de un campo ``email'', si este campo no existe al hacer la llamada a la API, swagger se encarga de rechazar la llamada con un error de formato. Así se logra evitar que el backend tenga errores por variables indefinidas, nulas, o se guarden datos vacíos\dots
 
