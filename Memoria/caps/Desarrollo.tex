@@ -724,6 +724,87 @@ Un usuario puede perder acceso a su wallet a causa de múltiples razones como he
 
 En el caso de ``Estublock'' no hay implementado en el presente un sistema de recuperación del wallet. Sin embargo, se pueden implementar tres métodos para evitar que el usuario pierda acceso a dicho wallet. Por un lado tenemos las \textbf{seed phrases}, estas son un conjunto de palabras aleatorias que el usuario debe guardar a buen recaudo y ``bajo llave'' pues pueden servirle en caso de emergencia para recuperar el acceso al wallet. Si el usuario olvida la contraseña, las \emph{seed phrases} servirán para recuperar dicho acceso. Por otro lado, existe la opción de compartir parte de la clave privada con varios usuarios de mucha confianza. En el caso de olvidar la contraseña de su wallet, el usuario tiene acceso a su clave privada reuninedo dicha clave con ayuda de esas personas de mucha confianza. Una vez reconstruida la clave privada, puede utilizar una nueva contraseña para cifrarla y seguir utilizando sin problemas el sistema. Por último, es ideal que el usuario haga una copia de seguridad del wallet para evitar que perder el móvil, o fallos en el móvil (archivos corruptos, móvil roto\dots) o un robo puedan hacerle perder el acceso al wallet. 
 
+
+
+% ##################################################
+% ##################################################
+\section{Seguridad y Keystore}
+
+En la sección anterior sobre el wallet hemos mencionado brevemente la palabra \textbf{keystore}. Aquí vamos a profundizar mucho más sobre su uso, funcionamiento, que seguridad se ha implementado en ``Estublock'' para tratar de mantener el archivo seguro y como evitamos que, aunque alguien tenga acceso al móvil, minimizar el riesgo de perder que el \emph{keystore} se vea comprometido. \\
+
+\subsection{Keystore}
+
+Un archivo \textbf{keystore} (conocido también como Ethereum UTC file) es una versión cifrada de la clave privada Ethereum del usuario. Esta clave privada, se utiliza para firmar las transacciones. Si se pierde el archivo, se pierde acceso a la clave privada y por tanto no se puede firmar ninguna transacción. Esto provoca que tu cuenta en Ethereum quede congelada para siempre sin que puedas utilizarla, ni recuperar el saldo. La clave privada se podría guardar en un archivo no cifrado sin problema, pero hay que atenerse a las consecuencias, pues esta queda completamente vulnerable a que cualquier persona la lea y se envíe a si mismo todo el dinero de la cuenta. \\
+
+Es por esto mismo que existe el \textbf{keystore}, este permite guardar la clave privada cifrada con una contraseña. Si alguien quisiese robar la cuenta de otra persona, necesitaría la contraseña de la otra persona y el \emph{keystore}, es obligatorio tener ambas cosas, aunque parezca un detalle pequeño, supone ya una barrera más de seguridad. Para entrar por ejemplo en la cuenta bancaria de una persona, solo se necesita tener la contraseña de esta persona. Aquí, hace falta acceso al \emph{keystore} y a la contraseña. Cuando se utiliza un cliente de Ethereum para realizar transacciones, por ejemplo, la librería \textbf{web3j} que se ha utilizado en ``Estublock'', el cliente pide la contraseña para poder descifrar el \emph{keystore} y llevar a cabo la transacción. \\
+
+\emph{¿Pero, qué información hay en el keystore?}, en la siguiente figura \ref{fig:keystore} se presenta un \emph{keystore} creado por la aplicación ``Estublock''. Este \emph{keystore} esta guardado en el dispositivo móvil. \\
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figs/Desarrollo/Keystore/keystore}
+  \caption[Contenido de un Keystore]{Contenido de un Keystore}
+  \label{fig:keystore}
+\end{figure}
+
+Como se puede apreciar, el archivo es de tipo \emph{json}, y la inmensa mayoría de la información se encuentra dentro de \emph{crypto}. Pasemos a profundizar sobre los componentes:
+\begin{itemize}
+\item \texbtf{address:} Address de la cuenta asociada a este keystore.
+\item \texbtf{cipher:} Nombre del cifrado simétrico utilizado, en este caso \texbtf{AES-128}. El cifrado AES, en ingles \textbf{A}dvanced \textbf{E}ncryption \textbf{S}tandard, es un estándar utilizado en el cifrado de información para que se mantenga privada. Es muy popular y seguro (el gobierno de los estados unidos lo utiliza para mantener datos clasificados a salvo de hackers). AES cifra bloques de texto con la ayuda de una contraseña de \emph{X} bits de longitud (en este caso 128 bits, de ahí que se llame AES-128). 
+\item \texbtf{cipherparams:} Parámetros requeridos para el algoritmo de cifrado.
+\item \texbtf{ciphertext:} La clave privada de Ethereum del usuario, cifrada utilizando el algoritmo AES.
+\item \texbtf{kdf:} Función de derivación de clave o \emph{Key Derivation Function}(KDF). Deriva una o más claves secretas a partir de una contraseña usando una función pseudoaleatoria. Los KDF se pueden utilizar para extender claves en otras más largas, aumentando la seguridad. Básicamente, se utiliza en el \emph{keystore} para que el usuario pueda cifrar el propio \emph{keystore} con una contraseña.
+\item \texbtf{kdfparams:} Parámetros necesarios para la función KDF.
+\item \texbtf{mac:} Es un Código de Autenticación de Mensaje, o \emph{Message Authentication Code}(MAC). Es una porción de información utilizada para autenticar un mensaje. En este caso, autentica la contraseña.
+\end{itemize}
+
+Pasemos a ver, los pasos y procedimientos que sigue un keystore para firmar transacciones.
+
+\subsubsection{Cifrado de la clave privada}
+
+Como se ha mencionado en la sección anterior (\textbf{Wallet}), una cuenta de Ethereum tiene un par de claves pública-privada. Para mantener la clave privada a buen recaudo, es crucial utilizar un cifrado muy fuerte (AES). Este cifrado simétrico, permite cifrar información con una contraseña, y descifrarla con la misma contraseña (esta no es la contraseña del usuario, sino que es el resultado de aplicar a la contraseña del usuario la función de derivación KDF). Entonces, si juntamos la clave privada de Ethereum cifrada, con el algoritmo AES y nuestra contraseña, obtenemos la clave privada de Ethereum descifrada y lista para firmar una transacción en la red blockchain \ref{fig:keystore_aes}. Sin embargo, la contraseña que se utiliza para descifrar la clave privada, ha pasado antes por el \emph{KDF}. Veamos como se protege nuestra contraseña.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figs/Desarrollo/Keystore/keystore_AES}
+  \caption[Descifrado de la clave privada con AES]{Descifrado de la clave privada con AES}
+  \label{fig:keystore_aes}
+\end{figure}
+
+\subsubsection{Protección de la contraseña}
+
+Como hemos mencionado antes, la contraseña del usuario pasa previamente por una función de derivación de claves. El resultado de esta función es lo que se utiliza (junto con AES) para descifrar la clave privada (como se ha mencionado antes). Para lograr esto, se le pasan a la función de derivación unos parámetros, en este caso se esta utilizando la función \textbf{scrypt}\cite{scrypt} a la que se le pasan varios parámetros.
+\begin{itemize}
+\item \textbf{dklen:} Longitud en octetos de la contraseña derivada (es decir, que tan largo tiene que ser el resutlado de \emph{scrypt}).
+\item \textbf{n:} Coste de CPU y Memoria.
+\item \textbf{r:} Tamaño del bloque.
+\item \textbf{p:} Parámetro de paralelización.
+\item \textbf{salt:} Número único generado aleatoriamente.
+\end{itemize}
+
+Todo lo anterior se ejecuta junto con la contraseña del usuario \ref{fig:keystore_scrypt}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figs/Desarrollo/Keystore/keystore_scrypt}
+  \caption[KDF de una contraseña]{KDF de una contraseña}
+  \label{fig:keystore_scrypt}
+\end{figure}
+
+\subsubsection{Verificación de la contraseña}
+
+Para asegurarnos de que la contraseña que introduce un usuario es correcta, se utiliza el valor de \textbf{MAC}. Justo después de ejecutar el KDF sobre la contraseña, se cogen los 16 Bytes que están más a la izquierda del resultado y se concatenan con el parámetro \textbf{ciphertext}. Una vez hecho esto, se hashean con \emph{SHA3-256} y se compara con \textbf{MAC}. Si la comparación sale positiva, la contraseña ha sido introducida correctamente, y si sale negativa, no \ref{fig:keystore_MAC}.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figs/Desarrollo/Keystore/keystore_MAC}
+  \caption[Comprobación de contraseña correcta con MAC]{Comprobación de contraseña correcta con MAC}
+  \label{fig:keystore_MAC}
+\end{figure}
+
+Un flujo completo con todas las partes anteriores juntas puede verse en el \hyperref[cap:Anexo]{Anexo}, en concreto en \ref{fig:keystore_completo}.
+
+\subsection{Keystore en Estublock}
+
 % ##################################################
 % ##################################################
 \section{Documentación}
