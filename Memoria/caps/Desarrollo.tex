@@ -44,10 +44,94 @@ Para la aplicación, se han usado ambas formas, pues por un lado hay pantallas e
 
 Uno de los puntos fuertes de programar con antelación la interfaz con XML, es que se puede separar la presentación de la app del código que controla los componentes, además, facilita la creación de distintos diseños para diferentes tamaños de pantalla, orientación, colores\dots Es la mejor opción a la hora de crear una interfaz de usuario aunque en ocasiones se requiera de crear o modificar de forma dinámica en tiempo de ejecución algunos elementos. También es habitual crear con XML un diseño estático, y luego modificarlo en tiempo de ejecución según sea necesario accediendo a sus componentes.  
 
+
+% --------------------------------------------------
+\subsection{Accesibilidad de Estublock}
+
+Cuando se crea un sitio web o una aplicación ya sea de escritorio o de móvil, una de las principales preocupaciones que un desarrollador tiene (sobre todo a nivel de interfaz) es la \textbf{accesibilidad}. Accesibilidad es tratar a todo el mundo igual, sean cuales sean sus capacidades. Aunque la definición es muy abierta, lo que quiere es conseguir que todo el mundo pueda utilizar lo que sea sin importar cuales seas sus capacidades y dificultades. Con ``lo que sea'' nos referimos a que accesibilidad aunque aquí este centrado en Software especialmente aplicaciones móvil, la accesibilidad es algo a tener en cuenta en todas partes, transporte, edificios, gimnasios, webs, videojuegos, aplicaciones móvil\dots Los desarrolladores de aplicaciones móvil, deben intentar ser más conscientes de las necesidades de todo el público potencial que puede querer utilizar la aplicación que se está desarrollando. \\
+
+El \emph{primer} paso para identificar como mejorar al máximo la accesibilidad de ``Estublock'' es definir quienes son los usuarios finales, que abanico de personas van a utilizar la aplicación, para así lograr en la medida de lo posible que todos los usuarios puedan utilizar y disfrutar de la aplicación. Dicho esto, el público objetivo de la aplicación es toda persona entre los 18 años hasta personas muy mayores. Los jóvenes (de 18 para arriba) son los estudiantes, luego tenemos a ponentes de charlas que pueden ser jóvenes también o ser personas ya jubiladas. Por otro lado están los profesores, hay profesores jóvenes, y profesores más mayores. La edad no es un aspecto clave a tener en cuenta pero es cierto que no es lo mismo un público objetivo de 8 años que de 18 años. \\
+
+\emph{Segundo} paso, hemos mencionado que accesibilidad se refiere a que personas con distintas dificultades y capacidades puedan utilizar la aplicación. ¿Qué capacidades pueden limitar el uso de la aplicación ``Estublock'' por las personas?\ref{fig:discapacidad} Usuarios con \textbf{deficiencias visuales} que utilicen un lector de pantallas para moverse por la aplicación (es decir, pulsan un boton y el móvil lee el texto del botón, si vuelven a pulsar el boton se ejecuta la acción que haga ese botón). Luego hay usuarios con \textbf{miopía}, que tratarán de tener la fuente del texto más grande para facilitar su lectura, la \textbf{vista cansada} también entra aquí, pues es habitual agrandar el texto cuando uno tiene la vista cansada. Hay que tener en cuenta también a usuarios con \textbf{discapacidades motrices}, que utilizaran ayudas como dispositivos de señalización o punteros visuales para manipular la aplicación. Por ejemplo, un usuario que ha nacido sin extremidades superiores utilizará los pies para manipular un móvil. Aunque este usuario tendrá una habilidad con los pies que el resto no tenemos, agradecerá enormemente que las aplicaciones móvil tengan en cuenta la incomodidad que conlleva utilizar los pies para utilizar una aplicación móvil. Por otro lado, no todas las dificultades tienen un factor ``físico'', hay que pensar también que hay usuarios \textbf{daltónicos}, y ante dos botones rojo y verde, el usuario daltónico vea ambos colores con la misma tonalidad. \\
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\linewidth]{figs/Desarrollo/Accesibilidad/discapacidades}
+  \caption[Clasificación de las principales formas de discapacidad]{Clasificación de las principales formas de discapacidad}
+  \label{fig:discapacidad}
+\end{figure}
+
+La clave para diseñar pensando en la accesibilidad, es pensar en un problema y decidir solucionarlo para más de un tipo de usuarios. Aunque la mejora manera de conseguir una solución bien hecha desde el principio es teniendo en cuenta todas las necesidades desde el primer momento. (Aunque siempre se pueden cambiar los planes y añadir algo que se pase haya pasado por alto). A la hora de desarrollar ``Estublock'' solo se ha tenido en cuenta la accesibilidad a nivel teórico, es decir, se tiene en mente la implementación de mejoras en accesibilidad, pero para lograr llegar al \emph{deadline} del proyecto, se han obviado y se ha ido directo al funcionamiento de la aplicación sin tener en cuenta la accesibilidad. \\
+
+Pasemos a ver, algunos puntos esenciales en los que hay que fijarse al añadir a ``Estublock'' una mejor accesibilidad.
+
+\subsubsection{Jerarquía}
+Cuando la navegación es fácil los usuarios entienden dónde están en la aplicación y qué es importante. Para enfatizar qué información es importante, se pueden utilizar múltiples señales visuales y textuales como el color, forma o movimiento. Cada botón, imagen y línea de texto añadidos aumentan la complejidad de una interfaz de usuario. Para mejorar la comprensión de la interfaz de usuario se pueden utilizar elementos claramente visibles, contrastes y tamaños adecuados, una clara jerarquía de importancia, información clave discernible de un vistazo\dots Así como colocar las acciones importantes en la parte superior o inferior de la pantalla, y colocando elementos relacionados con una jerarquía similar uno al lado del otro. Por ejemplo, en la siguiente figura \ref{fig:gatosyperros} a la izquierda queda claro que en la parte superior están los elementos importantes que pueden permitirte navegar por la aplicación, pero a la derecha choca al usuario que los controles de la aplicación estén en medio de la pantalla, cortando la información. 
+
+\begin{figure}[hbt]
+	\centering
+	\begin{subfigure}[b]{0.4\linewidth}
+		\centering
+        \includegraphics[width=1\linewidth]{figs/Desarrollo/Accesibilidad/gatosyperrosbien}
+        \caption[Acciones importantes en la parte superior]{Correcto: Acciones importantes en la parte superior}
+	\end{subfigure} 
+	\begin{subfigure}[b]{0.4\linewidth}
+		\centering
+        \includegraphics[width=1\linewidth]{figs/Desarrollo/Accesibilidad/gatosyperrosmal}
+        \caption[Acciones importantes en la parte de en medio]{Incorrecto: Acciones importantes en la parte de en medio}
+	\end{subfigure} 
+	\caption[Jerarquía de prioridad]{Jerarquía de prioridad}
+	\label{fig:gatosyperros}
+\end{figure}
+
+\subsubsection{Colores y Contraste}
+El color y el contraste pueden utilizarse para ayudar a los usuarios a ver e interpretar el contenido de su aplicación, interactuar con los elementos adecuados y comprender las acciones. Puede ayudar a comunicar el estado de ánimo, tono e información crítica. Colores primarios y secundarios pueden favorecer la accesibilidad. Al igual que el contraste de color entre elementos puede ayudar a los usuarios con baja visión a ver mucho mejor los elementos. Con el contraste de colores, los usuarios distinguen mejor los distintos elementos textuales y no textuales, puede hacer que imágenes se vean mejor, además, hay que tener en cuanta la luz externa, no es lo mismo utilizar la aplicación en un espacio cerrado que abierto, con sol o nublado, de día o de noche. Una de las principales ideas para ``Estublock'' es dar la posibilidad al usuario de personalizar el \emph{tema} de la aplicación, para que pueda decidir entre un abanico de temas el que mejor se ajuste a sus necesidades. Si prefiere un tema oscuro por la noche y uno claro por el día, puede cambiar entre ambos temas, si le cuesta diferenciar los colores, podrá seleccionar un tema de colores que tenga mayor contraste o que utilice otro abanico de colores que sí pueda ver (muy útil para personas con \emph{daltónicas}). La importancia del contraste puede verse en la figura \ref{fig:corazones}. \\
+
+\begin{figure}[hbt]
+	\centering
+	\begin{subfigure}[b]{0.4\linewidth}
+		\centering
+        \includegraphics[width=1\linewidth]{figs/Desarrollo/Accesibilidad/corazonesbien}
+        \caption[Contraste que permite ver el icóno]{Contraste que permite ver el icóno}
+	\end{subfigure} 
+	\begin{subfigure}[b]{0.4\linewidth}
+		\centering
+        \includegraphics[width=1\linewidth]{figs/Desarrollo/Accesibilidad/corazonesmal}
+        \caption[Contraste que no permite ver el icóno]{Contraste que permite no ver el icóno}
+	\end{subfigure} 
+	\caption[Contrastes de un icóno]{Contrastes de un icóno}
+	\label{fig:corazones}
+\end{figure}
+
+Aunque el feedback de la aplicación no tenga tanto que ver con la accesibilidad sino con la usabilidad. Es cierto que una mejora en los colores del feedback puede hacer que un usuario vea con mejor claridad lo que esta ocurriendo, o lo que la aplicación le esta tratando de transmitir. Por ejemplo, ante un error, él móvil puede mostrar una pequeña línea roja que el usuario puede no ver. Pero, si esta bien hecho, el móvil podría vibrar, a la vez que muestra en rojo el texto y la razón del error\ref{fig:error}. Para terminar una gran herramienta para elegir correctamente los colores de nuestra aplicación es \href{https://material.io/resources/color/#!/?view.left=1&view.right=0}{Color Tool} \\
+
+\begin{figure}[hbt]
+	\centering
+	\begin{subfigure}[b]{0.4\linewidth}
+		\centering
+        \includegraphics[width=1\linewidth]{figs/Desarrollo/Accesibilidad/errorbien}
+        \caption[Feedback con colores correcto]{Feedback con colores correcto}
+	\end{subfigure} 
+	\begin{subfigure}[b]{0.4\linewidth}
+		\centering
+        \includegraphics[width=1\linewidth]{figs/Desarrollo/Accesibilidad/errormal}
+        \caption[Feedback con colores incorrecto]{Feedback con colores incorrecto}
+	\end{subfigure} 
+	\caption[Feedback ante un error]{Feedback ante un error}
+	\label{fig:error}
+\end{figure}
+
 % --------------------------------------------------
 \subsection{Diseño de la Interfaz de Estublock}
 
-A la hora de diseñar la aplicación Estublock, se ha buscado un diseño ligero, intuitivo y rápido. Como que tener en cuenta a muchos usuarios, hay que pensar en los posibles problemas de visión, daltonismo, dislexia, evitar que se pueda mal interpretar un botón\dots todo esto para evitar en la medida de lo posible que el usuario se lleve una mala experiencia con la aplicación. Para todo ello, se ha utilizado una herramienta de diseño para prototipos de pantallas y testeo de pantallas llamada \emph{Marvelapp}\cite{marvelapp}. Marvelapp permite diseñar con bastante detalle aplicaciones móvil y web, y además permite enlazar pantallas para probar la efectividad de las pantallas y el entendimiento de las mismas. Marvelapp tiene un gran potencial al permitir diseñar rápidamente pantallas y poder probar su efectividad rápidamente. \\
+A la hora de diseñar la aplicación Estublock, se ha buscado un diseño ligero, intuitivo y rápido, para evitar que se pueda mal interpretar un botón, que el usuario se pierda al usar la aplicación o no sepa donde encontrar las cosas. Todo esto para evitar en la medida de lo posible que el usuario se lleve una mala experiencia con la aplicación. Para todo ello, se ha utilizado una herramienta de diseño para prototipos de pantallas y testeo de pantallas llamada \emph{Marvelapp}\cite{marvelapp}. Marvelapp permite diseñar con bastante detalle aplicaciones móvil y web, y además permite enlazar pantallas para probar la efectividad de las pantallas y el entendimiento de las mismas. Marvelapp tiene un gran potencial al permitir diseñar rápidamente pantallas y poder probar su efectividad rápidamente. El diagrama de flujo completo entre pantallas de la aplicación puede encontrarse en la figura \ref{fig:diagramaCompleto}\\
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=1\linewidth]{figs/Desarrollo/Interfaz/diagrama_completo}
+  \caption[Flujo entre pantallas de ``Estublock'']{Flujo entre pantallas de ``Estublock''}
+  \label{fig:diagramaCompleto}
+\end{figure}
 
 \subsubsection{Pantalla de Registro}
 
@@ -214,7 +298,7 @@ Para llegar a esta pantalla, el usuario ha elegido previamente el botón \textit
 	\label{fig:pantalla_qr}
 \end{figure}
 
-\subsubsection{Pantalla del Escanear un QR}
+\subsubsection{Pantalla de Escanear un QR}
 
 Esta pantalla es especial, pues llama a la actividad de la \textbf{cámara de fotos}. Como hemos visto anteriormente en el estado del arte, una aplicación puede llamar sin problemas a otra aplicación (siempre y cuando esta lo permita). En esta ocasión, se requiere de la cámara del usuario para escanear el QR. No todas las cámaras de los móviles escanean QRs de forma automática, pero esto no es un problema ya que la librería que se ha utilizado para programar esta actividad, se encarga de ello. El usuario entonces verá como se abre su cámara y al enfocar un QR, este se escanea automáticamente enviando a la red blockchain la asistencia. Una representación visual puede verse en \ref{fig:pantalla_escaneo_qr}
 
@@ -253,7 +337,9 @@ Por último, haremos mención de una carpeta muy importante llamada \textbf{valu
 
 
 
+
 % --------------------------------------------------
+\clearpage
 \section{Implementación} \label{sec:Codigo}
 
 Las aplicaciones Android pueden ser programadas principalmente en dos lenguajes de programación, \textbf{Java} y \textbf{Kotlin}. En el presente, la inmensa mayoría de aplicaciones han sido desarrolladas con Java, sin embargo Kotlin es promete ser el futuro. Actualmente sigue siendo un lenguaje muy secundario (aunque se puede hacer todo lo que se puede hacer con Java y esta muy bien documentado). Según google trends\ref{fig:java_vs_kotlin}, Kotlin esta lejos de quitarle el puesto a Java aunque los nuevos desarrolladores de aplicaciones Android muestran más interés por Kotlin por su comodidad, falta de verbosidad y ``limpieza'' (es decir, con menos líneas de código haces lo mismo que Java). 
