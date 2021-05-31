@@ -12,11 +12,26 @@ Blockchain\cite{b1,b2,b3,b4} es un término escuchado hoy en día por todas part
 
 % -------------------------------------------------- %
 \subsection{Definición}
-Blockchain es un tipo de base de datos, una base de datos es una colección de información guardada en un ordenador o servidor. Por norma general, la información esta guardada de forma ordenada y estructurada para poder ser accedida con comodidad. Las bases de datos no tienen un tamaño fijo, pudiendo crecer a niveles inimaginables, por norma general solo personal autorizado puede acceder a la información que se encuentra en ellas, así como añadir, eliminar y modificarla. \\
 
-Entonces, ¿donde difiere una blockchain con una base de datos tradicional? \\
+Blockchain es una tecnología \textbf{DLT} (Distributed Ledger Tecnology), un \emph{ledger} es un libro contable o de contabilidad. Por lo que DLT viene a ser una tecnología de libros de contabilidad distribuidos. DLT se refiere a la infraestructura tecnológica y a los protocolos que permiten el \textbf{acceso, validación y actualización} de registros de forma \textbf{simultánea e inmutable} a través de una red que se extiende por \textbf{múltiples entidades} o ubicaciones (en el caso de blockchain, estas entidades son ordenadores y se les llama nodos). \\
 
-Una de las principales diferencias esta en el modo en el que se guarda la información, blockchain junta la información en grupos conocidos como \textbf{bloques}. Estos bloques tienen capacidad para una cantidad de información, y una vez llenos se enlazan con el bloque anterior con la ayuda de un \textbf{hash}. Un \textbf{hash}\cite{whatIsHash} es un algoritmo que mezcla la información que se le introduce para generar una salida única e irreversible de siempre la misma longitud, como se puede ver en \ref{fig:hash} la contraseña del usuario \emph{Admin\_Ben} se hashea quedando una longitud fija en la base de datos. \\
+La tecnología blockchain se sostiene en tres pilares principales:
+\begin{enumerate}
+  \item Transparencia: Toda la información que se registra en la red blockchain es pública, todas las transacciones pueden ser visualizadas por todos los nodos que conforman la red blockchain. Aunque pueda parecer peligroso que todo el mundo pueda ver todas las transacciones, Blockchain utiliza complejos mecanismos criptográficos para mantener el anonimato en la red, de modo que nunca se puede saber quienes son los participantes involucrados en una transacción. 
+  \item Inmutabilidad: Una vez almacenada la información en la red, esta pasa a regirse por las reglas de la red, no pudiendo ser modificadas, alteradas o eliminadas de nunguna manera. 
+  \item Descentralización: La información que registra la red blockchain no queda guardada en un único lugar, no hay una empresa con toda la información centralizada en sus instalaciones. Todos los nodos (ordenadores) que forman la red blockchain tienen una copia exacta y actualizada de la información que hay en la red. Las redes distribuidas permiten además eliminar la necesidad de una autoridad central que controle el sistema para evitar manipulaciones o fraudes. 
+\end{enumerate}
+
+\subsection{¿Como funciona?}
+
+Una Blockchain es un sistema de registro de transacciones en constante crecimiento, junta la información en grupos conocidos como \textbf{bloques}. Cada bloque contiene información sobre las transacciones que se han realizado, así como información adicional en la cabecera. En la cabecera del bloque tenemos información sobre el número del bloque, el \textbf{hash} del bloque anterior, el \textbf{timestamp} y el \textbf{nonce} entre otros. \\
+
+Entendamos estos conceptos:
+\begin{itemize}
+  \item Hash: Un hash\cite{whatIsHash} es un algoritmo que mezcla la información que se le introduce para generar una salida única e irreversible que tiene siempre una longitud fija. Es importante que cada salida es única para la información introducida, el más mínimo cambio en la información introducida y la salida cambiará por completo. Es como una huella digital de la información, no hay dos huellas iguales. Las funciones hash se utilizan de forma habitual para guardar la contraseña de personas en una base de datos, así, la contraseña nunca queda guardada en claro y si la base de datos se ve comprometida, es casi imposible recuperar la contraseña original \ref{fig:hash}. Aplicado a una red Blockchain, se ejecuta una función \textbf{hash256} sobre toda la información de un bloque. El resultado se utiliza en el siguiente bloque que se vaya a crear. Es decir, que cada bloque tiene el hash del bloque anterior (y el siguiente bloque tendrá el hash del bloque actual). 
+  \item Timestamp: Identifica la hora exacta en segundos de la creación del bloque.
+  \item Nonce: Un nonce\cite{whatIsNonce} es un número que solo puede ser utilizado una única vez. 
+\end{itemize}
 
 \begin{figure}[h!]
   \centering
@@ -25,18 +40,9 @@ Una de las principales diferencias esta en el modo en el que se guarda la inform
   \label{fig:hash}
 \end{figure}
 
-Existen múltiples algoritmos hash, y van evolucionando con el tiempo siendo cada vez más seguros y con menos colisiones. Una colisión, se da cuando dos entradas diferentes producen el mismo resultado (rompiendo con una de las reglas principales de los algoritmos hash que es que cada entrada produzca una única salida). \\
+Para continuar con la explicación, utilizaremos redes blockchain que utilizan el algoritmo de consenso \textbf{Proof of Work}\cite{whatIsProofOfWork} como hace por ejemplo la red de \textbf{Bitcoin}\cite{whatIsBitcoin}. La base es la misma para la inmensa mayoría de redes, sin embargo según el algoritmo de consenso el método difiere ligeramente. Los algoritmos se verán mas adelante\ref{sec:Algor}. En el caso de Proof of Work, para añadir un nuevo bloque a la red, debe ser \textbf{minado}\cite{minarBitcoin}. Para minar un bloque, todos los nodos de la red blockchain tratan de encontrar un hash con un requisito añadido. Ejecutar un hash sobre cualquier tipo de información, es un proceso muy fácil. Por ello, utilizando Proof of Work, se añade una dificultad al hash. La dificultad\ref{fig:hashDiff} consiste en obligar que el hash resultante tenga un número de \textbf{0's} al principio del resultado. Por lo tanto, el minado consiste en modificar el \emph{nonce} (pues no se pueden modificar las transacciones que hay en el bloque o el hash del bloque anterior). Los nodos de la red modifican el nonce de forma aleatoria hasta que algún nodo logre dar con un nonce que cumpla con la dificultad del hash. Logrado esto, el resto de nodos de la red verifican que el nonce que ha encontrado resuelve en efecto la dificultad del hash y se procede a añadir el bloque a la red y vuelta a empezar. En el caso de bitcoin, se mina un bloque cada 10 minutos aproximadamente. \\
 
-Para continuar con la explicación, utilizaremos como ejemplo la red de \textbf{Bitcoin}\cite{whatIsBitcoin} y su algoritmo de consenso \textbf{Proof of Work}\cite{whatIsProofOfWork}. La base es la misma para la inmensa mayoría de redes, sin embargo según el algoritmo de consenso el método difiere ligeramente. Los algoritmos se verán mas adelante\ref{sec:Algor}. Ahora entraremos en más detalles con las transacciónes, pero a grandes rasgos se puede ver la vida de una transacción de bitcoin en la figura \ref{fig:bitcoin} \\
-
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.8\linewidth]{figs/EstadoArte/Blockchain/bitcoinMining}
-  \caption[Vida de una transacción en Bitcoin]{Vida de una transacción en Bitcoin}
-  \label{fig:bitcoin}
-\end{figure}
-
-Cada bloque de la red blockchain, una vez tiene suficiente información para formarse, pasa por una función \textbf{hash256}. Cuando decimos suficiente información, nos referimos a las ``transacciones'', estas no son más que datos, ya sean monetarios, nombres, lugares, compras, firmas... o cualquier tipo de información digital. Todos los nodos de la red comparten estas transacciones, están todos sincronizados. Entendemos como nodo un ordenador de la red blockchain. Como ya sabemos, para formar un bloque, se tiene que calcular un hash, para evitar colisiones entre múltiples nodos de la blockchain, y así evitar que varios bloques se quieran añadir simultáneamente, el hash resultante ha de tener una cantidad determinada de \verb|0|'s al principio del mismo, esto es conocido como ``dificultad del hash''\ref{fig:hashDiff}. Por ejemplo, si la dificultad del hash es de \verb|32bits| la función hash256 resultante puede ser algo así: \textit{000000003d3a75526946a3bcf00daec9fc9c9c4d51ddc7cc5df888f74dd434d1}. Para llegar a este hash, los nodos de la blockchain tienen que utilizar el hash del bloque anterior junto con la información de las transacciones, y junto con un número conocido como \textbf{nonce}\cite{whatIsNonce}. Un \textbf{nonce} es un número que solo puede ser usado una vez. Los nodos solo pueden modificar este número, no pueden tocar ni el hash del bloque anterior ni las transacciones. Los nodos proceden entonces a modificar de manera aleatoria este nonce hasta dar con el hash con los \verb|0|'s que se piden. Este procedimiento es completamente aleatorio, por lo que a más poder de computo, mas rápido puedes probar números y mas posibilidades tienes de dar con el hash que se pide. A este proceso se le llama ``minado''\cite{minarBitcoin}
+La vida de una transacción en bitcoin a grandes rasgos puede verse en la figura \ref{fig:bitcoin}. La razón de que blockchain sea una cadena de bloques, es que después de todo el proceso de hashing, de minado\dots los bloques quedan enlazados entre si gracias a estos hashes\ref{fig:bloqueEnlazado}. 
 
 \begin{figure}[h!]
   \centering
@@ -45,7 +51,19 @@ Cada bloque de la red blockchain, una vez tiene suficiente información para for
   \label{fig:hashDiff}
 \end{figure}
 
-Una vez un nodo encuentra el nonce correcto, lo comparte con el resto de nodos de la red blockchain los cuales validan la información, y se procede a añadir el nuevo bloque a la red blockchain. El nodo que ha encontrado el resultado correcto recibe un incentivo, en el caso de bitcoin, el nodo se asigna a si mismo un número de bitcoins, creando así nuevo bitcoin. 
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figs/EstadoArte/Blockchain/bitcoinMining}
+  \caption[Vida de una transacción en Bitcoin]{Vida de una transacción en Bitcoin}
+  \label{fig:bitcoin}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figs/EstadoArte/Blockchain/bloqueEnlazado}
+  \caption[Cadena de bloques]{Cadena de bloques}
+  \label{fig:bloqueEnlazado}
+\end{figure}
 
 % -------------------------------------------------- %
 \subsection{Tipos de redes blockchain}
