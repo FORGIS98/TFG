@@ -9,6 +9,45 @@ El desarrollo de la aplicación móvil, se ha enfocado únicamente a dispositivo
 
 % ##################################################
 % ##################################################
+\section{Análisis}
+
+Antes de arrancar con el desarrollo de la aplicación, hay que tener claros los objetivos que tiene que cumplir ``Estublock'', y que casos de uso va a tener la aplicación.
+
+\subsection{Objetivos y público de Estublock}
+
+El \textbf{principal} objetivo de la aplicación \emph{Estublock} es: \emph{Permitir registrar asistencias a eventos}. Para cumplir con este objetivo, se va a utilizar la tecnología Blockchain, y aunque viene integrado con ``Estublock'', la funcionalidad de comunicación con la red Blockchain se hace a través de un SDK. Dicho esto, para cumplir con el registro de asistencias, necesitamos que la aplicación permita registrar a usuarios, crear eventos y registrar a las personas en esos eventos. Por lo tanto, se requiere de una funcionalidad de login y registro, así como un lugar donde crear eventos y donde poder registrar a los usuarios en un evento dado. \\
+
+La aplicación va principalmente dirigida a estudiantes, profesores y organizadores de eventos (dentro de este grupo, se ha pensado en las asociaciones de alumnos como \emph{ACM} o \emph{Delegación de Alumnos}). Como estos usuarios se mueven en el ámbito universitario, se requiere también de una funcionalidad que permita a los usuarios suscribirse a asignaturas. Con esto en mente, la decisión ha sido que ``Estublock'' funcione con un sistema de suscripciones. Es decir, alumnos, profesores y organizadores se suscribirán a temas (como asignaturas, congresos\dots) y una vez suscritos, los profesores y organizadores podrán crear eventos dentro del tema al que se han suscrito. Y todos los usuarios (profesores y organizadores incluidos) podrán asistir a los eventos del tema al que estén suscritos. \\
+
+Aunque a continuación se van a analizar los casos de uso concretamente, veamos un caso de uso completo tanto desde el punto de vista de un alumno nuevo como de un profesor nuevo. En los siguientes diagramas se han obviado las suscripciones a temas, se profundizará más en el apartado siguiente, \hyperref[sec:casosUso]{Casos de uso}. Por un lado tenemos el caso de uso del alumno \ref{fig:uso_alumno} en el que un alumno se registra en la aplicación móvil y posteriormente genera un código QR que el profesor tendrá que escanear para validar la asistencia de ese alumno al evento. Por otro lado, tenemos al profesor \ref{fig:uso_profe} el cual tras registrarse, crea un nuevo evento utilizando su wallet (pues tiene que firmar la transacción para enviarla a la red blockchain) y tras eso, escanea el QR del alumno y al igual que antes, firma y envía la transacción. 
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.4\linewidth]{figs/Desarrollo/CasosUso/generalAlumno}
+  \caption[Caso de uso general del alumno]{Caso de uso general del alumno}
+  \label{fig:uso_alumno}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.4\linewidth]{figs/Desarrollo/CasosUso/generalProfe}
+  \caption[Caso de uso general del profe]{Caso de uso general del profe}
+  \label{fig:uso_profe}
+\end{figure}
+
+\subsection{Casos de Uso}
+\label{sec:casosUso}
+
+\subsubsection{Registro}
+\subsubsection{Login}
+\subsubsection{Suscripcion a Tema}
+\subsubsection{Creacion de un Evento}
+\subsubsection{Generacion de QR}
+\subsubsection{Registro de Asistencia}
+
+
+% ##################################################
+% ##################################################
 \section{Arquitectura de la Aplicación}
 
 Recordemos un poco el esqueleto del proyecto ``Estublock''. Se ha decidido crear varios componentes modulares soportados por APIs, así cambios en el código de un componente no afectan al resto. El proyecto dispone de tres APIs diferentes. Tenemos primero la API que comunica con el servidor que tiene ejecutando la base de datos, luego la API que trata algunos datos con la red blockchain que se ha levantado. Y por último, una API intermedia que es con la que se comunica el dispositivo móvil para centralizar las llamadas, quitarle trabajo de computo al móvil y a la aplicación. Sin embargo, recordemos que el dispositivo móvil también hará llamadas directamente a la red blockchain a través del \hyperref[sec:SDK]{SDK}. La arquitectura queda como se muestra en la figura \ref{fig:estublockArch}. \\
@@ -805,7 +844,7 @@ Un flujo completo con todas las partes anteriores juntas puede verse en el \hype
 
 \subsection{Keystore en Estublock}
 
-En ``Estublock'' el keystore se crea cuando el usuario se registra en la aplicación móvil por primera vez. Se le crea una \textbf{LightWallet}. Este wallet es de rápida creación comparado al wallet por defecto, muy útil en para aplicaciones móvil pues no disponen de la misma cantidad de recursos que un ordenador. (Si en vez de ser aplicación móvil, fuese aplicación de escriotrio, sería conveniente utilizar las wallet ``noramles'' o por defecto). La \textbf{diferencia} radica en la función de derivación de claves. Como sabemos, la contraseña del usuario pasa por el KDF antes de cifrar el keystore con el algoritmo AES. 2 de los valores del KDF eran la \textbf{n} y la \textbf{p}. Estos son los dos valores que varian entre creación por defecto y creación ligera o \textbf{LightWallet}. En el caso de creación por defecto el valor de \emph{n} es $1^18$ frente a creación \emph{light} que el valor es \emph{n} igual a $1^12$. Con respecto a \temph{p} tenemos $1$ para creación por defecto y 6 para creación light. Con respecto a la clave privada, esta se crea también cuando el usuario hace login, utilizando el algorítmo ECDSA (Elliptic Curve Digital Signature Algorithm) como se describió en el apartado del \hyperref[sec:wallet]{Wallet} \\
+En ``Estublock'' el keystore se crea cuando el usuario se registra en la aplicación móvil por primera vez. Se le crea una \textbf{LightWallet}. Este wallet es de rápida creación comparado al wallet por defecto, muy útil en para aplicaciones móvil pues no disponen de la misma cantidad de recursos que un ordenador. (Si en vez de ser aplicación móvil, fuese aplicación de escriotrio, sería conveniente utilizar las wallet ``noramles'' o por defecto). La \textbf{diferencia} radica en la función de derivación de claves. Como sabemos, la contraseña del usuario pasa por el KDF antes de cifrar el keystore con el algoritmo AES. 2 de los valores del KDF eran la \textbf{n} y la \textbf{p}. Estos son los dos valores que varian entre creación por defecto y creación ligera o \textbf{LightWallet}. En el caso de creación por defecto el valor de \emph{n} es $1^18$ frente a creación \emph{light} que el valor es \emph{n} igual a $1^12$. Con respecto a \emph{p} tenemos $1$ para creación por defecto y 6 para creación light. Con respecto a la clave privada, esta se crea también cuando el usuario hace login, utilizando el algorítmo ECDSA (Elliptic Curve Digital Signature Algorithm) como se describió en el apartado del \hyperref[sec:wallet]{Wallet} \\
 
 El keystore se guarda en el dispositivo móvil del usuario. En concreto en una carpeta privada dentro del entorno de de la aplicación llamada \emph{files}, en la siguiente figura \ref{fig:fileSystem} se puede apreciar que hay 3 keystores creados (pues hay 3 cuentas en el dispositivo móvil). Este almacenamiento interno es específico de la app, es decir, no puede ser accedido por otras aplicaciones que pueda tener el usuario en el dispositivo móvil. Esto evita que una aplicación maliciosa pueda tener acceso al keystore. El sistema Android evita que otras apps accedan a las ubicaciones internas (cifrando estas a partir de Android 10), lo que permite almacenar datos sensibles con seguridad y que solo la aplicación móvil en cuestión (``Estublock'') tenga acceso a dichos datos. La forma que tiene Android de evitar que otras aplicaciones accedan al keystore es utilizando los permisos de Linux. Recordemos que Android es un sistema operativo que funciona gracias al sistema operativo Linux. En linux, los usuarios del sistema tienen diferentes permisos de lectura, escritura y ejecución según la carpeta o archivo al que quieren acceder. En el caso del keystore, como se ve a la derecha en la figura \ref{fig:fileSystem}, los permisos de acceso que tienen los archivos \textbf{UTC} (keystore) son de lectura y escritura \textbf{únicamente} para el usuario ``Estublock'' es decir, para la aplicación móvil que se ha desarrollado. Ninguna otra aplicación tiene acceso a esos archivos. \\
 
@@ -816,7 +855,7 @@ El keystore se guarda en el dispositivo móvil del usuario. En concreto en una c
   \label{fig:fileSystem}
 \end{figure}
 
-\emph{¿Cuando desbloquea Estublock el keystore del usuario?}, al hacer login el usuario introduce su correo y contraseña. Al verificar la correcta identidad del usuario en la base de datos, se guarda la contraseña en en una variable del archivo \emph{GlobalState.java}. Esta contraseña se utilizará en caso necesario para desbloquear el keystore y poder firmar transacciones. Esta contraseña se guarda \texbtf{únicamente} en tiempo de ejecución, una vez el usuario cierre la aplicación, se elimina, no quedando rastro de ella en ninguna parte. \\
+\emph{¿Cuando desbloquea Estublock el keystore del usuario?}, al hacer login el usuario introduce su correo y contraseña. Al verificar la correcta identidad del usuario en la base de datos, se guarda la contraseña en en una variable del archivo \emph{GlobalState.java}. Esta contraseña se utilizará en caso necesario para desbloquear el keystore y poder firmar transacciones. Esta contraseña se guarda \textbf{únicamente} en tiempo de ejecución, una vez el usuario cierre la aplicación, se elimina, no quedando rastro de ella en ninguna parte. \\
 
 
 % ##################################################
