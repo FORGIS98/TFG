@@ -748,13 +748,13 @@ Es por esto mismo que existe el \textbf{keystore}, este permite guardar la clave
 
 Como se puede apreciar, el archivo es de tipo \emph{json}, y la inmensa mayoría de la información se encuentra dentro de \emph{crypto}. Pasemos a profundizar sobre los componentes:
 \begin{itemize}
-\item \texbtf{address:} Address de la cuenta asociada a este keystore.
-\item \texbtf{cipher:} Nombre del cifrado simétrico utilizado, en este caso \texbtf{AES-128}. El cifrado AES, en ingles \textbf{A}dvanced \textbf{E}ncryption \textbf{S}tandard, es un estándar utilizado en el cifrado de información para que se mantenga privada. Es muy popular y seguro (el gobierno de los estados unidos lo utiliza para mantener datos clasificados a salvo de hackers). AES cifra bloques de texto con la ayuda de una contraseña de \emph{X} bits de longitud (en este caso 128 bits, de ahí que se llame AES-128). 
-\item \texbtf{cipherparams:} Parámetros requeridos para el algoritmo de cifrado.
-\item \texbtf{ciphertext:} La clave privada de Ethereum del usuario, cifrada utilizando el algoritmo AES.
-\item \texbtf{kdf:} Función de derivación de clave o \emph{Key Derivation Function}(KDF). Deriva una o más claves secretas a partir de una contraseña usando una función pseudoaleatoria. Los KDF se pueden utilizar para extender claves en otras más largas, aumentando la seguridad. Básicamente, se utiliza en el \emph{keystore} para que el usuario pueda cifrar el propio \emph{keystore} con una contraseña.
-\item \texbtf{kdfparams:} Parámetros necesarios para la función KDF.
-\item \texbtf{mac:} Es un Código de Autenticación de Mensaje, o \emph{Message Authentication Code}(MAC). Es una porción de información utilizada para autenticar un mensaje. En este caso, autentica la contraseña.
+\item \textbf{address:} Address de la cuenta asociada a este keystore.
+\item \textbf{cipher:} Nombre del cifrado simétrico utilizado, en este caso \textbf{AES-128}. El cifrado AES, en ingles \textbf{A}dvanced \textbf{E}ncryption \textbf{S}tandard, es un estándar utilizado en el cifrado de información para que se mantenga privada. Es muy popular y seguro (el gobierno de los estados unidos lo utiliza para mantener datos clasificados a salvo de hackers). AES cifra bloques de texto con la ayuda de una contraseña de \emph{X} bits de longitud (en este caso 128 bits, de ahí que se llame AES-128). 
+\item \textbf{cipherparams:} Parámetros requeridos para el algoritmo de cifrado.
+\item \textbf{ciphertext:} La clave privada de Ethereum del usuario, cifrada utilizando el algoritmo AES.
+\item \textbf{kdf:} Función de derivación de clave o \emph{Key Derivation Function}(KDF). Deriva una o más claves secretas a partir de una contraseña usando una función pseudoaleatoria. Los KDF se pueden utilizar para extender claves en otras más largas, aumentando la seguridad. Básicamente, se utiliza en el \emph{keystore} para que el usuario pueda cifrar el propio \emph{keystore} con una contraseña.
+\item \textbf{kdfparams:} Parámetros necesarios para la función KDF.
+\item \textbf{mac:} Es un Código de Autenticación de Mensaje, o \emph{Message Authentication Code}(MAC). Es una porción de información utilizada para autenticar un mensaje. En este caso, autentica la contraseña.
 \end{itemize}
 
 Pasemos a ver, los pasos y procedimientos que sigue un keystore para firmar transacciones.
@@ -804,6 +804,20 @@ Para asegurarnos de que la contraseña que introduce un usuario es correcta, se 
 Un flujo completo con todas las partes anteriores juntas puede verse en el \hyperref[cap:Anexo]{Anexo}, en concreto en \ref{fig:keystore_completo}.
 
 \subsection{Keystore en Estublock}
+
+En ``Estublock'' el keystore se crea cuando el usuario se registra en la aplicación móvil por primera vez. Se le crea una \textbf{LightWallet}. Este wallet es de rápida creación comparado al wallet por defecto, muy útil en para aplicaciones móvil pues no disponen de la misma cantidad de recursos que un ordenador. (Si en vez de ser aplicación móvil, fuese aplicación de escriotrio, sería conveniente utilizar las wallet ``noramles'' o por defecto). La \textbf{diferencia} radica en la función de derivación de claves. Como sabemos, la contraseña del usuario pasa por el KDF antes de cifrar el keystore con el algoritmo AES. 2 de los valores del KDF eran la \textbf{n} y la \textbf{p}. Estos son los dos valores que varian entre creación por defecto y creación ligera o \textbf{LightWallet}. En el caso de creación por defecto el valor de \emph{n} es $1^18$ frente a creación \emph{light} que el valor es \emph{n} igual a $1^12$. Con respecto a \temph{p} tenemos $1$ para creación por defecto y 6 para creación light. Con respecto a la clave privada, esta se crea también cuando el usuario hace login, utilizando el algorítmo ECDSA (Elliptic Curve Digital Signature Algorithm) como se describió en el apartado del \hyperref[sec:wallet]{Wallet} \\
+
+El keystore se guarda en el dispositivo móvil del usuario. En concreto en una carpeta privada dentro del entorno de de la aplicación llamada \emph{files}, en la siguiente figura \ref{fig:fileSystem} se puede apreciar que hay 3 keystores creados (pues hay 3 cuentas en el dispositivo móvil). Este almacenamiento interno es específico de la app, es decir, no puede ser accedido por otras aplicaciones que pueda tener el usuario en el dispositivo móvil. Esto evita que una aplicación maliciosa pueda tener acceso al keystore. El sistema Android evita que otras apps accedan a las ubicaciones internas (cifrando estas a partir de Android 10), lo que permite almacenar datos sensibles con seguridad y que solo la aplicación móvil en cuestión (``Estublock'') tenga acceso a dichos datos. La forma que tiene Android de evitar que otras aplicaciones accedan al keystore es utilizando los permisos de Linux. Recordemos que Android es un sistema operativo que funciona gracias al sistema operativo Linux. En linux, los usuarios del sistema tienen diferentes permisos de lectura, escritura y ejecución según la carpeta o archivo al que quieren acceder. En el caso del keystore, como se ve a la derecha en la figura \ref{fig:fileSystem}, los permisos de acceso que tienen los archivos \textbf{UTC} (keystore) son de lectura y escritura \textbf{únicamente} para el usuario ``Estublock'' es decir, para la aplicación móvil que se ha desarrollado. Ninguna otra aplicación tiene acceso a esos archivos. \\
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=1\linewidth]{figs/Desarrollo/Keystore/keystore_MAC}
+  \caption[Sistema de archivos interno de la aplicación]{Sistema de archivos interno de la aplicación}
+  \label{fig:fileSystem}
+\end{figure}
+
+\emph{¿Cuando desbloquea Estublock el keystore del usuario?}, al hacer login el usuario introduce su correo y contraseña. Al verificar la correcta identidad del usuario en la base de datos, se guarda la contraseña en en una variable del archivo \emph{GlobalState.java}. Esta contraseña se utilizará en caso necesario para desbloquear el keystore y poder firmar transacciones. Esta contraseña se guarda \texbtf{únicamente} en tiempo de ejecución, una vez el usuario cierre la aplicación, se elimina, no quedando rastro de ella en ninguna parte. \\
+
 
 % ##################################################
 % ##################################################
