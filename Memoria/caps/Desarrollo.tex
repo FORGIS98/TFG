@@ -23,80 +23,50 @@ Aunque a continuación se van a analizar los casos de uso concretamente, veamos 
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.6\linewidth]{figs/Desarrollo/CasosUso/generalAlumno}
+  \includegraphics[width=0.8\linewidth]{figs/Desarrollo/CasosUso/generalAlumno}
   \caption[Caso de uso general del alumno]{Caso de uso general del alumno}
   \label{fig:uso_alumno}
 \end{figure}
 
+\begin{landscape}
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.6\linewidth]{figs/Desarrollo/CasosUso/generalProfe}
+  \includegraphics[scale=0.5]{figs/Desarrollo/CasosUso/generalProfe}
   \caption[Caso de uso general del profe]{Caso de uso general del profe}
   \label{fig:uso_profe}
 \end{figure}
+\end{landscape}
 
+\clearpage
 \subsection{Casos de Uso}
 \label{sec:casosUso}
+
+Los diagramas con los casos de uso se encuentran al final de la sección \emph{Casos de Uso}.
 
 % ----------------------
 \subsubsection{Registro}
 
 Para registrarse \ref{fig:casoRegistro}, el usuario introduce sus credenciales y la aplicación Estublock se encargará de crear el \emph{wallet} y de llamar a la API que guarda los datos del usuario en la base de datos.
 
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.6\linewidth]{figs/Desarrollo/CasosUso/registro}
-  \caption[Caso de uso de registrar usuario]{Caso de uso de registrar usuario}
-  \label{fig:casoRegistro}
-\end{figure}
-
 % ----------------------
 \subsubsection{Login}
 
 Para hacer login \ref{fig:casoLogin} en la aplicación, se requiere del correo y la contraseña. Una vez la base de datos da el visto bueno de las credenciales, Estublock recupera con ayuda de las \emph{SharedPreferences} (se verá mas adelante) el directorio donde esta guardado el wallet del usuario.
-
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.6\linewidth]{figs/Desarrollo/CasosUso/login}
-  \caption[Caso de uso de login]{Caso de uso de login}
-  \label{fig:casoLogin}
-\end{figure}
 
 % ----------------------
 \subsubsection{Suscripcion a Tema}
 
 Los usuarios deben suscribirse a temas \ref{fig:casoSuscripciones} para poder asistir a los eventos de esos temas. Para ello, la aplicación Estublock le pide a la base de datos una lista de todos los temas existentes. De esos temas, el usuario podrá elegir los que le interesan y luego Estublock le pide a la base de datos que los guarde.
 
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.6\linewidth]{figs/Desarrollo/CasosUso/suscripcionAsignatura}
-  \caption[Caso de uso de suscripcion a temas]{Caso de uso de suscripcion a temas}
-  \label{fig:casoSuscripciones}
-\end{figure}
-
 % ----------------------
 \subsubsection{Creacion de un Evento}
 
 Profesores y organizadores tienen la opción de crear eventos \ref{fig:casoEvento}, para ello, Estublock lista los temas a los que el usuario esta suscrito. El usuario selecciona uno de los temas, introduce los datos del evento y cuando guarda esos datos, Estublock con ayuda del SDK firma (con la clave privada de Ethereum del usuario) los datos del evento y los envía a la red blockchain.
 
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.6\linewidth]{figs/Desarrollo/CasosUso/crearEvento}
-  \caption[Caso de uso de crear evento]{Caso de uso de crear evento}
-  \label{fig:casoEvento}
-\end{figure}
-
 % ----------------------
 \subsubsection{Asistir a un evento}
 
 Los usuarios que desean validar su asistencia a un evento \ref{fig:casoCrearQR}, primero seleccionan el tema del evento, Estublock recupera la lista de eventos asociados a ese tema. Luego el alumno selecciona el evento concreto en el que se encuentran. Y Estublock se encarga de pedir al SDK el address del usuario y junto con los datos del evento genera un código QR que luego muestra al alumno. De este modo, en ese QR estan los datos del evento y el address del alumno. 
-
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.6\linewidth]{figs/Desarrollo/CasosUso/crearQR}
-  \caption[Caso de uso de crear QR]{Caso de uso de crear QR}
-  \label{fig:casoCrearQR}
-\end{figure}
 
 % ----------------------
 \subsubsection{Registro de Asistencia}
@@ -105,7 +75,42 @@ Para registrar una asistencia \ref{fig:casoEscanearQR}, Estublock utiliza la apl
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.6\linewidth]{figs/Desarrollo/CasosUso/escanearQR}
+  \includegraphics[width=1\linewidth]{figs/Desarrollo/CasosUso/registro}
+  \caption[Caso de uso de registrar usuario]{Caso de uso de registrar usuario}
+  \label{fig:casoRegistro}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=1\linewidth]{figs/Desarrollo/CasosUso/login}
+  \caption[Caso de uso de login]{Caso de uso de login}
+  \label{fig:casoLogin}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=1\linewidth]{figs/Desarrollo/CasosUso/suscripcionAsignatura}
+  \caption[Caso de uso de suscripcion a temas]{Caso de uso de suscripcion a temas}
+  \label{fig:casoSuscripciones}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=1\linewidth]{figs/Desarrollo/CasosUso/crearEvento}
+  \caption[Caso de uso de crear evento]{Caso de uso de crear evento}
+  \label{fig:casoEvento}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=1\linewidth]{figs/Desarrollo/CasosUso/crearQR}
+  \caption[Caso de uso de crear QR]{Caso de uso de crear QR}
+  \label{fig:casoCrearQR}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=1\linewidth]{figs/Desarrollo/CasosUso/escanearQR}
   \caption[Caso de uso de escanear QR]{Caso de uso de escanear QR}
   \label{fig:casoEscanearQR}
 \end{figure}
@@ -192,6 +197,9 @@ Cuando la navegación es fácil los usuarios entienden dónde están en la aplic
 \subsubsection{Colores y Contraste}
 El color y el contraste pueden utilizarse para ayudar a los usuarios a ver e interpretar el contenido de su aplicación, interactuar con los elementos adecuados y comprender las acciones. Puede ayudar a comunicar el estado de ánimo, tono e información crítica. Colores primarios y secundarios pueden favorecer la accesibilidad. Al igual que el contraste de color entre elementos puede ayudar a los usuarios con baja visión a ver mucho mejor los elementos. Con el contraste de colores, los usuarios distinguen mejor los distintos elementos textuales y no textuales, puede hacer que imágenes se vean mejor, además, hay que tener en cuanta la luz externa, no es lo mismo utilizar la aplicación en un espacio cerrado que abierto, con sol o nublado, de día o de noche. Una de las principales ideas para ``Estublock'' es dar la posibilidad al usuario de personalizar el \emph{tema} de la aplicación, para que pueda decidir entre un abanico de temas el que mejor se ajuste a sus necesidades. Si prefiere un tema oscuro por la noche y uno claro por el día, puede cambiar entre ambos temas, si le cuesta diferenciar los colores, podrá seleccionar un tema de colores que tenga mayor contraste o que utilice otro abanico de colores que sí pueda ver (muy útil para personas con \emph{daltónicas}). La importancia del contraste puede verse en la figura \ref{fig:corazones}. \\
 
+Aunque el feedback de la aplicación no tenga tanto que ver con la accesibilidad sino con la usabilidad. Es cierto que una mejora en los colores del feedback puede hacer que un usuario vea con mejor claridad lo que esta ocurriendo, o lo que la aplicación le esta tratando de transmitir. Por ejemplo, ante un error, él móvil puede mostrar una pequeña línea roja que el usuario puede no ver. Pero, si esta bien hecho, el móvil podría vibrar, a la vez que muestra en rojo el texto y la razón del error\ref{fig:error}. Para terminar una gran herramienta para elegir correctamente los colores de nuestra aplicación es \href{https://material.io/resources/color/#!/?view.left=1&view.right=0}{Color Tool} \\
+
+\vspace{1cm}
 \begin{figure}[hbt]
 	\centering
 	\begin{subfigure}[b]{0.4\linewidth}
@@ -208,7 +216,7 @@ El color y el contraste pueden utilizarse para ayudar a los usuarios a ver e int
 	\label{fig:corazones}
 \end{figure}
 
-Aunque el feedback de la aplicación no tenga tanto que ver con la accesibilidad sino con la usabilidad. Es cierto que una mejora en los colores del feedback puede hacer que un usuario vea con mejor claridad lo que esta ocurriendo, o lo que la aplicación le esta tratando de transmitir. Por ejemplo, ante un error, él móvil puede mostrar una pequeña línea roja que el usuario puede no ver. Pero, si esta bien hecho, el móvil podría vibrar, a la vez que muestra en rojo el texto y la razón del error\ref{fig:error}. Para terminar una gran herramienta para elegir correctamente los colores de nuestra aplicación es \href{https://material.io/resources/color/#!/?view.left=1&view.right=0}{Color Tool} \\
+\vspace{1cm}
 
 \begin{figure}[hbt]
 	\centering
@@ -226,6 +234,8 @@ Aunque el feedback de la aplicación no tenga tanto que ver con la accesibilidad
 	\label{fig:error}
 \end{figure}
 
+\vspace{1cm}
+
 % --------------------------------------------------
 \subsection{Diseño de la Interfaz de Estublock}
 
@@ -238,6 +248,7 @@ A la hora de diseñar la aplicación Estublock, se ha buscado un diseño ligero,
   \label{fig:diagramaCompleto}
 \end{figure}
 
+\clearpage
 \subsubsection{Pantalla de Registro}
 
 En la pantalla de registro, se pide al usuario que introduzca sus datos personales. Se comprueba que los datos sean correctos, por ejemplo, al introducir el correo electrónico, un \textit{regex} se encarga de verificar que el correo sea universitario. Los regex evalúan expresiones regulares y se puede buscar con él un patrón como puede ser \textit{@alumnos.upm.es} para verificar que el usuario es por ejemplo un alumno. El regex que se ha utilizado para comprobar el correo se muestra en la figura \ref{fig:regex}. \\
@@ -331,6 +342,8 @@ En la pantalla de suscripciones el usuario puede ver la lista de asignaturas a l
 
 Si el usuario decide añadir nuevas asignaturas a su lista, tendrá que darle al botón de \textit{Añadir}. Esto le lleva a una nueva pantalla en la que se listan todas las asignaturas que hay disponibles para suscribirse. Una vez el usuario selecciona las asignaturas puede proceder a guardarlas. Con respecto al diseño original y al resultado final, caben destacar dos aspectos. El primero es que el botón \textit{Guardar} se ha movido de sitio, no hay ninguna razón especial para esta decisión. Por otro lado, lo que falta es un buscador de asignaturas, este no se ha añadido por ahora, pues no era de crucial importancia al no tener una lista grande de asignaturas disponibles. Sin embrago, es importante que esto se añada en el futuro, pues son muchas las asignaturas que pueden acumularse. El resultado puede verse en \ref{fig:pantalla_añadir_sus}
 
+\vspace{1cm}
+
 \begin{figure}[hbt]
 	\centering
 	\begin{subfigure}[b]{0.4\linewidth}
@@ -346,6 +359,8 @@ Si el usuario decide añadir nuevas asignaturas a su lista, tendrá que darle al
 	\caption[Pantalla de Suscribirse]{Pantalla de Suscribirse}
 	\label{fig:pantalla_añadir_sus}
 \end{figure}
+
+\vspace{1cm}
 
 \subsubsection{Pantalla de Creación de Eventos}
 
@@ -383,6 +398,7 @@ Para llegar a esta pantalla, el usuario tiene que ir desde el menú, a \textit{C
 	\label{fig:pantalla_hora}
 \end{figure}
 
+\clearpage
 \subsubsection{Pantalla de generar un QR}
 
 Para llegar a esta pantalla, el usuario ha elegido previamente el botón \textit{Asistencia} así como seleccionar la asignatura y evento al que se quiere registrar. En la pantalla, aparece un gran QR que el profesor debe escanear. Esto es \textbf{muy importante}, es uno de los grandes cambios en la forma en la que se registra la asistencia. Al diseñar la aplicación ``Estublock'' en Marvelapp, se planteó que el profesor enseñaría el QR y los alumnos lo escanearían. Sin embargo ahora se hace al revés. Esta decisión se ha tomado, ya que quien tiene que firmar las transacciones a la red Blockchain es el profesor, para ello, tiene que ser él quien lea los datos de un alumno y firme con su wallet que ese alumno ha asistido al exámen. Luego, la pantalla ha quedado más sencilla, pero con mucho más espacio para él QR y así facilitar su escaneo. La pantalla del QR se puede ver a continuación \ref{fig:pantalla_qr}
@@ -413,11 +429,11 @@ Esta pantalla es especial, pues llama a la actividad de la \textbf{cámara de fo
   \caption[Pantalla de Escaneo de QR]{Pantalla de escaneo de QR Estublock}
   \label{fig:pantalla_escaneo_qr}
 \end{figure}
-
+\vspace{5cm}
 % --------------------------------------------------
 \subsection{Implementación XML}
 
-Como ya hemos mencionado, las interfaces de usuario en Android se programan utilizando código XML. XML, del ingles \emph{Extensible Markup Language} es un metalenguaje que permite definir con un lenguaje de marcas información y datos. Es parecido a HTML, pero las etiquetas no estan predefinidas sino que puedes inventarte las que quieras. Permite crear estructuras con parámetros y atributos los cuales pueden utilizarse por ejemplo en internet para enviar datos a una API. En el caso de las aplicaciones móvil, el código XML se utiliza para diseñar las pantallas o \emph{layouts}, ya que XML es un lenguaje ligero y esto hace que las pantallas sean ligeras también. Es con el código XML con el que se definen las jerarquías que se mencionan en el apartado \hyperref[sec:GUI]{3.2.1}, por ejemplo, parte de la estructura de la pantalla \emph{crear un evento} puede verse en \ref{fig:xml_crear_evento} se han omitido los atributos para ahorrar espacio. 
+Como ya hemos mencionado, las interfaces de usuario en Android se programan utilizando código XML. XML, del ingles \emph{Extensible Markup Language} es un metalenguaje que permite definir con un lenguaje de marcas información y datos. Es parecido a HTML, pero las etiquetas no estan predefinidas sino que puedes inventarte las que quieras. Permite crear estructuras con parámetros y atributos los cuales pueden utilizarse por ejemplo en internet para enviar datos a una API. En el caso de las aplicaciones móvil, el código XML se utiliza para diseñar las pantallas o \emph{layouts}, ya que XML es un lenguaje ligero y esto hace que las pantallas sean ligeras también. Es con el código XML con el que se definen las jerarquías que se mencionan en el apartado \hyperref[sec:GUI]{3.2.1}, por ejemplo, parte de la estructura de la pantalla \emph{crear un evento} puede verse en \ref{fig:xml_crear_evento} se han omitido los atributos para ahorrar espacio. \\
 
 \begin{figure}[h!]
   \centering
@@ -426,7 +442,7 @@ Como ya hemos mencionado, las interfaces de usuario en Android se programan util
   \label{fig:xml_crear_evento}
 \end{figure}
 
-Programar pantallas para Android sin ningún tipo de feedback, es decir, sin saber como esta quedando la pantalla, es muy difícil. Por eso, Android Studio, trae consigo una herramienta de gran utilidad, la que cual permite visualizar y editar el código sin tener que escribirlo por completo. Se puede por ejemplo crear un botón, y la herramienta de forma automática escribirá el código XML correspondiente, luego se puede cambiar el color del botón, y la herramienta se encargará de escribir el código XML correspondiente. Sin embargo, tras una actualización de Android Studio (actualización a la versión 4.2.0.24-1) el sistema de atributos dejó de funcionar, y hubo que añadir los atributos manualmente, esto supuso un tiempo extra a la hora de realizar las pantallas, y es una de las razones por las que las pantallas (excepto login y registro) han quedado visualmente más básicas. La herramienta de Android Studio puede encontrarse en la figura\ref{fig:herramienta_android}.
+Programar pantallas para Android sin ningún tipo de feedback, es decir, sin saber como esta quedando la pantalla, es muy difícil. Por eso, Android Studio, trae consigo una herramienta de gran utilidad, la que cual permite visualizar y editar el código sin tener que escribirlo por completo. Se puede por ejemplo crear un botón, y la herramienta de forma automática escribirá el código XML correspondiente, luego se puede cambiar el color del botón, y la herramienta se encargará de escribir el código XML correspondiente. Sin embargo, tras una actualización de Android Studio (actualización a la versión 4.2.0.24-1) el sistema de atributos dejó de funcionar, y hubo que añadir los atributos manualmente, esto supuso un tiempo extra a la hora de realizar las pantallas, y es una de las razones por las que las pantallas (excepto login y registro) han quedado visualmente más básicas. La herramienta de Android Studio puede encontrarse en la figura\ref{fig:herramienta_android}. \\
 
 \begin{figure}[h!]
   \centering
@@ -439,12 +455,7 @@ XML no solo sirve para diseñar las pantallas, hasta ahora todo lo que hemos com
 
 Por último, haremos mención de una carpeta muy importante llamada \textbf{values} en la que se guardan parámetros para definir los colores, las dimensiones de la pantalla, los distintos temas disponibles y un archivo llamado \textbf{strings} el cual guarda todo el texto estático que se quiere añadir a las pantallas. Este archivo existe, para facilitar el migrado de la aplicación a otros idiomas. Por ejemplo, en vez de escribir en un \textit{TextView} una palabra en español, se le asignará un identificador dentro del archivo \emph{strings}, de modo que si alguna vez tenemos varios idiomas disponibles, se puede tener con el mismo identificador la palabra en varios idiomas, y será tan sencillo como decirle a Android que utilice un archivo \emph{strings} u otro, de modo que las pantallas no hay que modificarlas nunca si se quiere cambiar de idioma. Lo mismo aplica a los colores, temas (si queremos un tema oscuro, no hay que cambiar las pantallas sino que se cambian los colores del archivo de temas y el archivo de colores)\dots Básicamente, aportan flexibilidad y escalabilidad en la aplicación para poder modificarla con más seguridad y rapidez. 
 
-
-
-
-
 % --------------------------------------------------
-\clearpage
 \section{Implementación} \label{sec:Codigo}
 
 Las aplicaciones Android pueden ser programadas principalmente en dos lenguajes de programación, \textbf{Java} y \textbf{Kotlin}. En el presente, la inmensa mayoría de aplicaciones han sido desarrolladas con Java, sin embargo Kotlin es promete ser el futuro. Actualmente sigue siendo un lenguaje muy secundario (aunque se puede hacer todo lo que se puede hacer con Java y esta muy bien documentado). Según google trends\ref{fig:java_vs_kotlin}, Kotlin esta lejos de quitarle el puesto a Java aunque los nuevos desarrolladores de aplicaciones Android muestran más interés por Kotlin por su comodidad, falta de verbosidad y ``limpieza'' (es decir, con menos líneas de código haces lo mismo que Java). 
@@ -475,7 +486,7 @@ Por lo tanto, aunque Kotlin promete mucho, la aplicación Estublock se ha desarr
 % --------------------------------------------------
 \subsection{Implementación Java}
 
-Todo el código de la aplicación esta disponible en mi repositorio de github\cite{forgis98}. Vamos a tratar de resumir el trabajo realizado, pues gran parte de este TFG esta reflejado en la aplicación móvil que se ha desarrollado. \\
+Todo el código de la aplicación esta disponible en mi repositorio de github\cite{forgis98}. Vamos a tratar de resumir el trabajo realizado, pues gran parte de este TFG esta reflejado en la aplicación móvil que se ha desarrollado.
 
 \subsubsection{Archivos del Proyecto}
 
@@ -601,6 +612,7 @@ Para solventar el problema con la llamada DELETE se ha usado la librería Okhttp
   \label{fig:generador_qr}
 \end{figure}
 
+\clearpage
 \item \textbf{ZXing: } Esta librería permite generar códigos QR, pero más importante y la razón por la que se ha usado, permite escanear códigos QR. Para generar QR se utilizó la librería anterior puesto que su uso es más fácil de utilizar que ZXing para Android. El código en este caso es bastante más largo por lo que se ha incluido en el \hyperref[cap:Anexo]{Anexo} en concreto en \ref{fig:escaneandoQRs}.
 
 \end{enumerate}
@@ -636,11 +648,12 @@ El SDK dispone de 3 archivos separados del proyecto Estublock. Se han creado com
 Por otro lado, con respecto al diseño de los métodos, se ha optado por tratar de programarlos de la forma más genérica posible para que puedan aplicarse en una amplia variedad de situaciones, además se han sobrecargado los métodos (más adelante veremos que significa sobrecargar métodos) para que se puedan utilizar distintos tipos de variables en las funciones sin problema. 
 
 % --------------------------------------------------
+\vspace{5cm}
 \subsection{Comunicación con la Red Blockchain}
 
 En el archivo \emph{TransactionsHelper.java} se encuentra importada la librería de \emph{web3j} y se encuentra también el código que firma y envía las transacciones. Web3j es una biblioteca de Java y Android que permite trabajar con smart contracts e integrarse con clientes o nodos en la red de \emph{Ethereum}. Esto permite trabajar con la red de Ethereum sin necesidad de implementar el código de integración para la plataforma. Implementa la API de cliente JSON-RPC de Ethereum sobre HTTP, soporta wallets, firmado de transacciones\dots JSON-RPC es un protocolo de llamada a procedimientos remotos que utiliza JSON para codificar los mensajes, es similar a XML-RPC. \\
 
-El uso de \emph{TransactionsHelper} es sencillo, primero se crea el objeto pasándole como parámetro la URL del nodo de la red blockchain al que vamos a conectarnos \ref{fig:transH}
+El uso de \emph{TransactionsHelper} es sencillo, primero se crea el objeto pasándole como parámetro la URL del nodo de la red blockchain al que vamos a conectarnos \ref{fig:transH} \\
 % \begin{lstlisting}[language=Java,float=ht,caption={[Java] Constructor de TransactionsHelper},label=lst:constructor]
 % // Constructor
 % public TransactionsHelper(@NonNull String blockchainURL){
@@ -657,7 +670,7 @@ El uso de \emph{TransactionsHelper} es sencillo, primero se crea el objeto pasá
   \label{fig:transH}
 \end{figure}
 
-Una vez creado el objeto se puede llamar al resto de funciones, entre las que están \textit{signTransaction(...)} que recibe seis argumentos entre otros las credenciales del wallet, el destino de la transacción (el smart contract) y un \emph{listener} para recuperar la respuesta de la transacción. Recordemos, no se pueden hacer operaciones pesadas en el hilo principal de Android por lo que hay que hacerlo en un hilo a parte (es decir en un \emph{Thread}). Otra función importante es \textit{sendSignedTransaction(...)} la cual recibe dos parámetros, la transacción firmada y un \emph{listener}. Ambas funciones están ``sobrecargadas'' (sobrecarga es la capacidad de un lenguaje de programación, que permite nombrar con el mismo identificador diferentes variables u operaciones), la razón de esta sobrecarga es permitir pasar los parámetro de múltiples maneras. Por ejemplo, los datos de la transacción se pueden pasar como JSON, como String, como HashMap\dots y gracias a la sobrecarga podemos ponerle el mismo nombre a la función. A grandes rasgos un pequeño ejemplo de código puede verse en \ref{fig:firmEnv} y un ejemplo completo de función puede verse en el Anexo \ref{fig:firma_envia_completo}
+Una vez creado el objeto se puede llamar al resto de funciones, entre las que están \textit{signTransaction(...)} que recibe seis argumentos entre otros las credenciales del wallet, el destino de la transacción (el smart contract) y un \emph{listener} para recuperar la respuesta de la transacción. Recordemos, no se pueden hacer operaciones pesadas en el hilo principal de Android por lo que hay que hacerlo en un hilo a parte (es decir en un \emph{Thread}). Otra función importante es \textit{sendSignedTransaction(...)} la cual recibe dos parámetros, la transacción firmada y un \emph{listener}. Ambas funciones están ``sobrecargadas'' (sobrecarga es la capacidad de un lenguaje de programación, que permite nombrar con el mismo identificador diferentes variables u operaciones), la razón de esta sobrecarga es permitir pasar los parámetro de múltiples maneras. Por ejemplo, los datos de la transacción se pueden pasar como JSON, como String, como HashMap\dots y gracias a la sobrecarga podemos ponerle el mismo nombre a la función. A grandes rasgos un pequeño ejemplo de código puede verse en \ref{fig:firmEnv} y un ejemplo completo de función puede verse en el Anexo \ref{fig:firma_envia_completo} \\
 
 % \begin{lstlisting}[language=Java,float=ht,caption={[Java] Firmar y Enviar transacciones.},label=lst:transactionHelper]
 % // Se crea y firma la transacción
@@ -703,7 +716,7 @@ En este archivo tenemos entonces un constructor, el cual modifica el proveedor d
   \label{fig:ecdsa}
 \end{figure}
 
-Luego, el programador dispone de varias funciones para crear un nuevo wallet con \textit{createNewWallet(...)}\ref{fig:crearWallet} que acepta dos parámetros, siendo estos una contraseña y luego el lugar en el que se quiere guardar el wallet creado. Al igual que antes, esta función esta sobrecargada permitiendo pasar la localización como objeto String o como objeto File. Y permite también recuperar el \emph{address} del usuario o todas las credenciales\ref{fig:recuperarCredenciales}.
+Luego, el programador dispone de varias funciones para crear un nuevo wallet con \textit{createNewWallet(...)}\ref{fig:crearWallet} que acepta dos parámetros, siendo estos una contraseña y luego el lugar en el que se quiere guardar el wallet creado. Al igual que antes, esta función esta sobrecargada permitiendo pasar la localización como objeto String o como objeto File. Y permite también recuperar el \emph{address} del usuario o todas las credenciales\ref{fig:recuperarCredenciales}. \\
 
 % \begin{lstlisting}[language=Java,float=ht,caption={[Java] Creacion de wallet y recuperación del address},label=lst:transactionHelper]
 % WalletUtils.generateLightNewWalletFile(password, new File(keyStoreDirectory));
@@ -726,6 +739,7 @@ Luego, el programador dispone de varias funciones para crear un nuevo wallet con
   \label{fig:recuperarCredenciales}
 \end{figure}
 
+\vspace{5cm}
 Como hemos mencionado anteriormente en este archivo se incluye también el guardado de los datos en él dispositivo móvil, aunque la función de web3j \textit{WalletUtils.generateLightNewWalletFile()} guarda los datos en el móvil. Para permitir que un usuario tenga varios wallets, se utiliza el \emph{SharedPreferences} para enlazar al usuario con su wallet. Para ello tenemos la función \textit{saveInPreferences(...)} la cual recibe cuatro parámetros entre ellos el lugar donde guardarlo, y los datos a guardar. Y luego tenemos otro método \textit{getFromPreferences(...)} para recuperar los datos\ref{fig:sharedPref}. \\
 
 % \begin{lstlisting}[language=Java,float=ht,caption={[Java] Guardado y recuperación de dátos en SharedPreferences},label=lst:transactionHelper]
@@ -875,7 +889,7 @@ En la sección anterior sobre el wallet hemos mencionado brevemente la palabra \
 
 \subsection{Keystore}
 
-Un archivo \textbf{keystore} (conocido también como Ethereum UTC file) es una versión cifrada de la clave privada Ethereum del usuario. Esta clave privada, se utiliza para firmar las transacciones. Si se pierde el archivo, se pierde acceso a la clave privada y por tanto no se puede firmar ninguna transacción. Esto provoca que tu cuenta en Ethereum quede congelada para siempre sin que puedas utilizarla, ni recuperar el saldo. La clave privada se podría guardar en un archivo no cifrado sin problema, pero hay que atenerse a las consecuencias, pues esta queda completamente vulnerable a que cualquier persona la lea y se envíe a si mismo todo el dinero de la cuenta. \\
+Un archivo \textbf{keystore}\cite{ether_keystore} (conocido también como Ethereum UTC file) es una versión cifrada de la \emph{clave privada de Ethereum}\cite{ether_keystore} del usuario. Esta clave privada, se utiliza para firmar las transacciones. Si se pierde el archivo, se pierde acceso a la clave privada y por tanto no se puede firmar ninguna transacción. Esto provoca que tu cuenta en Ethereum quede congelada para siempre sin que puedas utilizarla, ni recuperar el saldo. La clave privada se podría guardar en un archivo no cifrado sin problema, pero hay que atenerse a las consecuencias, pues esta queda completamente vulnerable a que cualquier persona la lea y se envíe a si mismo todo el dinero de la cuenta. \\
 
 Es por esto mismo que existe el \textbf{keystore}, este permite guardar la clave privada cifrada con una contraseña. Si alguien quisiese robar la cuenta de otra persona, necesitaría la contraseña de la otra persona y el \emph{keystore}, es obligatorio tener ambas cosas, aunque parezca un detalle pequeño, supone ya una barrera más de seguridad. Para entrar por ejemplo en la cuenta bancaria de una persona, solo se necesita tener la contraseña de esta persona. Aquí, hace falta acceso al \emph{keystore} y a la contraseña. Cuando se utiliza un cliente de Ethereum para realizar transacciones, por ejemplo, la librería \textbf{web3j} que se ha utilizado en ``Estublock'', el cliente pide la contraseña para poder descifrar el \emph{keystore} y llevar a cabo la transacción. \\
 
@@ -890,12 +904,12 @@ Es por esto mismo que existe el \textbf{keystore}, este permite guardar la clave
 Como se puede apreciar, el archivo es de tipo \emph{json}, y la inmensa mayoría de la información se encuentra dentro de \emph{crypto}. Pasemos a profundizar sobre los componentes:
 \begin{itemize}
 \item \textbf{address:} Address de la cuenta asociada a este keystore.
-\item \textbf{cipher:} Nombre del cifrado simétrico utilizado, en este caso \textbf{AES-128}. El cifrado AES, en ingles \textbf{A}dvanced \textbf{E}ncryption \textbf{S}tandard, es un estándar utilizado en el cifrado de información para que se mantenga privada. Es muy popular y seguro (el gobierno de los estados unidos lo utiliza para mantener datos clasificados a salvo de hackers). AES cifra bloques de texto con la ayuda de una contraseña de \emph{X} bits de longitud (en este caso 128 bits, de ahí que se llame AES-128). 
+\item \textbf{cipher:} Nombre del cifrado simétrico utilizado, en este caso \textbf{AES-128}\cite{aes_128}. El cifrado AES, en ingles \textbf{A}dvanced \textbf{E}ncryption \textbf{S}tandard, es un estándar utilizado en el cifrado de información para que se mantenga privada. Es muy popular y seguro (el gobierno de los estados unidos lo utiliza para mantener datos clasificados a salvo de hackers). AES cifra bloques de texto con la ayuda de una contraseña de \emph{X} bits de longitud (en este caso 128 bits, de ahí que se llame AES-128). 
 \item \textbf{cipherparams:} Parámetros requeridos para el algoritmo de cifrado.
 \item \textbf{ciphertext:} La clave privada de Ethereum del usuario, cifrada utilizando el algoritmo AES.
-\item \textbf{kdf:} Función de derivación de clave o \emph{Key Derivation Function}(KDF). Deriva una o más claves secretas a partir de una contraseña usando una función pseudoaleatoria. Los KDF se pueden utilizar para extender claves en otras más largas, aumentando la seguridad. Básicamente, se utiliza en el \emph{keystore} para que el usuario pueda cifrar el propio \emph{keystore} con una contraseña.
+\item \textbf{kdf:} Función de derivación de clave o \emph{Key Derivation Function}(KDF)\cite{kdf}. Deriva una o más claves secretas a partir de una contraseña usando una función pseudoaleatoria. Los KDF se pueden utilizar para extender claves en otras más largas, aumentando la seguridad. Básicamente, se utiliza en el \emph{keystore} para que el usuario pueda cifrar el propio \emph{keystore} con una contraseña.
 \item \textbf{kdfparams:} Parámetros necesarios para la función KDF.
-\item \textbf{mac:} Es un Código de Autenticación de Mensaje, o \emph{Message Authentication Code}(MAC). Es una porción de información utilizada para autenticar un mensaje. En este caso, autentica la contraseña.
+\item \textbf{mac:} Es un Código de Autenticación de Mensaje, o \emph{Message Authentication Code}(MAC)\cite{mac}. Es una porción de información utilizada para autenticar un mensaje. En este caso, autentica la contraseña.
 \end{itemize}
 
 Pasemos a ver, los pasos y procedimientos que sigue un keystore para firmar transacciones.
@@ -931,9 +945,10 @@ Todo lo anterior se ejecuta junto con la contraseña del usuario \ref{fig:keysto
   \label{fig:keystore_scrypt}
 \end{figure}
 
+\vspace{5cm}
 \subsubsection{Verificación de la contraseña}
 
-Para asegurarnos de que la contraseña que introduce un usuario es correcta, se utiliza el valor de \textbf{MAC}. Justo después de ejecutar el KDF sobre la contraseña, se cogen los 16 Bytes que están más a la izquierda del resultado y se concatenan con el parámetro \textbf{ciphertext}. Una vez hecho esto, se hashean con \emph{SHA3-256} y se compara con \textbf{MAC}. Si la comparación sale positiva, la contraseña ha sido introducida correctamente, y si sale negativa, no \ref{fig:keystore_MAC}.
+Para asegurarnos de que la contraseña que introduce un usuario es correcta, se utiliza el valor de \textbf{MAC}. Justo después de ejecutar el KDF sobre la contraseña, se cogen los 16 Bytes que están más a la izquierda del resultado y se concatenan con el parámetro \textbf{ciphertext}. Una vez hecho esto, se hashean con \emph{SHA3-256}\cite{sha3} y se compara con \textbf{MAC}. Si la comparación sale positiva, la contraseña ha sido introducida correctamente, y si sale negativa, no \ref{fig:keystore_MAC}.
 
 \begin{figure}[h!]
   \centering
@@ -948,7 +963,7 @@ Un flujo completo con todas las partes anteriores juntas puede verse en el \hype
 
 En ``Estublock'' el keystore se crea cuando el usuario se registra en la aplicación móvil por primera vez. Se le crea una \textbf{LightWallet}. Este wallet es de rápida creación comparado al wallet por defecto, muy útil en para aplicaciones móvil pues no disponen de la misma cantidad de recursos que un ordenador. (Si en vez de ser aplicación móvil, fuese aplicación de escriotrio, sería conveniente utilizar las wallet ``noramles'' o por defecto). La \textbf{diferencia} radica en la función de derivación de claves. Como sabemos, la contraseña del usuario pasa por el KDF antes de cifrar el keystore con el algoritmo AES. 2 de los valores del KDF eran la \textbf{n} y la \textbf{p}. Estos son los dos valores que varian entre creación por defecto y creación ligera o \textbf{LightWallet}. En el caso de creación por defecto el valor de \emph{n} es $1^18$ frente a creación \emph{light} que el valor es \emph{n} igual a $1^12$. Con respecto a \emph{p} tenemos $1$ para creación por defecto y 6 para creación light. Con respecto a la clave privada, esta se crea también cuando el usuario hace login, utilizando el algorítmo ECDSA (Elliptic Curve Digital Signature Algorithm) como se describió en el apartado del \hyperref[sec:wallet]{Wallet} \\
 
-El keystore se guarda en el dispositivo móvil del usuario. En concreto en una carpeta privada dentro del entorno de de la aplicación llamada \emph{files}, en la siguiente figura \ref{fig:fileSystem} se puede apreciar que hay 3 keystores creados (pues hay 3 cuentas en el dispositivo móvil). Este almacenamiento interno es específico de la app, es decir, no puede ser accedido por otras aplicaciones que pueda tener el usuario en el dispositivo móvil. Esto evita que una aplicación maliciosa pueda tener acceso al keystore. El sistema Android evita que otras apps accedan a las ubicaciones internas (cifrando estas a partir de Android 10), lo que permite almacenar datos sensibles con seguridad y que solo la aplicación móvil en cuestión (``Estublock'') tenga acceso a dichos datos. La forma que tiene Android de evitar que otras aplicaciones accedan al keystore es utilizando los permisos de Linux. Recordemos que Android es un sistema operativo que funciona gracias al sistema operativo Linux. En linux, los usuarios del sistema tienen diferentes permisos de lectura, escritura y ejecución según la carpeta o archivo al que quieren acceder. En el caso del keystore, como se ve a la derecha en la figura \ref{fig:fileSystem}, los permisos de acceso que tienen los archivos \textbf{UTC} (keystore) son de lectura y escritura \textbf{únicamente} para el usuario ``Estublock'' es decir, para la aplicación móvil que se ha desarrollado. Ninguna otra aplicación tiene acceso a esos archivos. \\
+El keystore se guarda en el dispositivo móvil del usuario. En concreto en una carpeta privada dentro del entorno de de la aplicación llamada \emph{files}, en la siguiente figura \ref{fig:fileSystem} se puede apreciar que hay 3 keystores creados (pues hay 3 cuentas en el dispositivo móvil). Este almacenamiento interno es específico de la app, es decir, no puede ser accedido por otras aplicaciones que pueda tener el usuario en el dispositivo móvil. Esto evita que una aplicación maliciosa pueda tener acceso al keystore. El sistema Android evita que otras apps accedan a las ubicaciones internas (cifrando estas a partir de Android 10), lo que permite almacenar datos sensibles con seguridad y que solo la aplicación móvil en cuestión (``Estublock'') tenga acceso a dichos datos. La forma que tiene Android de evitar que otras aplicaciones accedan al keystore es utilizando los permisos de Linux. Recordemos que Android es un sistema operativo que funciona gracias al sistema operativo \emph{GNU/Linux}\cite{linux}. En linux, los usuarios del sistema tienen diferentes permisos de lectura, escritura y ejecución según la carpeta o archivo al que quieren acceder\cite{usuariosLinux}. En el caso del keystore, como se ve a la derecha en la figura \ref{fig:fileSystem}, los permisos de acceso que tienen los archivos \textbf{UTC} (keystore) son de lectura y escritura \textbf{únicamente} para el usuario ``Estublock'' es decir, para la aplicación móvil que se ha desarrollado. Ninguna otra aplicación tiene acceso a esos archivos. \\
 
 \begin{figure}[h!]
   \centering

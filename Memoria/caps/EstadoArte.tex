@@ -42,29 +42,34 @@ Entendamos estos conceptos:
 
 Para continuar con la explicación, utilizaremos redes blockchain que utilizan el algoritmo de consenso \textbf{Proof of Work}\cite{whatIsProofOfWork} como hace por ejemplo la red de \textbf{Bitcoin}\cite{whatIsBitcoin}. La base es la misma para la inmensa mayoría de redes, sin embargo según el algoritmo de consenso el método difiere ligeramente. Los algoritmos se verán mas adelante\ref{sec:Algor}. En el caso de Proof of Work, para añadir un nuevo bloque a la red, debe ser \textbf{minado}\cite{minarBitcoin}. Para minar un bloque, todos los nodos de la red blockchain tratan de encontrar un hash con un requisito añadido. Ejecutar un hash sobre cualquier tipo de información, es un proceso muy fácil. Por ello, utilizando Proof of Work, se añade una dificultad al hash. La dificultad\ref{fig:hashDiff} consiste en obligar que el hash resultante tenga un número de \textbf{0's} al principio del resultado. Por lo tanto, el minado consiste en modificar el \emph{nonce} (pues no se pueden modificar las transacciones que hay en el bloque o el hash del bloque anterior). Los nodos de la red modifican el nonce de forma aleatoria hasta que algún nodo logre dar con un nonce que cumpla con la dificultad del hash. Logrado esto, el resto de nodos de la red verifican que el nonce que ha encontrado resuelve en efecto la dificultad del hash y se procede a añadir el bloque a la red y vuelta a empezar. En el caso de bitcoin, se mina un bloque cada 10 minutos aproximadamente. \\
 
-La vida de una transacción en bitcoin a grandes rasgos puede verse en la figura \ref{fig:bitcoin}. La razón de que blockchain sea una cadena de bloques, es que después de todo el proceso de hashing, de minado\dots los bloques quedan enlazados entre si gracias a estos hashes\ref{fig:bloqueEnlazado}. 
+\clearpage
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.8\linewidth]{figs/EstadoArte/Blockchain/hashDificultad}
+  \includegraphics[width=0.9\linewidth]{figs/EstadoArte/Blockchain/hashDificultad}
   \caption[Hash dificultad]{Dificultad del hash}
   \label{fig:hashDiff}
 \end{figure}
 
+La vida de una transacción en bitcoin a grandes rasgos puede verse en la figura \ref{fig:bitcoin}. La razón de que blockchain sea una cadena de bloques, es que después de todo el proceso de hashing, de minado\dots los bloques quedan enlazados entre si gracias a estos hashes\ref{fig:bloqueEnlazado}. 
+
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.8\linewidth]{figs/EstadoArte/Blockchain/bitcoinMining}
+  \includegraphics[width=0.9\linewidth]{figs/EstadoArte/Blockchain/bitcoinMining}
   \caption[Vida de una transacción en Bitcoin]{Vida de una transacción en Bitcoin}
   \label{fig:bitcoin}
 \end{figure}
 
+\begin{landscape}
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.8\linewidth]{figs/EstadoArte/Blockchain/bloqueEnlazado}
   \caption[Cadena de bloques]{Cadena de bloques}
   \label{fig:bloqueEnlazado}
 \end{figure}
+\end{landscape}
 
+\clearpage
 % -------------------------------------------------- %
 \subsection{Tipos de redes blockchain}
 
@@ -279,6 +284,13 @@ A grandes rasgos nos quedan estos tres términos importantes:
 
 Los smart contracts de ethereum están escritos en \textbf{Solidity}\cite{SolidityDocs}\ref{fig:soliditySmartContractEntero} o \textbf{Vyper}\cite{VyperDocs}, sus logos pueden verse en \ref{fig:programas}. Cualquier persona es libre de programar un smart contract y desplegarlo en la red de ethereum, los smart contracts son una transacción más y tienen su propio address. Permitiendo que cualquier persona haga llamadas al smart contract. Desplegar un smart contract cuesta \emph{gas} al igual que cualquier transacción, sin embargo es bastante más caro. 
 
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.7\linewidth]{figs/EstadoArte/Ethereum/SmartContract}
+  \caption[Código ejemplo de un smart contract]{Código ejemplo de un smart contract}
+  \label{fig:soliditySmartContractEntero}
+\end{figure}
+
 \begin{figure}[hbt]
 	\centering
 	\begin{subfigure}[b]{0.4\linewidth}
@@ -333,14 +345,6 @@ Los smart contracts de ethereum están escritos en \textbf{Solidity}\cite{Solidi
 %   }
 % }
 % \end{lstlisting}
-
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.7\linewidth]{figs/EstadoArte/Ethereum/SmartContract}
-  \caption[Código ejemplo de un smart contract]{Código ejemplo de un smart contract}
-  \label{fig:soliditySmartContractEntero}
-\end{figure}
-
 
 % -------------------------------------------------- %
 \subsection{Funcionamiento básico de Ethereum}
@@ -574,7 +578,7 @@ Las comunicaciones de la API se pueden dividir en los siguientes 3 casos de uso 
 Siendo más concretos pasemos a listar todas las funcionalidades de las que dispone la API, lógicamente esta no es la documentación completa la cual trae consigo los objetos JSON que aceptan la URIs y los errores u objetos JSON que devuelve cada una de las URIs. En el presente la documentación se mantiene en un repositorio de \emph{gitlab} privado. \\
 
 \begin{center}
-  \begin{tabular}{|c|l|m{23em}|}
+  \begin{longtable}{|c|l|m{23em}|}
     \hline
     \textcolor{green}{{\footnotesize POST}} & /user: & Permite registrar a un usuario en la base de datos. \\
     \hline
@@ -614,7 +618,7 @@ Siendo más concretos pasemos a listar todas las funcionalidades de las que disp
     \hline
     \textcolor{blue}{{\footnotesize GET}} & /event/{id}/attendance: & Permite obtener la lista de asistencias a un evento.  \\
     \hline
-  \end{tabular}
+  \end{longtable}
 \end{center}
 
 Gracias a usar swagger, la API sigue la documentación de forma estricta, es decir, no acepta llamadas en las que no se envien los parámetro especificados en la documentación. Si para crear un usuario se requiere de un campo ``email'', si este campo no existe al hacer la llamada a la API, swagger se encarga de rechazar la llamada con un error de formato. Así se logra evitar que el backend tenga errores por variables indefinidas, nulas, o se guarden datos vacíos\dots
