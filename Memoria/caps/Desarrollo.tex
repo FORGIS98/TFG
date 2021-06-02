@@ -23,14 +23,14 @@ Aunque a continuación se van a analizar los casos de uso concretamente, veamos 
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.4\linewidth]{figs/Desarrollo/CasosUso/generalAlumno}
+  \includegraphics[width=0.6\linewidth]{figs/Desarrollo/CasosUso/generalAlumno}
   \caption[Caso de uso general del alumno]{Caso de uso general del alumno}
   \label{fig:uso_alumno}
 \end{figure}
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.4\linewidth]{figs/Desarrollo/CasosUso/generalProfe}
+  \includegraphics[width=0.6\linewidth]{figs/Desarrollo/CasosUso/generalProfe}
   \caption[Caso de uso general del profe]{Caso de uso general del profe}
   \label{fig:uso_profe}
 \end{figure}
@@ -38,16 +38,82 @@ Aunque a continuación se van a analizar los casos de uso concretamente, veamos 
 \subsection{Casos de Uso}
 \label{sec:casosUso}
 
+% ----------------------
 \subsubsection{Registro}
+
+Para registrarse \ref{fig:casoRegistro}, el usuario introduce sus credenciales y la aplicación Estublock se encargará de crear el \emph{wallet} y de llamar a la API que guarda los datos del usuario en la base de datos.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\linewidth]{figs/Desarrollo/CasosUso/registro}
+  \caption[Caso de uso de registrar usuario]{Caso de uso de registrar usuario}
+  \label{fig:casoRegistro}
+\end{figure}
+
+% ----------------------
 \subsubsection{Login}
+
+Para hacer login \ref{fig:casoLogin} en la aplicación, se requiere del correo y la contraseña. Una vez la base de datos da el visto bueno de las credenciales, Estublock recupera con ayuda de las \emph{SharedPreferences} (se verá mas adelante) el directorio donde esta guardado el wallet del usuario.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\linewidth]{figs/Desarrollo/CasosUso/login}
+  \caption[Caso de uso de login]{Caso de uso de login}
+  \label{fig:casoLogin}
+\end{figure}
+
+% ----------------------
 \subsubsection{Suscripcion a Tema}
+
+Los usuarios deben suscribirse a temas \ref{fig:casoSuscripciones} para poder asistir a los eventos de esos temas. Para ello, la aplicación Estublock le pide a la base de datos una lista de todos los temas existentes. De esos temas, el usuario podrá elegir los que le interesan y luego Estublock le pide a la base de datos que los guarde.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\linewidth]{figs/Desarrollo/CasosUso/suscripcionAsignatura}
+  \caption[Caso de uso de suscripcion a temas]{Caso de uso de suscripcion a temas}
+  \label{fig:casoSuscripciones}
+\end{figure}
+
+% ----------------------
 \subsubsection{Creacion de un Evento}
-\subsubsection{Generacion de QR}
+
+Profesores y organizadores tienen la opción de crear eventos \ref{fig:casoEvento}, para ello, Estublock lista los temas a los que el usuario esta suscrito. El usuario selecciona uno de los temas, introduce los datos del evento y cuando guarda esos datos, Estublock con ayuda del SDK firma (con la clave privada de Ethereum del usuario) los datos del evento y los envía a la red blockchain.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\linewidth]{figs/Desarrollo/CasosUso/crearEvento}
+  \caption[Caso de uso de crear evento]{Caso de uso de crear evento}
+  \label{fig:casoEvento}
+\end{figure}
+
+% ----------------------
+\subsubsection{Asistir a un evento}
+
+Los usuarios que desean validar su asistencia a un evento \ref{fig:casoCrearQR}, primero seleccionan el tema del evento, Estublock recupera la lista de eventos asociados a ese tema. Luego el alumno selecciona el evento concreto en el que se encuentran. Y Estublock se encarga de pedir al SDK el address del usuario y junto con los datos del evento genera un código QR que luego muestra al alumno. De este modo, en ese QR estan los datos del evento y el address del alumno. 
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\linewidth]{figs/Desarrollo/CasosUso/crearQR}
+  \caption[Caso de uso de crear QR]{Caso de uso de crear QR}
+  \label{fig:casoCrearQR}
+\end{figure}
+
+% ----------------------
 \subsubsection{Registro de Asistencia}
 
+Para registrar una asistencia \ref{fig:casoEscanearQR}, Estublock utiliza la aplicación de la cámara de fotos para escanear los QR. Una vez se escanea un QR, se firman los datos de ese QR y se envían a la red blockchain con ayuda del SDK. Y se siguen escaneando QRs hasta que el usuario decida dejar de escanear QRs.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\linewidth]{figs/Desarrollo/CasosUso/escanearQR}
+  \caption[Caso de uso de escanear QR]{Caso de uso de escanear QR}
+  \label{fig:casoEscanearQR}
+\end{figure}
+
 
 % ##################################################
 % ##################################################
+\clearpage
 \section{Arquitectura de la Aplicación}
 
 Recordemos un poco el esqueleto del proyecto ``Estublock''. Se ha decidido crear varios componentes modulares soportados por APIs, así cambios en el código de un componente no afectan al resto. El proyecto dispone de tres APIs diferentes. Tenemos primero la API que comunica con el servidor que tiene ejecutando la base de datos, luego la API que trata algunos datos con la red blockchain que se ha levantado. Y por último, una API intermedia que es con la que se comunica el dispositivo móvil para centralizar las llamadas, quitarle trabajo de computo al móvil y a la aplicación. Sin embargo, recordemos que el dispositivo móvil también hará llamadas directamente a la red blockchain a través del \hyperref[sec:SDK]{SDK}. La arquitectura queda como se muestra en la figura \ref{fig:estublockArch}. \\
@@ -706,12 +772,6 @@ Como las llamadas a la red blockchain son pesadas, han sido implementadas con th
   \label{fig:callback}
 \end{figure}
 
-\subsection{Pruebas del SDK}
-
-Para verificar el correcto funcionamiento del SDK desarrollado, se han realizado varias pruebas. Por un lado tenemos pruebas realizadas directamente con la aplicación en funcionamiento. Es decir, se ejecuta la aplicación, se crea un usuario y se mira si se ha creado correctamente el keystore y si las \emph{Shared Preferences} de Android tienen guardada la relación entre usuario y keystore. También se prueba que al crear un nuevo evento la transacción se firme y se vea reflejada en la red blockchain. Por último, se comprueba que se escanee correctamente el código QR y se vea reflejada la asistencia en la red blockchain, y se verifica también que se genere correctamente el QR con los datos del usuario, en concreto, el address. Estas pruebas, además de verificar que el SDK funciona, también comprueban el correctamente funcionamiento de las librerías al estar haciendo llamadas a las APIs, generando QRs y llamando a la cámara de fótos. \\
-
-Por otro lado, más precisamente para probar llamadas a una red blockchain con más rápidez, se ha utilizado \textbf{ganache}\cite{ganache}. Ganache permite levantar una red blockchain de pruebas creando además 10 cuentas aleatorias para poder ``experimentar'' con ellas. La prueba ha consistido en desplegar un smart contract en la red, y firmar transacciones y enviarlas a la red blockchain de ganache. La ventaja de utilizar ganache es poder utilizar \textbf{Geth} desde la consola de linux para ver información sobre lo que esta sucediendo en la red blcockchain de forma local sin riesgos de comprometer la red blockchain original que se utiliza en ``Estublock''. \textbf{Geth}\cite{geth} es una implementación en el lenguaje \emph{Golang} del protocolo de Ethereum. Lógicamente, el objetivo de estas pruebas al igual que las anteriores era buscar errores, fallos, bugs\dots
-
 % --------------------------------------------------
 \subsection{Como Incorporarlo en Otras Aplicaciones} \label{sec:Maven}
 
@@ -734,6 +794,48 @@ Más detalles se pueden encontrar en el post de ``Waseef Akhtar''\cite{waseef}. 
 Una vez la librería es pública, cualquier programador puede añadirla a su proyecto añadiendo a sus dependencias la línea \textit{implementation 'com.<entidad>.estublock:EasyBlockchain:1.0.0'}, el nombre de la entidad aún está por definir. Una vez añadida la línea y después de que gradle termine de sincronizar el repositorio, el programador puede utilizar todas las funciones que hayan en la versión 1.0.0 del SDK.
 
 
+% -----------------------------
+\section{Pruebas}
+
+Probar la app es una parte importante dentro del proceso de desarrollo. Con pruebas coherentes, se puede verificar la corrección, comportamiento funcional y usabilidad de la aplicación antes de lanzarla al público. Las pruebas brindan muchas ventajas, entre otras están: Los avisos rápidos de \textbf{fallos} y \textbf{detección} de fallos. \textbf{Refactorización} de código más segura, y proporcionan \textbf{velocidad de desarrollo} más estable al ayudar a minimizar el tiempo que se pierde arreglando errores más tarde en el proyecto. Además, permite programar con más seguridad, pues tras la implementación de un método o funcionalidad nueva esta se puede probar al momento, dando feedback al desarrollador sobre el correcto funcionamiento del código. \\
+
+En Android, se pueden realizar pruebas unitarias con \textbf{JUnit}, o pruebas instrumentadas que se ejecutan en un dispositivo móvil. Además, Android facilita la integración de frameworks de prueba como \emph{Mockito}\cite{mockito}, \emph{Espresso}\cite{espresso} o \emph{UI Automator}\cite{uia}. Android recomienda crear y probar el código de forma iterativa \ref{fig:iterativo}. Por cada unidad, es decir, por cada método o un pequeño conjunto de métodos que trabajen juntos, se debe implementar una o varias pruebas que agoten todos los casos de interacción con esa unidad. Desde casos raros a triviales, pasando por entradas no validas, casos de acceso a recursos que no existen, interacciones estándar\dots \\
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figs/Desarrollo/Pruebas/iterativo}
+  \caption[Ciclos asociados con el desarrollo iterativo]{Ciclos asociados con el desarrollo iterativo}
+  \label{fig:iterativo}
+\end{figure}
+
+Existen pruebas de unidad local, estas se ejecutan en la maquina virtual de java en el ordenador del desarrollador. Son útiles cuando no existe dependencias con el framework de Android. Por otro lado, están las pruebas instrumentadas, que se ejecutan en un dispositivo móvil o emulador. Estas pruebas tienen acceso a las APIs y tienen su propio archivo \emph{AndroidManifest.txt}, aunque Gradle se encarga de generarlo automáticamente durante la compilación. 
+
+% -------------------------
+\subsection{Pruebas en Estublock}
+
+\subsubsection{Tests Manuales}
+
+Las herramientas que proporciona Android son muy efectivas, pero requieren de una implementación y estrategia a la que no se le ha podido invertir el tiempo deseado. Por lo tanto, para Estublock, se ha optado por hacer \emph{pruebas manuales}. Las pruebas manuales o tests manuales, son casos de prueba ejecutados manualmente por una persona sin herramientas que permitan automatizar las pruebas. El objetivo de las pruebas manuales es identificar los errores, problemas y defectos de la aplicación, y aunque sea la técnica más primitiva, ayuda a encontrar errores críticos en la aplicación. Existen varios tipos de pruebas manuales, en concreto hay dos que nos interesan conocidas como \textbf{Black Box Testing} (test de caja negra) y \textbf{White Box testing} (test de caja blanca). En la primera, la persona que realiza el test desconoce el código que se ejecuta por debajo, solo le interesa ver la entrada de datos y que respuesta recibe. Este test es recomendable con usuarios finales o con personas que no han participado en el proyecto. El \emph{white box testing} sin embargo, tiene en cuenta el código que se ejecuta. \\
+
+Esta técnica es la que se ha utilizado en ``Estublock'' y en el SDK. Es una técnica de prueba de software en la que se comprueba la estructura interna, el diseño y la codificación del software para verificar el flujo de entrada-salida y mejorar el diseño, la usabilidad y la seguridad. También es conocida como \emph{open box testing o transparent box testing} (test de caja abierta o test de caja transparente).
+
+\subsubsection{Estublock y SDK}
+
+Para verificar el correcto funcionamiento de Estublock y del SDK, se han realizado entoces pruebas manuales con una estrategia \emph{White Box}. En concreto: 
+\begin{itemize}
+\item Se realiza el registro de un usuario que no existe en el sistema, se verifica que la aplicación entra al menu de inicio. Se verifica que el SDK ha creado un wallet para el usuario, y que este se encuentra regitrado correctamente en la base de datos.
+\item Se hace login con el usuario creado. Se verifica que entra al menu de inicio y que se ha recuperado el directorio con el keystore del usuario.
+\item Se suscribe al usuario a un grupo de asignaturas. Con esto se comprueba que la base de datos devuelve correctamente la lista de asignaturas, que la aplicación es capaz de listarlas y que es capaz de seleccionar y guardar en la base de datos las asignaturas que el usuario ha seleccionado.
+\item Se crea un nuevo evento, con lo que se verifica que, se recupera correctamente la lista de asignaturas a las que el usuario esta suscrito, y también se verifica que los datos que el usuario introduce para crear un evento nuevo son firmados y registrados con las credenciales del usuario en la red blockchain. Con lo que se comprueba que el SDK es capaz de preparar una transacción, firmarla y enviarla. 
+\item Se procede a registrar la asistencia al evento creado. Se comprueba que el evento anteriormente añadido a la red blockchain puede recuperarse, y se comprueba que la aplicación puede generar un código QR con los datos del evento y del usuario.
+\item Por último, se comprueba el registro de la asistencia, es decir, el escaneo del código QR. Con ello se verifica que funciona correctamente la cámara junto con la librería que escanea códigos QR. Y, que con la información del código QR el SDK puede preparar la transacción, firmarla y enviarla. 
+\end{itemize}
+
+Junto a todo esto, se han comprobado también manualmente, casos en los que un usuario no existe (intentar hacer login con credenciales inválidas) o tratar de añadir a un usuario que ya tiene una cuenta existente en el sistema (mismo correo electrónico). Así como intentar firmar una transacción con la contraseña que desbloquea el wallet incorrecta y tratar de suscribirse a un tema al que ya esta suscrito el usuario. \\
+
+Por otro lado, se han hecho pruebas específicas del SDK con ayuda de \textbf{ganache}\cite{ganache}. Ganache permite levantar una red blockchain de pruebas creando además 10 cuentas aleatorias para poder ``experimentar'' con ellas. La prueba ha consistido en desplegar un smart contract en la red, y que el SDK firmase transacciones y las enviase a la red blockchain de ganache. La ventaja de utilizar ganache es poder utilizar el protocolo \textbf{Geth} desde la consola de comandos de linux para ver información sobre lo que esta sucediendo en la red blockchain de forma local sin riesgos de comprometer la red blockchain original que se utiliza en ``Estublock''. \textbf{Geth}\cite{geth} es una implementación en el lenguaje \emph{Golang} del protocolo de Ethereum. Lógicamente, el objetivo de estas pruebas al igual que las anteriores es buscar errores, fallos y bugs en el SDK que no se hayan podido probar con las pruebas anteriores.
+
+% ---------------------------------------
 \section{Wallet} \label{sec:wallet}
 
 El wallet es una aplicación que permite interactuar con la cuenta de Ethereum. Puede verse como una aplicación bancaria, que te permite ver tu saldo, enviar transacciones y conectar con aplicaciones. En el caso de ``Estublock'' no existe el concepto de saldo, pero sí se hacen transacciones y llamadas a una aplicación (el smart contract que tenemos ejecutando en la red blockchain a la que hacemos llamadas). El wallet guarda las credenciales del usuario, también conocidas como \textbf{keystore}. \\
@@ -850,7 +952,7 @@ El keystore se guarda en el dispositivo móvil del usuario. En concreto en una c
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=1\linewidth]{figs/Desarrollo/Keystore/keystore_MAC}
+  \includegraphics[width=1\linewidth]{figs/Desarrollo/Keystore/fileSystem}
   \caption[Sistema de archivos interno de la aplicación]{Sistema de archivos interno de la aplicación}
   \label{fig:fileSystem}
 \end{figure}
