@@ -127,17 +127,18 @@
 
 
 %--- Generación de hiperenlaces
+\definecolor{linkColor}{rgb}{0.25, 0.41, 0.88}
 \usepackage[
 	pdftex,
 	breaklinks,			% Permite que los links ocupen más de una línea
 %	hidelinks,			% Oculta el color y borde de los links
 	colorlinks=true,	% Pone color en los link o un borde
-	linkcolor=palered,	% Color de los links
-	anchorcolor=palered, 
-	citecolor=palered, 
-	filecolor=palered, 
-	menucolor=palered, 
-	urlcolor=palered,
+	linkcolor=linkColor,	% Color de los links
+	anchorcolor=linkColor, 
+	citecolor=linkColor, 
+	filecolor=linkColor, 
+	menucolor=linkColor, 
+	urlcolor=linkColor,
 	bookmarksnumbered=true % Incluye números en bookmarks
 ]{hyperref}
 \urlstyle{sf}			% Estilo sans serif para URLs

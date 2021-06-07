@@ -41,7 +41,7 @@ Aunque a continuación se van a analizar los casos de uso concretamente, veamos 
 \subsection{Casos de Uso}
 \label{sec:casosUso}
 
-Los diagramas con los casos de uso se encuentran al final de la sección \emph{Casos de Uso}.
+Los diagramas con los casos de uso se encuentran al final de esta sección.
 
 % ----------------------
 \subsubsection{Registro}
@@ -51,7 +51,7 @@ Para registrarse \ref{fig:casoRegistro}, el usuario introduce sus credenciales y
 % ----------------------
 \subsubsection{Login}
 
-Para hacer login \ref{fig:casoLogin} en la aplicación, se requiere del correo y la contraseña. Una vez la base de datos da el visto bueno de las credenciales, Estublock recupera con ayuda de las \emph{SharedPreferences} (se verá mas adelante) el directorio donde esta guardado el wallet del usuario.
+Para hacer login \ref{fig:casoLogin} en la aplicación, se requiere del correo y la contraseña. Una vez la base de datos da el visto bueno de las credenciales, Estublock recupera con ayuda de las \emph{SharedPreferences} (se verá más adelante) el directorio donde esta guardado el wallet del usuario.
 
 % ----------------------
 \subsubsection{Suscripcion a Tema}
@@ -121,9 +121,9 @@ Para registrar una asistencia \ref{fig:casoEscanearQR}, Estublock utiliza la apl
 \clearpage
 \section{Arquitectura de la Aplicación}
 
-Recordemos un poco el esqueleto del proyecto ``Estublock''. Se ha decidido crear varios componentes modulares soportados por APIs, así cambios en el código de un componente no afectan al resto. El proyecto dispone de tres APIs diferentes. Tenemos primero la API que comunica con el servidor que tiene ejecutando la base de datos, luego la API que trata algunos datos con la red blockchain que se ha levantado. Y por último, una API intermedia que es con la que se comunica el dispositivo móvil para centralizar las llamadas, quitarle trabajo de computo al móvil y a la aplicación. Sin embargo, recordemos que el dispositivo móvil también hará llamadas directamente a la red blockchain a través del \hyperref[sec:SDK]{SDK}. La arquitectura queda como se muestra en la figura \ref{fig:estublockArch}. \\
+Recordemos un poco el esqueleto del proyecto ``Estublock''. Se ha decidido crear varios componentes modulares soportados por APIs, así cambios en el código de un componente no afectan al resto. El proyecto dispone de tres APIs diferentes. Tenemos primero la API que comunica con el servidor que tiene ejecutando la base de datos, luego la API que trata algunos datos con la red blockchain que se ha levantado. Y por último, una API intermedia que es con la que se comunica el dispositivo móvil para centralizar las llamadas, quitarle trabajo de cómputo al móvil y a la aplicación. Sin embargo, recordemos que el dispositivo móvil también hará llamadas directamente a la red blockchain a través del \hyperref[sec:SDK]{SDK}. La arquitectura queda como se muestra en la figura \ref{fig:estublockArch}. \\
 
-El dispositivo móvil se comunica entonces con la api de microservicios con la ayuda de dos librerías que veremos más en profundidad en el apartado de \hyperref[sec:Codigo]{Codigo}, esta API a su vez se comunica con la API de la base de datos o de la red blockchain según la operación que se haya especificado y estas se comunican con el servidor postgresql para la base de datos y la red de quorum para la blockchain. \\
+El dispositivo móvil se comunica entonces con la api de microservicios con la ayuda de dos librerías que veremos más en profundidad en el apartado de \hyperref[sec:Codigo]{Código}, esta API a su vez se comunica con la API de la base de datos o de la red blockchain según la operación que se haya especificado y estas se comunican con el servidor postgresql para la base de datos y la red de quorum para la blockchain. \\
 
 \begin{figure}[h!]
   \centering
@@ -133,7 +133,7 @@ El dispositivo móvil se comunica entonces con la api de microservicios con la a
 \end{figure}
 
 % --------------------------------------------------
-\section{Interaz de Usuario}
+\section{Interfaz de Usuario}
 
 La interfaz de usuario es donde los usuarios interaccionan con la aplicación. Son las ventanas, botones, pantallas con las que el usuario interacciona. Deben tener un diseño intuitivo, fácil, que brinde una experiencia positiva. A más fácil de entender, mejor. Existen tres grandes tipos de interfaces de usuario, la interfaz de lenguaje natural, es la ideal y el sueño de todo usuario, pues permite comunicar humano y máquina con lenguaje natural. Un ejemplo de dispositivo que utiliza esta interfaz es \emph{Alexa}, que cuenta con un software basado en modelos acústicos y del lenguaje. El segundo tipo de interfaz es la interfaz de preguntas y respuestas. En esta interfaz se muestra una pregunta al usuario y según su respuesta se actúa de una u otra manera. Un ejemplo de estas interfaces son los software de instalación, como puede ser el instalador de un sistema operativo. Y por último, la interfaz que más nos interesa para este proyecto, la \textbf{interfaz gráfica de usuario}, en inglés ``Graphical User Interface'' o \textbf{GUI}. Esta utiliza gráficos, imágenes, videos, iconos, menús\dots para permitir al usuario interaccionar con la aplicación. 
 
@@ -158,11 +158,11 @@ Uno de los puntos fuertes de programar con antelación la interfaz con XML, es q
 % --------------------------------------------------
 \subsection{Accesibilidad de Estublock}
 
-Cuando se crea un sitio web o una aplicación ya sea de escritorio o de móvil, una de las principales preocupaciones que un desarrollador tiene (sobre todo a nivel de interfaz) es la \textbf{accesibilidad}. Accesibilidad es tratar a todo el mundo igual, sean cuales sean sus capacidades. Aunque la definición es muy abierta, lo que quiere es conseguir que todo el mundo pueda utilizar lo que sea sin importar cuales seas sus capacidades y dificultades. Con ``lo que sea'' nos referimos a que accesibilidad aunque aquí este centrado en Software especialmente aplicaciones móvil, la accesibilidad es algo a tener en cuenta en todas partes, transporte, edificios, gimnasios, webs, videojuegos, aplicaciones móvil\dots Los desarrolladores de aplicaciones móvil, deben intentar ser más conscientes de las necesidades de todo el público potencial que puede querer utilizar la aplicación que se está desarrollando. \\
+Cuando se crea un sitio web o una aplicación ya sea de escritorio o de móvil, una de las principales preocupaciones que un desarrollador tiene (sobre todo a nivel de interfaz) es la \textbf{accesibilidad}. Accesibilidad es tratar a todo el mundo igual, sean cuales sean sus capacidades. Aunque la definición es muy abierta, lo que quiere es conseguir que todo el mundo pueda utilizar lo que sea sin importar cuales seas sus capacidades y dificultades. Con ``lo que sea'' nos referimos a que accesibilidad aunque aquí este centrado en Software especialmente aplicaciones móviles, la accesibilidad es algo a tener en cuenta en todas partes, transporte, edificios, gimnasios, webs, videojuegos, aplicaciones móviles\dots Los desarrolladores de aplicaciones móviles, deben intentar ser más conscientes de las necesidades de todo el público potencial que puede querer utilizar la aplicación que se está desarrollando. \\
 
 El \emph{primer} paso para identificar como mejorar al máximo la accesibilidad de ``Estublock'' es definir quienes son los usuarios finales, que abanico de personas van a utilizar la aplicación, para así lograr en la medida de lo posible que todos los usuarios puedan utilizar y disfrutar de la aplicación. Dicho esto, el público objetivo de la aplicación es toda persona entre los 18 años hasta personas muy mayores. Los jóvenes (de 18 para arriba) son los estudiantes, luego tenemos a ponentes de charlas que pueden ser jóvenes también o ser personas ya jubiladas. Por otro lado están los profesores, hay profesores jóvenes, y profesores más mayores. La edad no es un aspecto clave a tener en cuenta pero es cierto que no es lo mismo un público objetivo de 8 años que de 18 años. \\
 
-\emph{Segundo} paso, hemos mencionado que accesibilidad se refiere a que personas con distintas dificultades y capacidades puedan utilizar la aplicación. ¿Qué capacidades pueden limitar el uso de la aplicación ``Estublock'' por las personas?\ref{fig:discapacidad} Usuarios con \textbf{deficiencias visuales} que utilicen un lector de pantallas para moverse por la aplicación (es decir, pulsan un boton y el móvil lee el texto del botón, si vuelven a pulsar el boton se ejecuta la acción que haga ese botón). Luego hay usuarios con \textbf{miopía}, que tratarán de tener la fuente del texto más grande para facilitar su lectura, la \textbf{vista cansada} también entra aquí, pues es habitual agrandar el texto cuando uno tiene la vista cansada. Hay que tener en cuenta también a usuarios con \textbf{discapacidades motrices}, que utilizaran ayudas como dispositivos de señalización o punteros visuales para manipular la aplicación. Por ejemplo, un usuario que ha nacido sin extremidades superiores utilizará los pies para manipular un móvil. Aunque este usuario tendrá una habilidad con los pies que el resto no tenemos, agradecerá enormemente que las aplicaciones móvil tengan en cuenta la incomodidad que conlleva utilizar los pies para utilizar una aplicación móvil. Por otro lado, no todas las dificultades tienen un factor ``físico'', hay que pensar también que hay usuarios \textbf{daltónicos}, y ante dos botones rojo y verde, el usuario daltónico vea ambos colores con la misma tonalidad. \\
+\emph{Segundo} paso, hemos mencionado que accesibilidad se refiere a que personas con distintas dificultades y capacidades puedan utilizar la aplicación. ¿Qué capacidades pueden limitar el uso de la aplicación ``Estublock'' por las personas?\ref{fig:discapacidad} Usuarios con \textbf{deficiencias visuales} que utilicen un lector de pantallas para moverse por la aplicación (es decir, pulsan un boton y el móvil lee el texto del botón, si vuelven a pulsar el boton se ejecuta la acción que haga ese botón). Luego hay usuarios con \textbf{miopía}, que tratarán de tener la fuente del texto más grande para facilitar su lectura, la \textbf{vista cansada} también entra aquí, pues es habitual agrandar el texto cuando uno tiene la vista cansada. Hay que tener en cuenta también a usuarios con \textbf{discapacidades motrices}, que utilizaran ayudas como dispositivos de señalización o punteros visuales para manipular la aplicación. Por ejemplo, un usuario que ha nacido sin extremidades superiores utilizará los pies para manipular un móvil. Aunque este usuario tendrá una habilidad con los pies que el resto no tenemos, agradecerá enormemente que las aplicaciones móviles tengan en cuenta la incomodidad que conlleva utilizar los pies para utilizar una aplicación móvil. Por otro lado, no todas las dificultades tienen un factor ``físico'', hay que pensar también que hay usuarios \textbf{daltónicos}, y ante dos botones rojo y verde, el usuario daltónico vea ambos colores con la misma tonalidad. \\
 
 \begin{figure}[h!]
   \centering
@@ -176,7 +176,7 @@ La clave para diseñar pensando en la accesibilidad, es pensar en un problema y 
 Pasemos a ver, algunos puntos esenciales en los que hay que fijarse al añadir a ``Estublock'' una mejor accesibilidad.
 
 \subsubsection{Jerarquía}
-Cuando la navegación es fácil los usuarios entienden dónde están en la aplicación y qué es importante. Para enfatizar qué información es importante, se pueden utilizar múltiples señales visuales y textuales como el color, forma o movimiento. Cada botón, imagen y línea de texto añadidos aumentan la complejidad de una interfaz de usuario. Para mejorar la comprensión de la interfaz de usuario se pueden utilizar elementos claramente visibles, contrastes y tamaños adecuados, una clara jerarquía de importancia, información clave discernible de un vistazo\dots Así como colocar las acciones importantes en la parte superior o inferior de la pantalla, y colocando elementos relacionados con una jerarquía similar uno al lado del otro. Por ejemplo, en la siguiente figura \ref{fig:gatosyperros} a la izquierda queda claro que en la parte superior están los elementos importantes que pueden permitirte navegar por la aplicación, pero a la derecha choca al usuario que los controles de la aplicación estén en medio de la pantalla, cortando la información. 
+Cuando la navegación es fácil, los usuarios entienden dónde están en la aplicación y qué es importante. Para enfatizar qué información es importante, se pueden utilizar múltiples señales visuales y textuales como el color, forma o movimiento. Cada botón, imagen y línea de texto añadidos aumentan la complejidad de una interfaz de usuario. Para mejorar la comprensión de la interfaz de usuario se pueden utilizar elementos claramente visibles, contrastes y tamaños adecuados, una clara jerarquía de importancia, información clave discernible de un vistazo\dots Así como colocar las acciones importantes en la parte superior o inferior de la pantalla, y colocando elementos relacionados con una jerarquía similar uno al lado del otro. Por ejemplo, en la siguiente figura \ref{fig:gatosyperros} a la izquierda queda claro que en la parte superior están los elementos importantes que pueden permitirte navegar por la aplicación, pero a la derecha choca al usuario que los controles de la aplicación estén en medio de la pantalla, cortando la información. 
 
 \begin{figure}[hbt]
 	\centering
@@ -239,7 +239,7 @@ Aunque el feedback de la aplicación no tenga tanto que ver con la accesibilidad
 % --------------------------------------------------
 \subsection{Diseño de la Interfaz de Estublock}
 
-A la hora de diseñar la aplicación Estublock, se ha buscado un diseño ligero, intuitivo y rápido, para evitar que se pueda mal interpretar un botón, que el usuario se pierda al usar la aplicación o no sepa donde encontrar las cosas. Todo esto para evitar en la medida de lo posible que el usuario se lleve una mala experiencia con la aplicación. Para todo ello, se ha utilizado una herramienta de diseño para prototipos de pantallas y testeo de pantallas llamada \emph{Marvelapp}\cite{marvelapp}. Marvelapp permite diseñar con bastante detalle aplicaciones móvil y web, y además permite enlazar pantallas para probar la efectividad de las pantallas y el entendimiento de las mismas. Marvelapp tiene un gran potencial al permitir diseñar rápidamente pantallas y poder probar su efectividad rápidamente. El diagrama de flujo completo entre pantallas de la aplicación puede encontrarse en la figura \ref{fig:diagramaCompleto}\\
+A la hora de diseñar la aplicación Estublock, se ha buscado un diseño ligero, intuitivo y rápido, para evitar que se pueda mal interpretar un botón, que el usuario se pierda al usar la aplicación o no sepa donde encontrar las cosas. Todo esto para evitar en la medida de lo posible que el usuario se lleve una mala experiencia con la aplicación. Para todo ello, se ha utilizado una herramienta de diseño para prototipos de pantallas y testeo de pantallas llamada \emph{Marvelapp}\cite{marvelapp}. Marvelapp permite diseñar con bastante detalle aplicaciones móviles y web, y además permite enlazar pantallas para probar la efectividad de las pantallas y el entendimiento de las mismas. Marvelapp tiene un gran potencial al permitir diseñar rápidamente pantallas y poder probar su efectividad rápidamente. El diagrama de flujo completo entre pantallas de la aplicación puede encontrarse en la figura \ref{fig:diagramaCompleto}\\
 
 \begin{figure}[h!]
   \centering
@@ -260,7 +260,7 @@ En la pantalla de registro, se pide al usuario que introduzca sus datos personal
   \label{fig:regex}
 \end{figure}
 
-También, se hace verificación de que la contraseña ha sido escrita correctamente dos veces. Esta es una \textbf{nueva} decisión de diseño, puesto que en un inicio como veremos mas adelante, no se contemplaba en la pantalla de registro pedir la contraseña dos veces. Además, otros cambios que ha sufrido la pantalla de registro es en el número de datos que se le piden al usuario. Se ha eliminado la matrícula, esto es temporal, pues es probable que se añada en el futuro. La principal razón que nos llevó a tomar esta decisión, es que los profesores o ponentes de charlas que fuesen a utilizar esta aplicación, no disponen de matrícula. Solo los estudiantes tienen matrícula. Por otro lado, el nombre y apellidos se piden de forma conjunta, esto también es temporal pues hay que estudiar si van a ser o no datos fundamentales para poder acreditar al alumno la asistencia a un evento, o no es tan importante conocer el primer y segundo apellido del usuario, pues al final lo más importante es el correo electrónico. El diseño con \emph{marvelapp} y el resultado final, pueden encontrarse en la figura \ref{fig:pantalla_registro}
+También, se hace verificación de que la contraseña ha sido escrita correctamente dos veces. Esta es una \textbf{nueva} decisión de diseño, puesto que en un inicio como veremos más adelante, no se contemplaba en la pantalla de registro pedir la contraseña dos veces. Además, otros cambios que ha sufrido la pantalla de registro es en el número de datos que se le piden al usuario. Se ha eliminado la matrícula, esto es temporal, pues es probable que se añada en el futuro. La principal razón que nos llevó a tomar esta decisión, es que los profesores o ponentes de charlas que fuesen a utilizar esta aplicación, no disponen de matrícula. Solo los estudiantes tienen matrícula. Por otro lado, el nombre y apellidos se piden de forma conjunta, esto también es temporal pues hay que estudiar si van a ser o no datos fundamentales para poder acreditar al alumno la asistencia a un evento, o no es tan importante conocer el primer y segundo apellido del usuario, pues al final lo más importante es el correo electrónico. El diseño con \emph{marvelapp} y el resultado final, pueden encontrarse en la figura \ref{fig:pantalla_registro}
 
 \begin{figure}[hbt]
 	\centering
@@ -322,7 +322,7 @@ El menú principal es el corazón de la aplicación. Pues desde ahí se abre cam
 
 \subsubsection{Pantalla de Suscripciones}
 
-En la pantalla de suscripciones el usuario puede ver la lista de asignaturas a las que esta suscrito. También se le permite añadir y eliminar asignaturas, para que según avance el curso y vaya aprobando asignaturas pueda no verlas en la lista. Visualmente la pantalla de Marvelapp y la de Estublock han cambiado, pero las funcionalidades. Los que sí se puede destacar, es que se ha puesto en la pantalla de Estublock un botón grande que pone \textit{Añadir} y otro \textit{Eliminar} con esto lo que conseguimos es que el usuario tenga claro donde puede ir a añadir asignaturas o eliminarlas. En la pantalla que se hizo con Marvelapp, el botón de añadir es pequeño y se encuentra en una esquina, y puede no verse con claridad. El diseño de la pantalla queda mostrado en la siguiente figura\ref{fig:pantalla_asignaturas}
+En la pantalla de suscripciones el usuario puede ver la lista de asignaturas a las que esta suscrito. También se le permite añadir y eliminar asignaturas, para que según avance el curso y vaya aprobando asignaturas pueda no verlas en la lista. Visualmente la pantalla de Marvelapp y la de Estublock han cambiado, pero las funcionalidades. Lo que sí se puede destacar, es que se ha puesto en la pantalla de Estublock un botón grande que pone \textit{Añadir} y otro \textit{Eliminar} con esto lo que conseguimos es que el usuario tenga claro donde puede ir a añadir asignaturas o eliminarlas. En la pantalla que se hizo con Marvelapp, el botón de añadir es pequeño y se encuentra en una esquina, y puede no verse con claridad. El diseño de la pantalla queda mostrado en la figura\ref{fig:pantalla_asignaturas}
 
 \begin{figure}[hbt]
 	\centering
@@ -340,7 +340,7 @@ En la pantalla de suscripciones el usuario puede ver la lista de asignaturas a l
 	\label{fig:pantalla_asignaturas}
 \end{figure}
 
-Si el usuario decide añadir nuevas asignaturas a su lista, tendrá que darle al botón de \textit{Añadir}. Esto le lleva a una nueva pantalla en la que se listan todas las asignaturas que hay disponibles para suscribirse. Una vez el usuario selecciona las asignaturas puede proceder a guardarlas. Con respecto al diseño original y al resultado final, caben destacar dos aspectos. El primero es que el botón \textit{Guardar} se ha movido de sitio, no hay ninguna razón especial para esta decisión. Por otro lado, lo que falta es un buscador de asignaturas, este no se ha añadido por ahora, pues no era de crucial importancia al no tener una lista grande de asignaturas disponibles. Sin embrago, es importante que esto se añada en el futuro, pues son muchas las asignaturas que pueden acumularse. El resultado puede verse en \ref{fig:pantalla_añadir_sus}
+Si el usuario decide añadir nuevas asignaturas a su lista, tendrá que darle al botón de \textit{Añadir}. Esto le lleva a una nueva pantalla en la que se listan todas las asignaturas que hay disponibles para suscribirse. Una vez el usuario selecciona las asignaturas puede proceder a guardarlas. Con respecto al diseño original y al resultado final, caben destacar dos aspectos. El primero es que el botón \textit{Guardar} se ha movido de sitio, no hay ninguna razón especial para esta decisión. Por otro lado, lo que falta es un buscador de asignaturas, este no se ha añadido por ahora, pues no era de crucial importancia al no tener una lista grande de asignaturas disponibles. Sin embargo, es importante que esto se añada en el futuro, pues son muchas las asignaturas que pueden acumularse. El resultado puede verse en \ref{fig:pantalla_añadir_sus}
 
 \vspace{1cm}
 
@@ -433,7 +433,7 @@ Esta pantalla es especial, pues llama a la actividad de la \textbf{cámara de fo
 % --------------------------------------------------
 \subsection{Implementación XML}
 
-Como ya hemos mencionado, las interfaces de usuario en Android se programan utilizando código XML. XML, del ingles \emph{Extensible Markup Language} es un metalenguaje que permite definir con un lenguaje de marcas información y datos. Es parecido a HTML, pero las etiquetas no estan predefinidas sino que puedes inventarte las que quieras. Permite crear estructuras con parámetros y atributos los cuales pueden utilizarse por ejemplo en internet para enviar datos a una API. En el caso de las aplicaciones móvil, el código XML se utiliza para diseñar las pantallas o \emph{layouts}, ya que XML es un lenguaje ligero y esto hace que las pantallas sean ligeras también. Es con el código XML con el que se definen las jerarquías que se mencionan en el apartado \hyperref[sec:GUI]{3.2.1}, por ejemplo, parte de la estructura de la pantalla \emph{crear un evento} puede verse en \ref{fig:xml_crear_evento} se han omitido los atributos para ahorrar espacio. \\
+Como ya hemos mencionado, las interfaces de usuario en Android se programan utilizando código XML. XML, del ingles \emph{Extensible Markup Language} es un metalenguaje que permite definir con un lenguaje de marcas información y datos. Es parecido a HTML, pero las etiquetas no estan predefinidas sino que puedes inventarte las que quieras. Permite crear estructuras con parámetros y atributos los cuales pueden utilizarse por ejemplo en internet para enviar datos a una API. En el caso de las aplicaciones móviles, el código XML se utiliza para diseñar las pantallas o \emph{layouts}, ya que XML es un lenguaje ligero y esto hace que las pantallas sean ligeras también. Es con el código XML con el que se definen las jerarquías que se mencionan en el apartado \hyperref[sec:GUI]{3.2.1}, por ejemplo, parte de la estructura de la pantalla \emph{crear un evento} puede verse en \ref{fig:xml_crear_evento} se han omitido los atributos para ahorrar espacio. \\
 
 \begin{figure}[h!]
   \centering
@@ -486,7 +486,7 @@ Por lo tanto, aunque Kotlin promete mucho, la aplicación Estublock se ha desarr
 % --------------------------------------------------
 \subsection{Implementación Java}
 
-Todo el código de la aplicación esta disponible en mi repositorio de github\cite{forgis98}. Vamos a tratar de resumir el trabajo realizado, pues gran parte de este TFG esta reflejado en la aplicación móvil que se ha desarrollado.
+Todo el código de la aplicación esta disponible en mi repositorio de github\cite{forgis98}. Vamos a tratar de resumir el trabajo realizado, pues gran parte de este TFG está reflejado en la aplicación móvil que se ha desarrollado.
 
 \subsubsection{Archivos del Proyecto}
 
@@ -510,6 +510,7 @@ La estructura de carpetas del SDK, es muy parecida a la de ``Estublock'' con la 
 
 Por último, al ejecutar la aplicación en el dispositivo móvil por primera vez y registrar a un usuario, se crea en el directorio de carpetas del usuario dos archivos nuevos. Uno de ellos es el \hyperref[sec:wallet]{wallet} del cual hablaremos más adelantes. Y el otro es una carpeta con un archivo en el que guardar datos en forma de un par \{claves $->$ valor\}. Este carpeta se llama \textbf{shared preferences}. En el caso de la aplicación, se utiliza para guardar el directorio en el que se ha guardado el wallet.
 
+\vspace{5cm}
 \subsubsection{Librerías utilizadas} \label{sec:librerias}
 
 Se han utilizado 8 librerías extras (a parte de las que incluye por defecto android al iniciar el proyecto). \emph{web3j} se mencionará en el apartado del \hyperref[sec:SDK]{SDK} y \emph{play-services-vision} es necesaria para \emph{ZXing} pero no se ha usado directamente. Queda entonces: \\
@@ -648,7 +649,6 @@ El SDK dispone de 3 archivos separados del proyecto Estublock. Se han creado com
 Por otro lado, con respecto al diseño de los métodos, se ha optado por tratar de programarlos de la forma más genérica posible para que puedan aplicarse en una amplia variedad de situaciones, además se han sobrecargado los métodos (más adelante veremos que significa sobrecargar métodos) para que se puedan utilizar distintos tipos de variables en las funciones sin problema. 
 
 % --------------------------------------------------
-\vspace{5cm}
 \subsection{Comunicación con la Red Blockchain}
 
 En el archivo \emph{TransactionsHelper.java} se encuentra importada la librería de \emph{web3j} y se encuentra también el código que firma y envía las transacciones. Web3j es una biblioteca de Java y Android que permite trabajar con smart contracts e integrarse con clientes o nodos en la red de \emph{Ethereum}. Esto permite trabajar con la red de Ethereum sin necesidad de implementar el código de integración para la plataforma. Implementa la API de cliente JSON-RPC de Ethereum sobre HTTP, soporta wallets, firmado de transacciones\dots JSON-RPC es un protocolo de llamada a procedimientos remotos que utiliza JSON para codificar los mensajes, es similar a XML-RPC. \\
@@ -692,11 +692,8 @@ Una vez creado el objeto se puede llamar al resto de funciones, entre las que es
   \label{fig:firmEnv}
 \end{figure}
 
-
-
 % --------------------------------------------------
 \subsection{Comunicación con el Dispositivo Móvil}
-
 Para facilitar la generación de credenciales, wallets, guardar en la carpeta ``Shared Preferences'' de Android todos los datos necesarios para la comunicación con la red blockchain\dots Tenemos el archivo \emph{WalletHelper.java}. En él además de la librería web3j, tenemos algunas funcionalidades de Seguridad de Java para modificar el proveedor de seguridad, y permitir que salten errores por algoritmos o parámetros erróneos. \\
 
 En este archivo tenemos entonces un constructor, el cual modifica el proveedor de seguridad a causa de un error con el algoritmo ``Elliptic Curve Digital Signature Algorithm''(ECDSA)\cite{ecdsa} para el proveedor BC\cite{bc}. Más información sobre el error se puede encontrar en el repositorio de web3j en la \href{https://github.com/web3j/web3j/issues/915}{issue\_915}. Básicamente lo que hace el código es modificar el proveedor \ref{fig:ecdsa} \\
@@ -765,7 +762,7 @@ Se ha decidido utilizar \emph{SharedPreferences} para elegir que wallet desbloqu
 % --------------------------------------------------
 \subsection{``Callback Listener''}
 
-Como las llamadas a la red blockchain son pesadas, han sido implementadas con threads: ``\textit{new Threads( new Runnable(){...} )}''. Como el código no espera a la respuesta del thread, se han implementado dos funciones que hacen de ``escucha'' para cuando termina la ejecución. Estas funciones están especificadas en \emph{EasyBlockchainListener.java}, este archivo es una \emph{interdaz de java} para poder ser sobrescritas por le programador para que las funciones hagan lo que el programador desee. Utilizando la anotación de java \textit{@Override} con la que se sobrescribe un método para que el programador cambie el código y pueda hacer con la respuesta lo que considere necesario. Tenemos dos callbacks, uno para cuando se firma la transacción, y otro para cuando se envía a la red blockchain. Para utilizarlos no hay más que pasar como último parámetro de las funciones anteriormente mencionadas una función que será la que sobrescriba a los métodos como se puede ver en \ref{fig:callback}.
+Como las llamadas a la red blockchain son pesadas, han sido implementadas con threads: ``\textit{new Threads( new Runnable(){...} )}''. Como el código no espera a la respuesta del thread, se han implementado dos funciones que hacen de ``escucha'' para cuando termina la ejecución. Estas funciones están especificadas en \emph{EasyBlockchainListener.java}, este archivo es una \emph{interfaz de java} para poder ser sobrescritas por le programador para que las funciones hagan lo que el programador desee. Utilizando la anotación de java \textit{@Override} con la que se sobrescribe un método para que el programador cambie el código y pueda hacer con la respuesta lo que considere necesario. Tenemos dos callbacks, uno para cuando se firma la transacción, y otro para cuando se envía a la red blockchain. Para utilizarlos no hay más que pasar como último parámetro de las funciones anteriormente mencionadas una función que será la que sobrescriba a los métodos como se puede ver en \ref{fig:callback}.
 
 % \begin{lstlisting}[language=Java,float=ht,caption={[Java] Ejemplo de sobrescritura de un listener.},label=lst:transactionHelper]
 % public void doSomething(...){
@@ -787,7 +784,7 @@ Como las llamadas a la red blockchain son pesadas, han sido implementadas con th
 \end{figure}
 
 % --------------------------------------------------
-\subsection{Como Incorporarlo en Otras Aplicaciones} \label{sec:Maven}
+\subsection{Cómo Incorporarlo en Otras Aplicaciones} \label{sec:Maven}
 
 Para que otro programador pueda utilizar el SDK que se ha desarrollado el primer paso es publicar el SDK en algún repositorio como en los repositorios de \emph{Maven Centra}\cite{maven}. Maven dispone de una inmensa cantidad de repositorios que usuarios pueden utilizar añadiendo la dependencia a sus proyectos, y gradle (el sistema de automatización de construcción de código que utiliza Android) se encarga de bajar la información automáticamente y así el usuario puede utilizar las funcionalidades que el usuario desea. Esta comodidad y facilidad en la gestión del SDK es la razón por la que se ha decidido utilizar \emph{Maven}. Una alternativa era utilizar \emph{jcenter()} sin embargo, no se ha hecho puesto que la empresa que mantiene el repositorio JCenter (empresa llamada \emph{JFrog}\cite{jfrog}) lo convirtió en un repositorio de solo lectura el \textbf{31 de Marzo de 2021}. \\
 
@@ -803,7 +800,7 @@ Para publicar la librería se han de seguir a muy grandes rasgos estos pasos:
 \item Publicar la librería
 \end{itemize}
 
-Más detalles se pueden encontrar en el post de ``Waseef Akhtar''\cite{waseef}. \\
+Se pueden encontrar más detalles en el post de ``Waseef Akhtar''\cite{waseef}. \\
 
 Una vez la librería es pública, cualquier programador puede añadirla a su proyecto añadiendo a sus dependencias la línea \textit{implementation 'com.<entidad>.estublock:EasyBlockchain:1.0.0'}, el nombre de la entidad aún está por definir. Una vez añadida la línea y después de que gradle termine de sincronizar el repositorio, el programador puede utilizar todas las funciones que hayan en la versión 1.0.0 del SDK.
 
@@ -867,7 +864,7 @@ Existen distintos tipos de wallet\ref{fig:tipos_wallet}. Cada uno con sus ventaj
   \centering
   % https://www.bitpanda.com/academy/en/lessons/what-is-a-wallet-and-how-do-i-get-one/
   \includegraphics[width=0.8\linewidth]{figs/Desarrollo/Wallet/que_es_wallet}
-  \caption[Visión general de los wallets]{Visión general de los wallets}
+  \caption[Visión general de los wallets]{Visión general de los wallets (\href{https://www.bitpanda.com/academy/en/lessons/what-is-a-wallet-and-how-do-i-get-one/}{Bitpanda})}
   \label{fig:tipos_wallet}
 \end{figure}
 
@@ -921,7 +918,7 @@ Como se ha mencionado en la sección anterior (\textbf{Wallet}), una cuenta de E
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.8\linewidth]{figs/Desarrollo/Keystore/keystore_AES}
-  \caption[Descifrado de la clave privada con AES]{Descifrado de la clave privada con AES}
+  \caption[Descifrado de la clave privada con AES]{Descifrado de la clave privada con AES (\href{https://julien-maffre.medium.com/what-is-an-ethereum-keystore-file-86c8c5917b97}{Julian M})}
   \label{fig:keystore_aes}
 \end{figure}
 
@@ -941,7 +938,7 @@ Todo lo anterior se ejecuta junto con la contraseña del usuario \ref{fig:keysto
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.8\linewidth]{figs/Desarrollo/Keystore/keystore_scrypt}
-  \caption[KDF de una contraseña]{KDF de una contraseña}
+  \caption[KDF de una contraseña]{KDF de una contraseña (\href{https://julien-maffre.medium.com/what-is-an-ethereum-keystore-file-86c8c5917b97}{Julian M})}
   \label{fig:keystore_scrypt}
 \end{figure}
 
@@ -953,7 +950,7 @@ Para asegurarnos de que la contraseña que introduce un usuario es correcta, se 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.8\linewidth]{figs/Desarrollo/Keystore/keystore_MAC}
-  \caption[Comprobación de contraseña correcta con MAC]{Comprobación de contraseña correcta con MAC}
+  \caption[Comprobación de contraseña correcta con MAC]{Comprobación de contraseña correcta con MAC (\href{https://julien-maffre.medium.com/what-is-an-ethereum-keystore-file-86c8c5917b97}{Julian M})}
   \label{fig:keystore_MAC}
 \end{figure}
 
@@ -961,7 +958,7 @@ Un flujo completo con todas las partes anteriores juntas puede verse en el \hype
 
 \subsection{Keystore en Estublock}
 
-En ``Estublock'' el keystore se crea cuando el usuario se registra en la aplicación móvil por primera vez. Se le crea una \textbf{LightWallet}. Este wallet es de rápida creación comparado al wallet por defecto, muy útil en para aplicaciones móvil pues no disponen de la misma cantidad de recursos que un ordenador. (Si en vez de ser aplicación móvil, fuese aplicación de escriotrio, sería conveniente utilizar las wallet ``noramles'' o por defecto). La \textbf{diferencia} radica en la función de derivación de claves. Como sabemos, la contraseña del usuario pasa por el KDF antes de cifrar el keystore con el algoritmo AES. 2 de los valores del KDF eran la \textbf{n} y la \textbf{p}. Estos son los dos valores que varian entre creación por defecto y creación ligera o \textbf{LightWallet}. En el caso de creación por defecto el valor de \emph{n} es $1^18$ frente a creación \emph{light} que el valor es \emph{n} igual a $1^12$. Con respecto a \emph{p} tenemos $1$ para creación por defecto y 6 para creación light. Con respecto a la clave privada, esta se crea también cuando el usuario hace login, utilizando el algorítmo ECDSA (Elliptic Curve Digital Signature Algorithm) como se describió en el apartado del \hyperref[sec:wallet]{Wallet} \\
+En ``Estublock'' el keystore se crea cuando el usuario se registra en la aplicación móvil por primera vez. Se le crea una \textbf{LightWallet}. Este wallet es de rápida creación comparado al wallet por defecto, muy útil en para aplicaciones móviles pues no disponen de la misma cantidad de recursos que un ordenador. (Si en vez de ser aplicación móvil, fuese aplicación de escriotrio, sería conveniente utilizar las wallet ``noramles'' o por defecto). La \textbf{diferencia} radica en la función de derivación de claves. Como sabemos, la contraseña del usuario pasa por el KDF antes de cifrar el keystore con el algoritmo AES. 2 de los valores del KDF eran la \textbf{n} y la \textbf{p}. Estos son los dos valores que varian entre creación por defecto y creación ligera o \textbf{LightWallet}. En el caso de creación por defecto el valor de \emph{n} es $1^18$ frente a creación \emph{light} que el valor es \emph{n} igual a $1^12$. Con respecto a \emph{p} tenemos $1$ para creación por defecto y 6 para creación light. Con respecto a la clave privada, esta se crea también cuando el usuario hace login, utilizando el algorítmo ECDSA (Elliptic Curve Digital Signature Algorithm) como se describió en el apartado del \hyperref[sec:wallet]{Wallet} \\
 
 El keystore se guarda en el dispositivo móvil del usuario. En concreto en una carpeta privada dentro del entorno de de la aplicación llamada \emph{files}, en la siguiente figura \ref{fig:fileSystem} se puede apreciar que hay 3 keystores creados (pues hay 3 cuentas en el dispositivo móvil). Este almacenamiento interno es específico de la app, es decir, no puede ser accedido por otras aplicaciones que pueda tener el usuario en el dispositivo móvil. Esto evita que una aplicación maliciosa pueda tener acceso al keystore. El sistema Android evita que otras apps accedan a las ubicaciones internas (cifrando estas a partir de Android 10), lo que permite almacenar datos sensibles con seguridad y que solo la aplicación móvil en cuestión (``Estublock'') tenga acceso a dichos datos. La forma que tiene Android de evitar que otras aplicaciones accedan al keystore es utilizando los permisos de Linux. Recordemos que Android es un sistema operativo que funciona gracias al sistema operativo \emph{GNU/Linux}\cite{linux}. En linux, los usuarios del sistema tienen diferentes permisos de lectura, escritura y ejecución según la carpeta o archivo al que quieren acceder\cite{usuariosLinux}. En el caso del keystore, como se ve a la derecha en la figura \ref{fig:fileSystem}, los permisos de acceso que tienen los archivos \textbf{UTC} (keystore) son de lectura y escritura \textbf{únicamente} para el usuario ``Estublock'' es decir, para la aplicación móvil que se ha desarrollado. Ninguna otra aplicación tiene acceso a esos archivos. \\
 
@@ -972,7 +969,7 @@ El keystore se guarda en el dispositivo móvil del usuario. En concreto en una c
   \label{fig:fileSystem}
 \end{figure}
 
-\emph{¿Cuando desbloquea Estublock el keystore del usuario?}, al hacer login el usuario introduce su correo y contraseña. Al verificar la correcta identidad del usuario en la base de datos, se guarda la contraseña en en una variable del archivo \emph{GlobalState.java}. Esta contraseña se utilizará en caso necesario para desbloquear el keystore y poder firmar transacciones. Esta contraseña se guarda \textbf{únicamente} en tiempo de ejecución, una vez el usuario cierre la aplicación, se elimina, no quedando rastro de ella en ninguna parte. \\
+\emph{¿Cuándo desbloquea Estublock el keystore del usuario?}, al hacer login el usuario introduce su correo y contraseña. Al verificar la correcta identidad del usuario en la base de datos, se guarda la contraseña en en una variable del archivo \emph{GlobalState.java}. Esta contraseña se utilizará en caso necesario para desbloquear el keystore y poder firmar transacciones. Esta contraseña se guarda \textbf{únicamente} en tiempo de ejecución, una vez el usuario cierre la aplicación, se elimina, no quedando rastro de ella en ninguna parte. \\
 
 
 % ##################################################

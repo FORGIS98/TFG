@@ -3,7 +3,7 @@
 
 \setlength{\parindent}{0pt}
 
-En este capítulo se explicará que es blockchain, como funciona, que tipos hay, así como ver su uso en el presente y que aplicaciones se están desarrollando alrededor de la misma para sacarle su máximo potencial, este apartado es de crucial importancia pues servirá para ver el estado del arte de las aplicaciones (en concreto aplicaciones móvil) del presente. Además, se explicará el trabajo realizado para preparar la aplicación móvil, en concreto la APIRestful que se ha desarrollado para comunicar el móvil con la base de datos y parte de la red blockchain. También, se estudian conceptos básicos de Android que se han aprendido para preparar el proyecto. 
+En este capítulo se explicará qué es blockchain, cómo funciona, qué tipos hay, así como ver su uso en el presente y qué aplicaciones se están desarrollando alrededor de la misma para sacarle su máximo potencial. Este apartado es de crucial importancia pues servirá para ver el estado del arte de las aplicaciones (en concreto aplicaciones móviles) del presente. Además, se explicará el trabajo realizado para preparar la aplicación móvil, en concreto la APIRestful que se ha desarrollado para comunicar el móvil con la base de datos y parte de la red blockchain. También, se estudian conceptos básicos de Android que se han aprendido para preparar el proyecto. 
 
 % -------------------------------------------------- %
 % -------------------------------------------------- %
@@ -22,7 +22,7 @@ La tecnología blockchain se sostiene en tres pilares principales:
   \item \textbf{Descentralización:} La información que registra la red blockchain no queda guardada en un único lugar, no hay una empresa con toda la información centralizada en sus instalaciones. Todos los nodos (ordenadores) que forman la red blockchain tienen una copia exacta y actualizada de la información que hay en la red. Las redes distribuidas permiten además eliminar la necesidad de una autoridad central que controle el sistema para evitar manipulaciones o fraudes. 
 \end{enumerate}
 
-\subsection{¿Como funciona?}
+\subsection{¿Cómo funciona?}
 
 Una Blockchain es un sistema de registro de transacciones en constante crecimiento, junta la información en grupos conocidos como \textbf{bloques}. Cada bloque contiene información sobre las transacciones que se han realizado, así como información adicional en la cabecera. En la cabecera del bloque tenemos información sobre el número del bloque, el \textbf{hash} del bloque anterior, el \textbf{timestamp} y el \textbf{nonce} entre otros. \\
 
@@ -36,7 +36,7 @@ Entendamos estos conceptos:
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.8\linewidth]{figs/EstadoArte/Blockchain/hash}
-  \caption[Ejemplo del hashing de una contraseña]{Ejemplo del hashing de una contraseña}
+  \caption[Ejemplo del hashing de una contraseña]{Ejemplo del hashing de una contraseña (\href{https://www.ionos.com/digitalguide/server/security/hash-function/}{Ionos})}
   \label{fig:hash}
 \end{figure}
 
@@ -47,7 +47,7 @@ Para continuar con la explicación, utilizaremos redes blockchain que utilizan e
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.9\linewidth]{figs/EstadoArte/Blockchain/hashDificultad}
-  \caption[Hash dificultad]{Dificultad del hash}
+  \caption[Hash dificultad]{Dificultad del hash (\href{https://spectrum.ieee.org/computing/networks/how-blockchains-work}{Spectrum})}
   \label{fig:hashDiff}
 \end{figure}
 
@@ -56,7 +56,7 @@ La vida de una transacción en bitcoin a grandes rasgos puede verse en la figura
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.9\linewidth]{figs/EstadoArte/Blockchain/bitcoinMining}
-  \caption[Vida de una transacción en Bitcoin]{Vida de una transacción en Bitcoin}
+  \caption[Vida de una transacción en Bitcoin]{Vida de una transacción en Bitcoin (\href{https://www.investopedia.com/terms/b/blockchain.asp}{Investopedia})}
   \label{fig:bitcoin}
 \end{figure}
 
@@ -64,7 +64,7 @@ La vida de una transacción en bitcoin a grandes rasgos puede verse en la figura
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.8\linewidth]{figs/EstadoArte/Blockchain/bloqueEnlazado}
-  \caption[Cadena de bloques]{Cadena de bloques}
+  \caption[Cadena de bloques]{Cadena de bloques (\href{http://www.csg.uzh.ch/csg/en/research/blockchain.html}{U.Zurich})}
   \label{fig:bloqueEnlazado}
 \end{figure}
 \end{landscape}
@@ -103,7 +103,7 @@ Como ejemplo tenemos la \emph{Enterprise Ethereum Alliance}, en la que participa
 
 \subsubsection{Blockchain as a Service}
 
-Estas redes blockchain son controladas por un proveedor de servicios como puede ser \emph{Amazon}. Estos proveedores permiten utilizar redes blockchain en la nube, permitiendo a los desarrolladores aprovechar el potencial de las redes blockchain sin la necesidad de invertir en el computo que ello requiere.
+Estas redes blockchain son controladas por un proveedor de servicios como puede ser \emph{Amazon}. Estos proveedores permiten utilizar redes blockchain en la nube, permitiendo a los desarrolladores aprovechar el potencial de las redes blockchain sin la necesidad de invertir en el cómputo que ello requiere.
 
 % -------------------------------------------------- %
 \subsection{Tipos de algoritmo de consenso} \label{sec:Algor}
@@ -111,7 +111,7 @@ Estas redes blockchain son controladas por un proveedor de servicios como puede 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.8\linewidth]{figs/EstadoArte/Blockchain/algoritmosConsenso.jpeg}
-  \caption[Algoritmos de Consenso]{Diferentes tipos de algoritmos de consenso}
+  \caption[Algoritmos de Consenso]{Diferentes tipos de algoritmos de consenso (\href{https://101blockchains.com/es/algoritmos-de-consenso-blockchain/}{101Block})}
   \label{fig:consenso}
 \end{figure}
 
@@ -126,15 +126,15 @@ Existen múltiples algoritmos de consenso\ref{fig:consenso}, y estos evolucionan
 \item Actividad
 \end{itemize}
 
-Puesto que hay una gran cantidad de algoritmos trataremos de explicar algunos a continuación\cite{algoConsenso}. Todos los algoritmos buscan el mismo objetivo, solucionar el problema de las \textbf{faltas bizantinas}(BFT)\cite{BFT}. La tolerancia a faltas bizantinas es la resistencia de un sistema informático tolerante a fallas de componentes electrónicos. Si lo llevamos al mundo blockchain, cuando hablamos de fallas nos referimos a nodos de la blockchain defectuosos accidentalmente o provocado. Si una empresa tiene control de 200 nodos, puede tratar de crear transacciones falsas y minar ese bloque con los 200 nodos, el resto de nodos de la red tienen que ser capaces a través del algoritmo de consenso que se utilice de descartar la información de estos 200 nodos.
+Puesto que hay una gran cantidad de algoritmos trataremos de explicar algunos a continuación\cite{algoConsenso}. Todos los algoritmos buscan el mismo objetivo, solucionar el problema de los \textbf{fallos bizantinos}(BFT)\cite{BFT}. La tolerancia a fallos bizantinos es la resistencia de un sistema informático tolerante a fallas de componentes electrónicos. Si lo llevamos al mundo blockchain, cuando hablamos de fallas nos referimos a nodos de la blockchain defectuosos accidentalmente o provocado. Si una empresa tiene control de 200 nodos, puede tratar de crear transacciones falsas y minar ese bloque con los 200 nodos, el resto de nodos de la red tienen que ser capaces a través del algoritmo de consenso que se utilice de descartar la información de estos 200 nodos.
 
 \subsubsection{Proof of Work (PoW)}
 
 El algoritmo de prueba de trabajo es el primer algoritmo introducido en la red blockchain. Muchas blockchains utilizan este algoritmo para llevar a cabo el consenso y así confirmar todas las transacciones. \\ 
 
-\emph{¿Como funciona?} Cada nodo tiene descargada la red blockchain entera, cuando el nuevo bloque tiene las transacciones necesarias para ser minado, todos los nodos se ponen a buscar el resultado de un \textbf{hash} con la dificultad que tenga el mismo. A más poder de computo, mas posibilidades de encontrar el resultado, validarlo con los otros nodos y añadirlo a la red blockchain, además las redes que usan PoW suelen tener un sistema de premios por lo que cuando un nodo encuentra la solución al problema se le da criptomonedas a cambio. \\
+\emph{¿Cómo funciona?} Cada nodo tiene descargada la red blockchain entera, cuando el nuevo bloque tiene las transacciones necesarias para ser minado, todos los nodos se ponen a buscar el resultado de un \textbf{hash} con la dificultad que tenga el mismo. A más poder de cómputo, más posibilidades de encontrar el resultado, validarlo con los otros nodos y añadirlo a la red blockchain, además las redes que usan PoW suelen tener un sistema de premios por lo que cuando un nodo encuentra la solución al problema se le da criptomonedas a cambio. \\
 
-Este sistema tiene dos principales desventajas, la primera es que el poder de cálculo que se necesita es muy grande, y estos últimos años han crecido lo que se conoce como granjas de minado las cuales se llevan el premio la gran mayoría de veces. Esto causa que el sistema empiece a centralizarse, rompiendo con la idea de descentralización que tiene blockchain. El problema es que si alguien logra tener él poder de computo de un 51\% de la red blockchain este puede añadir los bloques que quiera a partir de ese momento pues siempre serán validados por la mayoría de nodos (su 51\% de los nodos). La segunda gran pega va ligada a estas granjas de minado, consumen gran cantidad de energía, en 2020 bitcoin consumió \emph{120 gigawatts} por segundo\cite{bitcoinEnergyUse} lo que a nivel medioambiental tiene un impacto negativo, por lo que PoW no es un algoritmo de consenso que se pueda mantener en el tiempo.
+Este sistema tiene dos principales desventajas, la primera es que el poder de cálculo que se necesita es muy grande, y estos últimos años han crecido lo que se conoce como granjas de minado las cuales se llevan el premio la gran mayoría de veces. Esto causa que el sistema empiece a centralizarse, rompiendo con la idea de descentralización que tiene blockchain. El problema es que si alguien logra tener él poder de cómputo de un 51\% de la red blockchain este puede añadir los bloques que quiera a partir de ese momento pues siempre serán validados por la mayoría de nodos (su 51\% de los nodos). La segunda gran pega va ligada a estas granjas de minado, consumen gran cantidad de energía, en 2020 bitcoin consumió \emph{120 gigawatts} por segundo\cite{bitcoinEnergyUse} lo que a nivel medioambiental tiene un impacto negativo, por lo que PoW no es un algoritmo de consenso que se pueda mantener en el tiempo.
 
 \emph{Ventajas y Desventajas}
 \begin{itemize}
@@ -147,9 +147,9 @@ Este sistema tiene dos principales desventajas, la primera es que el poder de c�
 \item CONS
   \begin{itemize}
   \item La adquisición de equipo para el minado es costosa
-  \item La máquina destinada al minado no podrá utilizarse para otra tarea pues se necesita todo el poder de computo en la resolución de los problemas matemáticos (función hash).
+  \item La máquina destinada al minado no podrá utilizarse para otra tarea pues se necesita todo el poder de cómputo en la resolución de los problemas matemáticos (función hash).
   \item La red tiende a centralizarse a causa de las granjas de minado, dándole poder al dueño de la granja y rompiendo la descentralización.
-  \item La minería podría desaparecer cuando no haya mas incentivos, en el caso de Bitcoin, cuando se alcance el límite de Bitcoins (21 Millones) los mineros dejarán de recibir premios y se perderá la motivación del minado, no tiene porque desaparecer la red, pero perderá seguidores.
+  \item La minería podría desaparecer cuando no haya más incentivos, en el caso de Bitcoin, cuando se alcance el límite de Bitcoins (21 Millones) los mineros dejarán de recibir premios y se perderá la motivación del minado. No tiene porque desaparecer la red, pero perderá seguidores.
   \end{itemize}
 \end{itemize}
 
@@ -157,7 +157,7 @@ Este sistema tiene dos principales desventajas, la primera es que el poder de c�
 
 El concepto de participación establece que una persona puede minar o validar transacciones en bloque según el número de monedas que posea. Esto significa que cuanta más criptomoneda tengas, más poder de minado se te asigna. \\ 
 
-Se creó como alternativa a PoW, para solventar algunos problemas que tiene (como el de la centralización a causa de las granjas de minado y el gasto energético derivado del poder de computo). PoS solventa este problema atribuyendo la potencia minera a la proporción de monedas que posee un minero. Por lo tanto, en vez de utilizar energía para responder al puzle matemático como hace PoW, aquí el minero se limita a resolver un porcentaje de las transacciones. Si se tiene un 3\% de las criptomonedas disponibles, se puede minar un 3\% de los bloques, en esta ocasión no hay que resolver ningún puzle matemático, simplemente generar un \textbf{hash} con los datos, lo que es una tarea trivial. \\
+Se creó como alternativa a PoW, para solventar algunos problemas que tiene (como el de la centralización a causa de las granjas de minado y el gasto energético derivado del poder de cómputo). PoS solventa este problema atribuyendo la potencia minera a la proporción de monedas que posee un minero. Por lo tanto, en vez de utilizar energía para responder al puzle matemático como hace PoW, aquí el minero se limita a resolver un porcentaje de las transacciones. Si se tiene un 3\% de las criptomonedas disponibles, se puede minar un 3\% de los bloques, en esta ocasión no hay que resolver ningún puzle matemático, simplemente generar un \textbf{hash} con los datos, lo que es una tarea trivial. \\
 
 PoS no es una solución definitiva, pues tiene problemas al igual que PoW. Al igual que antes mencionamos el ataque del 51\% (cuando una empresa o alguien tiene un 51\% de los nodos en su poder). En PoS, si tienes un 51\% de las criptomonedas, tienes un 51\% del poder de decisión sobre la red, pudiendo hacer los cambios que quieras en ella. Este ataque es frecuente en redes pequeñas con pocas criptomonedas en juego, puesto que de lo contrario, lograr tener un 51\% de las monedas supone tener muchísimo dinero. Para controlar estas fraudulencias, se penaliza económicamente a los nodos que tratan de saltarse las reglas (modificar bloques y transacciones), además, un ataque a la blockchain afecta al poder de la moneda y por lo tanto su valor en mercado disminuye, por lo que no compensa tratar de burlar las reglas de la blockchain. Los nodos de las redes que usan PoS, reciben una comisión al minar correctamente su parte del bloque. \\
 
@@ -174,10 +174,10 @@ Cada nodo participante en la red debe esperar durante un periodo de tiempo elegi
 
 Hasta ahora, hemos hablado de blockchain y criptomonedas, pero las criptomonedas son solo un muy pequeño uso del potencial de blockchain. Los \textbf{Smart Contracts}\cite{etherSmartContract} son un programa que se ejecuta en la red blockchain dando así la capacidad a la red de ser más versátil, al poder ejecutar código (escrito en el smart contract). Básicamente, añade una lógica a la blockchain. \\
 
-Una forma de entender los smart contracts es comparandolos a una máquina de ventas automática. Cuando quieres un snack introduces dinero en la máquina y pones el código del snack, la máquina tiene programada una rutina para verificar que has metido la cantidad adecuada y a cambio devuelve el snack seleccionado. Ese programa interno que tiene la máquina, es el equivalente a un \textbf{smart contract}. \\
+Una forma de entender los smart contracts es comparándolos a una máquina de ventas automática. Cuando quieres un snack introduces dinero en la máquina y pones el código del snack, la máquina tiene programada una rutina para verificar que has metido la cantidad adecuada y a cambio devuelve el snack seleccionado. Ese programa interno que tiene la máquina, es el equivalente a un \textbf{smart contract}. \\
 
 
-Al estar programados en la red blockchain, no pueden ser modificados sin que todos los nodos se enteren. De hecho, cuando se quiere actualizar un smart contract, no se actualiza el existente en la red, sino que se realiza una nueva transacción la cual ha de ser validada por el resto de nodos. Los smart contracts permiten que se realicen transacciones y acuerdos de confianza entre partes dispares y anónimas sin necesidad de una autoridad central, un sistema legal o un mecanismo de aplicación externo. No se puede evadir o sortear al smart contract, cuando realizas una llamada a una de sus funciones no hay forma humana de lograr burlarlo, la rutina se ejecutará siempre sin fallos. El equivalente se puede ver como tener a un notario robótico el cual nunca comete errores.  \\
+Al estar programados en la red blockchain, no pueden ser modificados sin que todos los nodos se enteren. De hecho, cuando se quiere actualizar un smart contract, no se actualiza el existente en la red, sino que se realiza una nueva transacción la cual ha de ser validada por el resto de nodos. Los smart contracts permiten que se realicen transacciones y acuerdos de confianza entre partes dispares y anónimas sin necesidad de una autoridad central, un sistema legal o un mecanismo de aplicación externo. No se puede evadir o sortear al smart contract, cuando realizas una llamada a una de sus funciones no hay forma humana de lograr burlarlo, la rutina se ejecutará siempre sin fallos. El equivalente se puede ver como tener a un notario robótico, el cual nunca comete errores.  \\
 
 \label{sec:smartContract}
 \index{SmartContract}
@@ -263,7 +263,7 @@ Y mucho más \cite{appCripto}.
 \subsection{Ether (ETH)}
 La moneda que utiliza la red de Ethereum es el \textbf{ether}, se utiliza para recompensar a los mineros que aseguran las transacciones. \emph{Ethereum1.0} utiliza el algoritmo \textit{PoW} y \emph{Ethereum2.0} utiliza \textit{PoS}\cite{Ethereum2.0}. Los ethers se utilizan como almacén de valor, prestamos de garantía, medio de intercambio, unidad de cuenta en mercados digitales \dots \\
 
-Cada transacción en ethereum lleva asociado un coste conocido como \textbf{gas}. El gas es la unidad que se utiliza para ver el coste de computo que tiene la transacción, para poder remunerar adecuadamente al minero. La unidad de gas se mide en \textbf{Gwei}\cite{Gwei} si por ejemplo queremos enviar una cantidad \verb|X| de ether a otra persona esta transacción tiene un coste de \verb|21.000|Gwei lo que es equivalente a \verb|0,000021 ETH| (1ETH = $10^9$Gwei)
+Cada transacción en ethereum lleva asociado un coste conocido como \textbf{gas}. El gas es la unidad que se utiliza para ver el coste de cómputo que tiene la transacción, para poder remunerar adecuadamente al minero. La unidad de gas se mide en \textbf{Gwei}\cite{Gwei} si por ejemplo queremos enviar una cantidad \verb|X| de ether a otra persona esta transacción tiene un coste de \verb|21.000|Gwei lo que es equivalente a \verb|0,000021 ETH| (1ETH = $10^9$Gwei)
 
 % -------------------------------------------------- %
 \subsection{Carteras}
@@ -349,7 +349,7 @@ Los smart contracts de ethereum están escritos en \textbf{Solidity}\cite{Solidi
 % -------------------------------------------------- %
 \subsection{Funcionamiento básico de Ethereum}
 
-Para entender el funcionamiento básico de Ethereum, vamos a exponerlo por niveles como lo hacen en la documentación oficial\cite{etherStack}. 
+Para entender el funcionamiento básico de Ethereum, vamos a exponerlo por niveles como hacen en la documentación oficial\cite{etherStack}. 
 
 % -------------------------------------------------- %
 \subsection{Nivel 1: Máquina Virtual de Ethereum} 
@@ -383,7 +383,7 @@ Para que una app pueda interactuar con la red, necesita conectarse a un nodo de 
 % -------------------------------------------------- %
 \subsection{Nivel 4: API para el cliente de ethereum}
 
-Las APIs permiten a los desarrolladores abstraer parte de la dificultad de interactuar directamente con los nodos de ethereum. Además proporcionan herramientas como para convertir datos de ETh a Gwei\dots Existen APIs en \verb|JavaScript, Java, Python| por ejemplo, una de las más conocidas es la librería \textbf{Web3}\cite{web3} la cual evita al programador tener que implementar la comunicación con los nodos. 
+Las APIs permiten a los desarrolladores abstraer parte de la dificultad de interactuar directamente con los nodos de ethereum. Además proporcionan herramientas como para convertir datos de ETh a Gwei\dots Existen APIs en \verb|JavaScript, Java, Python| por ejemplo, una de las más conocidas es la librería \textbf{Web3}\cite{web3}, la cual evita al programador tener que implementar la comunicación con los nodos. 
 
 % -------------------------------------------------- %
 \subsection{Nivel 5: Aplicaciones para usuario}
@@ -392,9 +392,9 @@ En el nivel superior están las apps orientadas al usuario. Principalmente son a
 
 % -------------------------------------------------- %
 % -------------------------------------------------- %
-\section{Aplicaciones móvil que usan Blockchain}
+\section{Aplicaciones móviles que usan Blockchain}
 
-Ahora que entendemos que es Blockchain, visto múltiples ejemplos de redes, visto múltiples aplicaciones de la red Blockchain, y hemos indagado más sobre Ethereum y lo Smart Contract, vamos a pasar a ver los proyectos actuales que utilizan aplicaciones móvil y blockchain. Puesto que el objetivo de este \textbf{TFG} es el desarrollo de una aplicación Android que comunique con una blockchain para luego sacar esa funcionalidad en un SDK.
+Ahora que entendemos que es Blockchain, visto múltiples ejemplos de redes, visto múltiples aplicaciones de la red Blockchain, y hemos indagado más sobre Ethereum y lo Smart Contract, vamos a pasar a ver los proyectos actuales que utilizan aplicaciones móviles y blockchain. Puesto que el objetivo de este \textbf{TFG} es el desarrollo de una aplicación Android que comunique con una blockchain para luego sacar esa funcionalidad en un SDK.
 
 % -------------------------------------------------- %
 \subsection{GUTS Tickets}
@@ -445,7 +445,7 @@ Voatz\ref{fig:Voatz} es una plataforma electoral móvil que permite a los ciudad
 % ###########################################
 \section{Android}
 
-Android\cite{android} es un sistema operativo móvil basado en el \emph{Linux Kernel}. Fue diseñado para dispositivos móvil inteligentes, con pantallas táctiles, disponible para tablets, relojes inteligentes, incluso hay versiones de Android para el software de automóviles\cite{androidAuto}. Android es el sistema operativo móvil más utilizado del mundo, con una cuota de mercado superior al 90\% en 2018. Su código fuente es abierto y libre para que cualquiera pueda consultarlo o contribuir a él. Actualmente se encuentra en la versión \textbf{11} internamente conocido como ``Red Velvet Cake'' pero son pocos los móviles con opción a ella, a la hora de desarrollar una aplicación para dispositivos Android, lo ideal es elegir la versión \textbf{6} también conocido como ``Oreo'' la cual puede ejecutar una gran mayoría. 
+Android\cite{android} es un sistema operativo móvil basado en el \emph{Linux Kernel}. Fue diseñado para dispositivos móviles inteligentes, con pantallas táctiles, disponible para tablets, relojes inteligentes, incluso hay versiones de Android para el software de automóviles\cite{androidAuto}. Android es el sistema operativo móvil más utilizado del mundo, con una cuota de mercado superior al 90\% en 2018. Su código fuente es libre para que cualquiera pueda consultarlo o contribuir a él. Actualmente se encuentra en la versión \textbf{11} internamente conocido como ``Red Velvet Cake'' pero son pocos los móviles con opción a ella, a la hora de desarrollar una aplicación para dispositivos Android, lo ideal es elegir la versión \textbf{6} también conocido como ``Oreo'' la cual puede ejecutar una gran mayoría. 
 
 % --------------------------------------------------
 \subsection{Conceptos Básicos de Android}
@@ -539,7 +539,7 @@ Para poder desarrollar la aplicación móvil y el SDK de este TFG, se ha desarro
 \subsubsection{NodeJS}
 Node.js\cite{nodejs} es un entorno de ejecución de \textbf{JavaScript} construido con el motor de \emph{JavaScript V8 de Chrome}. Esta ideado como un entorno orientado a eventos asíncronos con el que se pueden diseñar aplicaciones escalables en la red. Permite tratar múltiples conexiones simultaneas sin que el programador tenga que preocuparse por la concurrencia. Hoy en día, los modelos de concurrencia usan hilos del sistema operativo y requieren de bloquear procesos para operaciones de lectura y escritura. Los usuarios de NodeJS están libres de preocuparse por el bloqueo del proceso, ya que no existe. De ahí que sea muy propicio desarrollar sistemas escalables con NodeJS, de todos modos aunque NodeJS trabaja sin hilos, se pueden aprovechar múltiples núcleos en su entorno, generando varios procesos. \\
 
-Se ha decidido utilizar NodeJS para desarrollar la API de microservicios pues nos da la seguridad de que responderá correctamente a miles de llamadas simultaneas (siempre y cuando el servidor en el que se este ejecutando pueda con el poder de computo que ello requiere). Por lo tanto, permite estar tranquilos y saber que el sistema no se caerá y podrá dar servicio un largo tiempo. Además, NodeJS junto con su gestor de paquetes \emph{npm} permiten mantener el sistema actualizado con facilidad sin preocupeaciones de problemas de dependencias y paquetes desactualizados o con problemas de seguridad. \\
+Se ha decidido utilizar NodeJS para desarrollar la API de microservicios, pues nos da la seguridad de que responderá correctamente a miles de llamadas simultaneas (siempre y cuando el servidor en el que se este ejecutando pueda con el poder de cómputo que ello requiere). Por lo tanto, permite estar tranquilos y saber que el sistema no se caerá y podrá dar servicio un largo tiempo. Además, NodeJS junto con su gestor de paquetes \emph{npm} permiten mantener el sistema actualizado con facilidad sin preocupeaciones de problemas de dependencias y paquetes desactualizados o con problemas de seguridad. \\
 
 Algunos ejemplos de grandes proyectos que utilizan NodeJS son:
 \begin{itemize}
@@ -575,7 +575,7 @@ Las comunicaciones de la API se pueden dividir en los siguientes 3 casos de uso 
   \label{fig:casosUso}
 \end{figure}
 
-Siendo más concretos pasemos a listar todas las funcionalidades de las que dispone la API, lógicamente esta no es la documentación completa la cual trae consigo los objetos JSON que aceptan la URIs y los errores u objetos JSON que devuelve cada una de las URIs. En el presente la documentación se mantiene en un repositorio de \emph{gitlab} privado. \\
+Siendo más concretos, pasemos a listar todas las funcionalidades de las que dispone la API, lógicamente esta no es la documentación completa la cual trae consigo los objetos JSON que aceptan la URIs y los errores u objetos JSON que devuelve cada una de las URIs. En el presente la documentación se mantiene en un repositorio de \emph{gitlab} privado. \\
 
 \begin{center}
   \begin{longtable}{|c|l|m{23em}|}
