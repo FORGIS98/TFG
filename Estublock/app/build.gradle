@@ -49,5 +49,4 @@ dependencies {
     implementation 'com.google.android.gms:play-services-vision:20.1.3' // Maven.Google: Dec, 2020
 
     implementation project(":EasyBlockchain") // Mi intento de SDK
-
 }

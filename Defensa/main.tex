@@ -1,7 +1,9 @@
 \documentclass[usenames,dvipsnames]{beamer}
+\usetheme{uniud}
+
 \usepackage[utf8]{inputenc}
 \usepackage{verbatim}
-\usetheme{uniud}
+\usepackage{tabularx}
 
 
 %: Portada {{{
@@ -71,6 +73,8 @@
 
 %: Motivacion y Objetivos {{{
 \section{Motivación y Objetivos}
+\framecard[UniBlue]{Motivación y Objetivos}
+
 \begin{frame} 
 \frametitle{¿Qué es Estublock?} 
   \begin{center}
@@ -110,6 +114,8 @@
 
 %: Tecnología Actual {{{
 \section{Tecnología Actual}
+\framecard[UniBlue]{Tecnología Actual}
+
 \begin{frame} 
 \frametitle{¿Qué es Blockchain?} 
   \begin{columns}
@@ -183,16 +189,18 @@
 
 %: Desarrollo Móvil {{{
 \section{Desarrollo Móvil}
+\framecard[UniBlue]{Desarrollo Aplicación}
+
 \begin{frame} 
 \frametitle{Casos de Uso} 
   \begin{block}{Casos de Uso de Estublock}
      \begin{itemize}
-      \item Login
-      \item Registro
+      \item Registro de nuevo usuario
+      \item Inicio de sesión
       \item Suscripción a un tema
-      \item Eliminar suscripción a un tema
-      \item Generar QR
-      \item Escanear QR
+      \item Creación de un evento
+      \item Asistir a un evento
+      \item Registrar asistencias
     \end{itemize}
   \end{block}
 \end{frame} 
@@ -210,25 +218,155 @@
 % Mencionar Problema con Android Studio y los Atributos XML
 \begin{frame} 
 \frametitle{Interfaz de Usuario} 
+  \begin{columns}
+  \begin{column}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture}
+      \node[inner sep=0pt] (logo) at (0,0){\includegraphics[scale=0.235]{graphics/combo_marvel_marvel}};
+    \end{tikzpicture}
+    \vspace{0.5cm}
+    \end{center}
+  \end{column}
+  \begin{column}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture}
+      \node[inner sep=0pt] (logo) at (0,0){\includegraphics[scale=0.2]{graphics/combo_estublock_android}};
+    \end{tikzpicture}
+    \vspace{1cm}
+    \end{center}
+  \end{column}
+  \end{columns}
 \end{frame}
+
+\begin{frame} 
+\frametitle{Accesibilidad} 
+  \begin{block}{Discapacidades}
+    \begin{itemize}
+      \item Sensoriales: \emph{Visuales, auditivas, etc.}
+      \item Motoras: \emph{Lesiones, movilidad reducida, etc.}
+      \item Cognitivas: \emph{Dislexia, etc.}
+    \end{itemize}
+  \end{block}
+
+  \pause
+
+  \begin{columns}
+  \begin{column}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture}
+      \node[inner sep=0pt] (logo) at (0,0){\includegraphics[scale=0.2]{graphics/corazonesbien}};
+    \end{tikzpicture}
+    \end{center}
+  \end{column}
+  \begin{column}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture}
+      \node[inner sep=0pt] (logo) at (0,0){\includegraphics[scale=0.2]{graphics/corazonesmal}};
+    \end{tikzpicture}
+    \end{center}
+  \end{column}
+  \end{columns}
+\end{frame} 
 
 % No entrar en detalle, mencionar levemente para que se han usado y por qué
 % Si eso, número de líneas de código
+% Java vs Kotlin
 \begin{frame} 
-\frametitle{Librerías Principales} 
+\frametitle{Librerías y Código} 
+  \begin{tabular}{|l|l|m{14em}|}
+    \hline
+    \textbf{\textcolor{UniGold}{Nombre}} & 
+    \textbf{\textcolor{UniGold}{Equipo}} & 
+    \textbf{\textcolor{UniGold}{Uso}} \\
+    \hline
+    Volley & Android & Llamadas a una API Rest \\
+    \hline
+    Okhttp & Squareup & Llamadas a una API Rest \\
+    \hline
+    Bcrypt & P.Favre & Cifrado de contraseñas \\
+    \hline
+    QRGenerator & AndroidMads & Generador de códigos QR \\
+    \hline
+    ZXing & Google & Escaner de códigos QR \\
+    \hline
+  \end{tabular}
+
+  \begin{columns}
+  \begin{column}{0.33\textwidth}
+    \begin{center}
+      \textcolor{UniGold}{Nº Archivos} \\
+      14 de Java \\
+      13 de XML
+    \end{center}
+  \end{column}
+  \begin{column}{0.33\textwidth}
+    \begin{center}
+      \textcolor{UniGold}{Código Java} \\
+      1799 Líneas
+    \end{center}
+  \end{column}
+  \begin{column}{0.33\textwidth}
+    \begin{center}
+      \textcolor{UniGold}{Código XML} \\
+      748 Líneas
+    \end{center}
+  \end{column}
+  \end{columns}
 \end{frame}
 %: }}}
 
 
 %: Desarrollo SDK {{{
 \section{Kit de Desarrollo Software}
+\framecard[UniBlue]{Kit de Desarrollo Software}
+
 % Diagrama para mostrar como esta formado 
 \begin{frame} 
 \frametitle{Diseño del SDK} 
+  \begin{center}
+    \begin{tikzpicture}
+      \node[inner sep=0pt] (logo) at (0,0){\includegraphics[scale=0.35]{graphics/sdk_diseno}};
+    \end{tikzpicture} \\
+    \vspace{0.5cm}
+    \begin{tabular}{|l|l|m{14em}|}
+      \hline
+      \textbf{\textcolor{UniGold}{Nombre}} & 
+      \textbf{\textcolor{UniGold}{Equipo}} & 
+      \textbf{\textcolor{UniGold}{Uso}} \\
+      \hline
+      Web3j & Web3Labs & Comunicación con la red Blockchain\\
+      \hline
+    \end{tabular}
+  \end{center}
+
+  \vspace{-0.5cm}
+
+  \begin{columns}
+  \begin{column}{0.5\textwidth}
+    \begin{center}
+      \textcolor{UniGold}{Nº Archivos} \\
+      3 de Java
+    \end{center}
+  \end{column}
+  \begin{column}{0.5\textwidth}
+    \begin{center}
+      \textcolor{UniGold}{Código Java} \\
+      278 Líneas
+    \end{center}
+  \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame} 
 \frametitle{Seguridad y Keystore} 
+  \begin{block}{Aspectos Importantes}
+    \begin{itemize}
+      \item \textcolor{UniGold}{Wallet} y \textcolor{UniGold}{Keystore} se guardan en el dispositivo móvil.
+      \item \textcolor{UniGold}{Keystore} cifrado con AES-128.
+      \item \textcolor{UniGold}{Contraseña} reforzada con KDF.
+      \item \textcolor{UniGold}{Linux} impide el acceso al wallet desde otras Apps.
+    \end{itemize}
+  \end{block}
 \end{frame}
 
 \begin{frame} 
@@ -246,6 +384,8 @@
 
 %: Conclusiones y Trabajo Futuro {{{
 \section{Conclusiones y Trabajo Futuro}
+\framecard[UniBlue]{Conclusiones y Trabajo Futuro}
+
 % Madurez de las herramientas, resultados, que has aprendido, que te ha permitido, ideas extraidas, falta de librerías especificas, blockchain es una realidad (estado de madurez de la tecnología)
 \begin{frame} 
 \frametitle{Conclusiones} 
