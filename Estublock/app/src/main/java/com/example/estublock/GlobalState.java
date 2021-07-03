@@ -11,10 +11,10 @@ public class GlobalState extends Application {
   private String userPassword;
   private String myPref = "UserToWallet";
 
-  private String quorum_RPC = "http://138.100.10.226:22000"; // Dejarlo con IP en vez de dominio, no se conecta a la blockchain con el dominio :/
-  private String blockchain_URL = "http://hubble.ls.fi.upm.es:10010";
-  private String dataBase_URL = "http://hubble.ls.fi.upm.es:10011";
-  private String micro_URL = "http://hubble.ls.fi.upm.es:10012";
+  private String quorum_RPC = "IP"; // Dejarlo con IP en vez de dominio, no se conecta a la blockchain con el dominio :/
+  private String blockchain_URL = "IP";
+  private String dataBase_URL = "IP";
+  private String micro_URL = "IP";
 
   public void setPathToWallet(File pathToWallet) { this.pathToWallet = pathToWallet; }
   public File getPathToWallet(){ return this.pathToWallet; }
